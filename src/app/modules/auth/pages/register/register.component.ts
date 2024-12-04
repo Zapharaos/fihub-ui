@@ -1,13 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Button} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {DividerModule} from "primeng/divider";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
-import {PrimeTemplate} from "primeng/api";
-import {RouterLink} from "@angular/router";
+import {Message} from "primeng/api";
+import {Router, RouterLink} from "@angular/router";
 import {CheckboxModule} from "primeng/checkbox";
+import {MessagesModule} from "primeng/messages";
+import {Ripple} from "primeng/ripple";
+import {NgClass} from "@angular/common";
+import {UsersService, UsersUserWithPassword} from "@core/api";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-register',
@@ -19,25 +24,44 @@ import {CheckboxModule} from "primeng/checkbox";
     FormsModule,
     InputTextModule,
     PasswordModule,
-    PrimeTemplate,
-    ReactiveFormsModule,
     RouterLink,
-    CheckboxModule
+    CheckboxModule,
+    MessagesModule,
+    Ripple,
+    NgClass
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent implements OnInit {
-  registerForm!: FormGroup;
+export class RegisterComponent {
+  user: UsersUserWithPassword = {};
+  confirmation: string = '';
+  agreement = false;
+  loading = false;
+  error = false;
+  messages: Message[] = [];
 
-  ngOnInit() {
-    this.registerForm = new FormGroup({
-      firstname: new FormControl<object | null>(null),
-      lastname: new FormControl<object | null>(null),
-      email: new FormControl<object | null>(null),
-      password: new FormControl<object | null>(null),
-      confirmation: new FormControl<object | null>(null),
-      agreement: new FormControl<object | null>(null),
-    });
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private usersService: UsersService,
+  ) {
+
+  }
+
+  register() {
+    this.loading = true;
+
+    this.usersService.createUser(this.user).pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe({
+      next: () => {
+        this.router.navigate(['/dashboard'])
+      },
+      error: (error: any) => {
+        console.log(error)
+        this.loading = false;
+      },
+    })
   }
 }

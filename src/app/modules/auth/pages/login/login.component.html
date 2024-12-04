@@ -1,34 +1,57 @@
-<div class="container mx-auto max-w-xl flex flex-col gap-3">
+<div class="flex flex-col items-center justify-center min-h-screen">
+
+  <p-messages
+    [(value)]="messages"
+    [closable]="false"
+    [enableService]="false"/>
+
   <p-card header="Log in" class="container-2xl">
-    <form [formGroup]="loginForm" class="flex flex-col gap-4">
+
+    <div class="flex flex-col gap-4">
 
       <!-- Email -->
       <div class="flex flex-col gap-2">
-        <label>Email</label>
-        <input type="text" pInputText formControlName="email" placeholder="Email"/>
+        <label for="email">Email</label>
+        <input [(ngModel)]="user.email"
+               [autofocus]="true"
+               [disabled]="loading"
+               [ngClass]="{'ng-invalid': error}"
+               pInputText
+               type="text"
+               id="email"
+               placeholder="Email"
+        />
       </div>
 
       <!-- Password -->
       <div class="flex flex-col gap-2">
-        <label>Password</label>
-        <p-password
-          formControlName="password"
-          placeholder="Password"
-          [toggleMask]="true"
-          [feedback]="false"
+        <label for="password">Password</label>
+        <p-password [(ngModel)]="user.password"
+                    [disabled]="loading"
+                    [feedback]="false"
+                    [toggleMask]="true"
+                    [ngClass]="{'ng-invalid': error}"
+                    autocomplete="current-password"
+                    id="password"
+                    placeholder="Password"
         />
       </div>
-    </form>
+    </div>
 
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1">
-        <p-button label="Connect" class="w-full" styleClass="w-full" />
+        <p-button (click)="login()"
+                  [disabled]="!user.email || !user.password || loading"
+                  label="Connect"
+                  class="w-full"
+                  styleClass="w-full"
+                  pRipple/>
       </div>
     </ng-template>
-
   </p-card>
+
   <div class="flex items-center justify-center">
-    <p-button routerLink="/register" label="Create an account" [link]="true" />
+    <p-button routerLink="/auth/register" label="Create an account" [link]="true" />
     or
     <p-button label="Forgot password" [link]="true" />
   </div>

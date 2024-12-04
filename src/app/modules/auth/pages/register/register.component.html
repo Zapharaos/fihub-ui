@@ -1,29 +1,66 @@
-<div class="container mx-auto max-w-xl flex flex-col gap-3">
-  <p-card header="Welcome to Fihub">
-    <form [formGroup]="registerForm" class="flex flex-col gap-4">
+<div class="flex flex-col items-center justify-center min-h-screen">
+
+  <p-messages
+    [(value)]="messages"
+    [closable]="false"
+    [enableService]="false"/>
+
+  <p-card header="Welcome to Fihub" class="container-2xl">
+
+    <div class="flex flex-col gap-4">
 
       <!-- Firstname -->
       <div class="flex flex-col gap-2">
-        <label>Firstname</label>
-        <input type="text" pInputText formControlName="firstname" placeholder="Firstname"/>
+        <label for="firstname">Firstname</label>
+        <input [(ngModel)]="user.first_name"
+               [autofocus]="true"
+               [disabled]="loading"
+               [ngClass]="{'ng-invalid': error}"
+               pInputText
+               type="text"
+               id="firstname"
+               placeholder="Firstname"
+        />
       </div>
 
       <!-- Lastname -->
       <div class="flex flex-col gap-2">
-        <label>Lastname</label>
-        <input type="text" pInputText formControlName="lastname" placeholder="Lastname"/>
+        <label for="lastname">Lastname</label>
+        <input [(ngModel)]="user.last_name"
+               [autofocus]="true"
+               [disabled]="loading"
+               [ngClass]="{'ng-invalid': error}"
+               pInputText
+               type="text"
+               id="lastname"
+               placeholder="Lastname"
+        />
       </div>
 
       <!-- Email -->
       <div class="flex flex-col gap-2">
-        <label>Email</label>
-        <input type="email" pInputText formControlName="email" placeholder="Email"/>
+        <label for="email">Email</label>
+        <input [(ngModel)]="user.email"
+               [autofocus]="true"
+               [disabled]="loading"
+               [ngClass]="{'ng-invalid': error}"
+               pInputText
+               type="text"
+               id="email"
+               placeholder="Email"
+        />
       </div>
 
       <!-- Password -->
       <div class="flex flex-col gap-2">
-        <label>Password</label>
-        <p-password formControlName="password" placeholder="Password" [toggleMask]="true">
+        <label for="password">Password</label>
+        <p-password [(ngModel)]="user.password"
+                    [disabled]="loading"
+                    [toggleMask]="true"
+                    [ngClass]="{'ng-invalid': error}"
+                    autocomplete="password"
+                    id="password"
+                    placeholder="Password">
           <ng-template pTemplate="header">
             <h6 class="text-sm font-semibold">Pick a password</h6>
           </ng-template>
@@ -42,28 +79,41 @@
 
       <!-- Confirmation -->
       <div class="flex flex-col gap-2">
-        <label>Confirmation</label>
-        <p-password formControlName="confirmation" placeholder="Confirmation" [toggleMask]="true" [feedback]="false" class="w-full" />
+        <label for="confirmation">Confirmation</label>
+        <p-password [(ngModel)]="confirmation"
+                    [disabled]="loading"
+                    [feedback]="false"
+                    [toggleMask]="true"
+                    [ngClass]="{'ng-invalid': error}"
+                    id="confirmation"
+                    placeholder="Confirmation"
+        />
       </div>
 
       <!-- Agreement -->
       <div class="flex gap-2">
-        <p-checkbox
-          formControlName="agreement"
-          [binary]="true"
-          inputId="agreement" />
+        <p-checkbox [(ngModel)]="agreement"
+                    [binary]="true"
+                    inputId="agreement" />
         <label for="agreement">I agree to Fihub's  and .</label>
       </div>
+    </div>
 
-    </form>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1">
-        <p-button label="Register" class="w-full" styleClass="w-full" />
+        <p-button (click)="register()"
+                  [disabled]="!user.first_name || !user.last_name || !user.email ||!user.password || !confirmation || loading"
+                  label="Register"
+                  class="w-full"
+                  styleClass="w-full"
+                  pRipple/>
       </div>
     </ng-template>
   </p-card>
 
   <div class="flex items-center justify-center">
-    <p-button routerLink="/login" label="Log in" [link]="true" />
+    <p-button routerLink="/auth" label="Create an account" [link]="true" />
+    or
+    <p-button label="Forgot password" [link]="true" />
   </div>
 </div>
