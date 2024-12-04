@@ -1,41 +1,13 @@
-<div class="flex flex-col items-center justify-center min-h-screen">
+<div class="flex flex-col items-center justify-center min-h-screen gap-3">
 
   <p-messages
     [(value)]="messages"
     [closable]="false"
     [enableService]="false"/>
 
-  <p-card header="{{'register.title' | translate}}" class="container-2xl">
+  <p-card header="{{'register.title' | translate}}">
 
     <div class="flex flex-col gap-4">
-
-      <!-- Firstname -->
-      <div class="flex flex-col gap-2">
-        <label for="firstname">{{'auth.form.firstname' | translate}}</label>
-        <input [(ngModel)]="user.first_name"
-               [autofocus]="true"
-               [disabled]="loading"
-               [ngClass]="{'ng-invalid': error}"
-               pInputText
-               type="text"
-               id="firstname"
-               placeholder="{{'auth.form.firstname-placeholder' | translate}}"
-        />
-      </div>
-
-      <!-- Lastname -->
-      <div class="flex flex-col gap-2">
-        <label for="lastname">{{'auth.form.lastname' | translate}}</label>
-        <input [(ngModel)]="user.last_name"
-               [autofocus]="true"
-               [disabled]="loading"
-               [ngClass]="{'ng-invalid': error}"
-               pInputText
-               type="text"
-               id="lastname"
-               placeholder="{{'auth.form.lastname-placeholder' | translate}}"
-        />
-      </div>
 
       <!-- Email -->
       <div class="flex flex-col gap-2">
@@ -47,7 +19,6 @@
                pInputText
                type="text"
                id="email"
-               placeholder="{{'auth.form.email-placeholder' | translate}}"
         />
       </div>
 
@@ -60,7 +31,6 @@
                     [ngClass]="{'ng-invalid': error}"
                     autocomplete="password"
                     id="password"
-                    placeholder="{{'auth.form.pwd.password-placeholder' | translate}}"
                     weakLabel="{{'auth.form.pwd.feedback.complexity.weak' | translate}}"
                     mediumLabel="{{'auth.form.pwd.feedback.complexity.medium' | translate}}"
                     strongLabel="{{'auth.form.pwd.feedback.complexity.strong' | translate}}">
@@ -89,7 +59,6 @@
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
                     id="confirmation"
-                    placeholder="{{'auth.form.pwd.confirmation-placeholder' | translate}}"
         />
       </div>
 
@@ -105,7 +74,7 @@
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1">
         <p-button (click)="register()"
-                  [disabled]="!user.first_name || !user.last_name || !user.email ||!user.password || !confirmation || loading"
+                  [disabled]="!user.email || !user.password || !confirmation || loading"
                   label="{{'register.submit' | translate}}"
                   class="w-full"
                   styleClass="w-full"

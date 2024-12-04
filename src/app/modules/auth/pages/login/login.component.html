@@ -1,11 +1,11 @@
-<div class="flex flex-col items-center justify-center min-h-screen">
+<div class="flex flex-col items-center justify-center min-h-screen gap-3">
 
   <p-messages
     [(value)]="messages"
     [closable]="false"
     [enableService]="false"/>
 
-  <p-card header="{{'login.title' | translate}}" class="container-2xl">
+  <p-card header="{{'login.title' | translate}}">
 
     <div class="flex flex-col gap-4">
 
@@ -19,7 +19,6 @@
                pInputText
                type="text"
                id="email"
-               placeholder="{{'auth.form.email-placeholder' | translate}}"
         />
       </div>
 
@@ -33,7 +32,6 @@
                     [ngClass]="{'ng-invalid': error}"
                     autocomplete="current-password"
                     id="password"
-                    placeholder="{{'auth.form.pwd.password-placeholder' | translate}}"
         />
       </div>
     </div>

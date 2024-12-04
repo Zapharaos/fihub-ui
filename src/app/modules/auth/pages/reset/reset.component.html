@@ -1,11 +1,11 @@
-<div class="flex flex-col items-center justify-center min-h-screen">
+<div class="flex flex-col items-center justify-center min-h-screen gap-3">
 
   <p-messages
     [(value)]="messages"
     [closable]="false"
     [enableService]="false"/>
 
-  <p-card header="{{'reset.title' | translate}}" class="container-2xl">
+  <p-card header="{{'reset.title' | translate}}">
     <div class="flex flex-col gap-4">
       <!-- Password -->
       <div class="flex flex-col gap-2">
@@ -16,7 +16,6 @@
                     [ngClass]="{'ng-invalid': error}"
                     autocomplete="password"
                     id="password"
-                    placeholder="{{'auth.form.pwd.password-placeholder' | translate}}"
                     weakLabel="{{'auth.form.pwd.feedback.complexity.weak' | translate}}"
                     mediumLabel="{{'auth.form.pwd.feedback.complexity.medium' | translate}}"
                     strongLabel="{{'auth.form.pwd.feedback.complexity.strong' | translate}}">
@@ -45,7 +44,6 @@
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
                     id="confirmation"
-                    placeholder="{{'auth.form.pwd.confirmation-placeholder' | translate}}"
         />
       </div>
     </div>

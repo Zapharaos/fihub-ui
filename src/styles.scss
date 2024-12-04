@@ -41,6 +41,9 @@ p-password .p-component {
   border-radius: 6px;
 }
 
+.p-card {
+  min-width: 24rem; /* 384px */
+}
 .p-card .p-card-body {
-  padding: 2rem 2.5rem;
+  padding: 2rem;
 }

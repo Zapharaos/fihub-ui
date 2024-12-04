@@ -1,17 +1,10 @@
 {
   "auth": {
     "form": {
-      "firstname": "Firstname",
-      "firstname-placeholder": "Firstname",
-      "lastname": "Lastname",
-      "lastname-placeholder": "Lastname",
       "email": "Email",
-      "email-placeholder": "Email",
       "pwd": {
         "password": "Password",
-        "password-placeholder": "Password",
         "confirmation": "Confirmation",
-        "confirmation-placeholder": "Confirmation",
         "feedback": {
           "header": "Pick a password",
           "complexity": {

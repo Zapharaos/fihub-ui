@@ -1,0 +1,111 @@
+definitions:
+  render.ErrorResponse:
+    properties:
+      message:
+        type: string
+      title:
+        type: string
+    type: object
+  users.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  users.UserWithPassword:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: contact@matthieu-freitag.com
+    name: Zapharaos
+    url: https://matthieu-freitag.com/
+  description: Fihub API Swagger
+  termsOfService: http://swagger.io/terms/
+  title: Fihub API Swagger
+  version: "1.0"
+paths:
+  /api/v1/users:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user.
+      operationId: CreateUser
+      parameters:
+      - description: user (json)
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/users.UserWithPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user
+          schema:
+            $ref: '#/definitions/users.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/render.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/render.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create a new user
+      tags:
+      - Users
+  /api/v1/users/{id}:
+    get:
+      description: Get a user by id.
+      operationId: GetUser
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user
+          schema:
+            $ref: '#/definitions/users.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/render.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/render.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Get a user
+      tags:
+      - Users
+swagger: "2.0"
