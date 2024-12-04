@@ -5,13 +5,13 @@
     [closable]="false"
     [enableService]="false"/>
 
-  <p-card header="Log in" class="container-2xl">
+  <p-card header="{{'login.title' | translate}}" class="container-2xl">
 
     <div class="flex flex-col gap-4">
 
       <!-- Email -->
       <div class="flex flex-col gap-2">
-        <label for="email">Email</label>
+        <label for="email">{{'auth.form.email' | translate}}</label>
         <input [(ngModel)]="user.email"
                [autofocus]="true"
                [disabled]="loading"
@@ -19,13 +19,13 @@
                pInputText
                type="text"
                id="email"
-               placeholder="Email"
+               placeholder="{{'auth.form.email-placeholder' | translate}}"
         />
       </div>
 
       <!-- Password -->
       <div class="flex flex-col gap-2">
-        <label for="password">Password</label>
+        <label for="password">{{'auth.form.pwd.password' | translate}}</label>
         <p-password [(ngModel)]="user.password"
                     [disabled]="loading"
                     [feedback]="false"
@@ -33,7 +33,7 @@
                     [ngClass]="{'ng-invalid': error}"
                     autocomplete="current-password"
                     id="password"
-                    placeholder="Password"
+                    placeholder="{{'auth.form.pwd.password-placeholder' | translate}}"
         />
       </div>
     </div>
@@ -42,7 +42,7 @@
       <div class="flex gap-3 mt-1">
         <p-button (click)="login()"
                   [disabled]="!user.email || !user.password || loading"
-                  label="Connect"
+                  label="{{'login.submit' | translate}}"
                   class="w-full"
                   styleClass="w-full"
                   pRipple/>
@@ -51,8 +51,8 @@
   </p-card>
 
   <div class="flex items-center justify-center">
-    <p-button routerLink="/auth/register" label="Create an account" [link]="true" />
+    <p-button routerLink="/auth/register" label="{{'login.register' | translate}}" [link]="true" />
     or
-    <p-button label="Forgot password" [link]="true" />
+    <p-button label="{{'login.forgot' | translate}}" [link]="true" />
   </div>
 </div>

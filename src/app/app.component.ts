@@ -11,15 +11,9 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'fihub-ui';
-
   constructor(private translate: TranslateService) {
     this.translate.addLangs(['fr', 'en']);
     this.translate.setDefaultLang('en');
     this.translate.use(this.translate.getBrowserLang() || "en");
-  }
-
-  useLanguage(language: string): void {
-    this.translate.use(language);
   }
 }

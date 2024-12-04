@@ -13,6 +13,7 @@ import {Ripple} from "primeng/ripple";
 import {NgClass} from "@angular/common";
 import {UsersService, UsersUserWithPassword} from "@core/api";
 import {finalize} from "rxjs";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-register',
@@ -28,7 +29,8 @@ import {finalize} from "rxjs";
     CheckboxModule,
     MessagesModule,
     Ripple,
-    NgClass
+    NgClass,
+    TranslateModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -45,6 +47,7 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private router: Router,
     private usersService: UsersService,
+    private translateService: TranslateService
   ) {
 
   }

@@ -13,6 +13,7 @@ import {MessageModule} from "primeng/message";
 import {MessagesModule} from "primeng/messages";
 import {FormsModule} from "@angular/forms";
 import {NgClass} from "@angular/common";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ import {NgClass} from "@angular/common";
     MessagesModule,
     FormsModule,
     NgClass,
+    TranslateModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -38,6 +40,11 @@ export class LoginComponent {
   loading = false;
   error = false;
   messages: Message[] = [];
+
+  constructor(
+    private translateService: TranslateService
+  ) {
+  }
 
   /*constructor(private loginService: LoginService,
               private messageService: MessageService,
