@@ -1,34 +1,17 @@
 import { Routes } from '@angular/router';
-import {HomeComponent} from "./home/home.component";
-import {LoginComponent} from "./modules/auth/pages/login/login.component";
-import {RegisterComponent} from "./modules/auth/pages/register/register.component";
-import {TransactionComponent} from "./modules/dashboard/transaction/transaction.component";
-import {TransactionsComponent} from "./modules/dashboard/transactions/transactions.component";
-import {ResetComponent} from "./modules/auth/pages/reset/reset.component";
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    pathMatch: 'full',
+    redirectTo: 'home',
   },
   {
-    path: 'reset',
-    component : ResetComponent,
+    path: 'auth',
+    loadChildren: () => import('./modules/auth/auth.routes').then(m => m.routes),
   },
   {
-    path: 'login',
-    component: LoginComponent,
+    path: 'dashboard',
+    loadChildren: () => import('./modules/dashboard/dashboard.routes').then(m => m.routes),
   },
-  {
-    path: 'register',
-    component: RegisterComponent,
-  },
-  {
-    path: 'transaction',
-    component: TransactionComponent,
-  },
-  {
-    path: 'transactions',
-    component: TransactionsComponent,
-  }
 ];
