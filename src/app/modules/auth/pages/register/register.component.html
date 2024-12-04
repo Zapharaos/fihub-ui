@@ -5,13 +5,13 @@
     [closable]="false"
     [enableService]="false"/>
 
-  <p-card header="Welcome to Fihub" class="container-2xl">
+  <p-card header="{{'register.title' | translate}}" class="container-2xl">
 
     <div class="flex flex-col gap-4">
 
       <!-- Firstname -->
       <div class="flex flex-col gap-2">
-        <label for="firstname">Firstname</label>
+        <label for="firstname">{{'auth.form.firstname' | translate}}</label>
         <input [(ngModel)]="user.first_name"
                [autofocus]="true"
                [disabled]="loading"
@@ -19,13 +19,13 @@
                pInputText
                type="text"
                id="firstname"
-               placeholder="Firstname"
+               placeholder="{{'auth.form.firstname-placeholder' | translate}}"
         />
       </div>
 
       <!-- Lastname -->
       <div class="flex flex-col gap-2">
-        <label for="lastname">Lastname</label>
+        <label for="lastname">{{'auth.form.lastname' | translate}}</label>
         <input [(ngModel)]="user.last_name"
                [autofocus]="true"
                [disabled]="loading"
@@ -33,13 +33,13 @@
                pInputText
                type="text"
                id="lastname"
-               placeholder="Lastname"
+               placeholder="{{'auth.form.lastname-placeholder' | translate}}"
         />
       </div>
 
       <!-- Email -->
       <div class="flex flex-col gap-2">
-        <label for="email">Email</label>
+        <label for="email">{{'auth.form.email' | translate}}</label>
         <input [(ngModel)]="user.email"
                [autofocus]="true"
                [disabled]="loading"
@@ -47,31 +47,34 @@
                pInputText
                type="text"
                id="email"
-               placeholder="Email"
+               placeholder="{{'auth.form.email-placeholder' | translate}}"
         />
       </div>
 
       <!-- Password -->
       <div class="flex flex-col gap-2">
-        <label for="password">Password</label>
+        <label for="password">{{'auth.form.pwd.password' | translate}}</label>
         <p-password [(ngModel)]="user.password"
                     [disabled]="loading"
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
                     autocomplete="password"
                     id="password"
-                    placeholder="Password">
+                    placeholder="{{'auth.form.pwd.password-placeholder' | translate}}"
+                    weakLabel="{{'auth.form.pwd.feedback.complexity.weak' | translate}}"
+                    mediumLabel="{{'auth.form.pwd.feedback.complexity.medium' | translate}}"
+                    strongLabel="{{'auth.form.pwd.feedback.complexity.strong' | translate}}">
           <ng-template pTemplate="header">
-            <h6 class="text-sm font-semibold">Pick a password</h6>
+            <h6 class="text-sm font-semibold">{{'auth.form.pwd.feedback.header' | translate}}</h6>
           </ng-template>
           <ng-template pTemplate="footer">
             <p-divider />
-            <p class="mt-2 mb-4">Suggestions</p>
+            <p class="mt-2 mb-4">{{'auth.form.pwd.feedback.suggestions.header' | translate}}</p>
             <ul class="pl-2 ml-2 mt-0 list-disc" style="line-height: 1.5">
-              <li>At least one lowercase</li>
-              <li>At least one uppercase</li>
-              <li>At least one numeric</li>
-              <li>Minimum 8 characters</li>
+              <li>{{'auth.form.pwd.feedback.suggestions.li-0' | translate}}</li>
+              <li>{{'auth.form.pwd.feedback.suggestions.li-1' | translate}}</li>
+              <li>{{'auth.form.pwd.feedback.suggestions.li-2' | translate}}</li>
+              <li>{{'auth.form.pwd.feedback.suggestions.li-3' | translate}}</li>
             </ul>
           </ng-template>
         </p-password>
@@ -79,14 +82,14 @@
 
       <!-- Confirmation -->
       <div class="flex flex-col gap-2">
-        <label for="confirmation">Confirmation</label>
+        <label for="confirmation">{{'auth.form.pwd.confirmation' | translate}}</label>
         <p-password [(ngModel)]="confirmation"
                     [disabled]="loading"
                     [feedback]="false"
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
                     id="confirmation"
-                    placeholder="Confirmation"
+                    placeholder="{{'auth.form.pwd.confirmation-placeholder' | translate}}"
         />
       </div>
 
@@ -95,7 +98,7 @@
         <p-checkbox [(ngModel)]="agreement"
                     [binary]="true"
                     inputId="agreement" />
-        <label for="agreement">I agree to Fihub's  and .</label>
+        <label for="agreement">{{'register.agreement' | translate}}</label>
       </div>
     </div>
 
@@ -103,7 +106,7 @@
       <div class="flex gap-3 mt-1">
         <p-button (click)="register()"
                   [disabled]="!user.first_name || !user.last_name || !user.email ||!user.password || !confirmation || loading"
-                  label="Register"
+                  label="{{'register.submit' | translate}}"
                   class="w-full"
                   styleClass="w-full"
                   pRipple/>
@@ -112,8 +115,6 @@
   </p-card>
 
   <div class="flex items-center justify-center">
-    <p-button routerLink="/auth" label="Create an account" [link]="true" />
-    or
-    <p-button label="Forgot password" [link]="true" />
+    <p-button routerLink="/auth" label="{{'register.login' | translate}}" [link]="true" />
   </div>
 </div>

@@ -1,3 +1,52 @@
 {
-  "demo-i18n": "English"
+  "auth": {
+    "form": {
+      "firstname": "Firstname",
+      "firstname-placeholder": "Firstname",
+      "lastname": "Lastname",
+      "lastname-placeholder": "Lastname",
+      "email": "Email",
+      "email-placeholder": "Email",
+      "pwd": {
+        "password": "Password",
+        "password-placeholder": "Password",
+        "confirmation": "Confirmation",
+        "confirmation-placeholder": "Confirmation",
+        "feedback": {
+          "header": "Pick a password",
+          "complexity": {
+            "weak": "Weak",
+            "medium": "Medium",
+            "strong": "Strong"
+          },
+          "suggestions": {
+            "header": "Suggestions",
+            "li-0": "At least one lowercase",
+            "li-1": "At least one uppercase",
+            "li-2": "At least one numeric",
+            "li-3": "Minimum 8 characters"
+          }
+        }
+      }
+    }
+  },
+  "login": {
+    "title": "Log in",
+    "submit": "Connect",
+    "register": "Create an account",
+    "forgot": "Forgot password"
+  },
+  "register": {
+    "title": "Welcome to Fihub",
+    "agreement": "I agree to Fihub's  and .",
+    "submit": "Register",
+    "login": "Log in"
+  },
+  "reset": {
+    "title": "Reset password",
+    "submit": "Reset password"
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  }
 }
