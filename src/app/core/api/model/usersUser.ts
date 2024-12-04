@@ -12,9 +12,7 @@
 export interface UsersUser { 
     created_at?: string;
     email?: string;
-    first_name?: string;
     id?: string;
-    last_name?: string;
     updated_at?: string;
 }
 
