@@ -26,10 +26,6 @@ export class RegisterComponent {
 
   }
 
-  isSubmitDisabled(): boolean {
-    return !this.user.email || !this.user.password || !this.user.confirmation || !this.user.checkbox
-  }
-
   register() {
     this.loading = true;
 

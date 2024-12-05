@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Button} from "primeng/button";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Button, ButtonDirective} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
 import {MessagesModule} from "primeng/messages";
@@ -7,10 +7,11 @@ import {PasswordModule} from "primeng/password";
 import {Message, PrimeTemplate} from "primeng/api";
 import {
   AbstractControl,
-  FormBuilder, FormControl,
+  FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
-  ReactiveFormsModule, ValidationErrors,
+  ReactiveFormsModule,
   ValidatorFn,
   Validators
 } from "@angular/forms";
@@ -40,12 +41,13 @@ import {FormUser} from "@shared/models/form-user";
     FormsModule,
     NgClass,
     DividerModule,
-    CheckboxModule
+    CheckboxModule,
+    ButtonDirective
   ],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss'
 })
-export class AuthFormComponent {
+export class AuthFormComponent implements OnInit {
   @Input() title: string = "";
   @Input() user: FormUser = {};
   @Input() fieldEmail: boolean = false;
@@ -54,67 +56,106 @@ export class AuthFormComponent {
   @Input() fieldConfirmation: boolean = false;
   @Input() fieldCheckbox: string = "";
   @Input() fieldSubmit: string = "";
-  @Input() isSubmitDisabled: () => boolean = () => true;
   @Output() onSubmit = new EventEmitter();
 
   loading = false;
   error = false;
   messages: Message[] = [];
-  // userForm: FormGroup = this.fb.group({});
+  userForm: FormGroup = this.fb.group({});
+
+  // TODO : loading, toast, errors, redirects, links
 
   constructor(
-    // private fb: FormBuilder,
+    private fb: FormBuilder,
   ) {
-    // this.initFormControls()
+  }
+
+  ngOnInit() {
+    // Form controls depends on the @Input fields which have yet to be passed in the constructor
+    this.initFormControls();
   }
 
   onSubmitWrapper() {
     this.onSubmit.emit();
   }
 
-  /*initFormControls() {
-    // const formControls: { [key: string]: [any, ValidatorFn[] | ValidationErrors] } = {};
-
+  initFormControls() {
     // Email
     if (this.fieldEmail) {
-      this.userForm.addControl('email', new FormControl('', Validators.required));
-      // formControls['email'] = [this.user.email, Validators.required];
+      this.userForm.addControl('email', new FormControl({
+        value: this.user.email,
+        disabled: this.loading
+        }, [
+          Validators.email,
+          Validators.required,
+        ]
+      ));
     }
+
     // Password
     if (this.fieldPassword) {
-      this.userForm.addControl('password', new FormControl('', Validators.required));
-      // formControls['password'] = [this.user.password, Validators.required];
+      this.userForm.addControl('password', new FormControl({
+        value: this.user.password,
+        disabled: this.loading
+      }, [
+        Validators.required
+      ]));
     }
+
     // Password Feedback
     if (this.fieldPasswordFeedback) {
-      this.userForm.addControl('password', new FormControl('', [
-        Validators.required,
+      this.userForm.addControl('password-feedback', new FormControl({
+        value: this.user.password,
+        disabled: this.loading
+      }, [
         Validators.minLength(8),
-        Validators.maxLength(64)
+        Validators.maxLength(64),
+        Validators.required,
       ]));
-      // formControls['password'] = [this.user.password, Validators.required, Validators.minLength(8), Validators.maxLength(64)];
     }
+
     // Confirmation
     if (this.fieldConfirmation) {
 
-      const passwordMatchValidator: ValidatorFn = (control: AbstractControl) => {
-        return this.user.password === control.value ? null : { passwordMismatch: true };
-      };
-
-      this.userForm.addControl('confirmation', new FormControl('', [
+      this.userForm.addControl('confirmation', new FormControl({
+        value: this.user.confirmation,
+        disabled: this.loading
+      }, [
         Validators.required,
-        passwordMatchValidator
       ]));
-      // formControls['confirmation'] = [this.user.confirmation, Validators.required, passwordMatchValidator];
+
+      // Validate that confirmation corresponds to the password
+      this.userForm.addValidators(this.passwordMatchValidator('password-feedback', 'confirmation'))
     }
+
     // Checkbox
     if (this.fieldCheckbox) {
-      this.userForm.addControl('checkbox', new FormControl('', [
-        Validators.requiredTrue
+      this.userForm.addControl('checkbox', new FormControl({
+        value: this.user.checkbox,
+        disabled: this.loading
+      }, [
+        Validators.requiredTrue,
       ]));
-      // formControls['checkbox'] = [this.user.checkbox, Validators.requiredTrue];
     }
+  }
 
-    // this.userForm = this.fb.group(formControls);
-  }*/
+  passwordMatchValidator(controlName: string, matchingControlName: string): ValidatorFn {
+    return (abstractControl: AbstractControl) => {
+      const control = abstractControl.get(controlName);
+      const matchingControl = abstractControl.get(matchingControlName);
+
+      if (matchingControl!.errors && !matchingControl!.errors?.['confirmedValidator']) {
+        return null;
+      }
+
+      if (control!.value !== matchingControl!.value) {
+        const error = { confirmedValidator: 'Passwords do not match.' };
+        matchingControl!.setErrors(error);
+        return error;
+      } else {
+        matchingControl!.setErrors(null);
+        return null;
+      }
+    }
+  }
 }
