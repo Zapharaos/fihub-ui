@@ -30,6 +30,8 @@ body {
   color: #dc2626;
 }
 
+// Password
+
 p-password,
 p-password div.p-password,
 p-password .p-component {
@@ -43,5 +45,11 @@ p-password .p-component {
 .p-password-panel .p-password-meter,
 .p-password-panel .p-password-meter .p-password-strength{
   border-radius: 6px;
+}
+
+// Toast
+
+.p-toast .p-toast-message .p-toast-message-content {
+  border-width: 0;
 }
 
