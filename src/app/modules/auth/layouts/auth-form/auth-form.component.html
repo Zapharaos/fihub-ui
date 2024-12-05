@@ -32,8 +32,7 @@
                     [feedback]="false"
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
-                    autocomplete="current-password"
-                    id="password"
+                    inputId="password"
         />
         <small *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="text-danger">
           {{'auth.form.error.required' | translate}}
@@ -46,8 +45,7 @@
         <p-password formControlName="password-feedback"
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
-                    autocomplete="password"
-                    id="password-feedback"
+                    inputId="password-feedback"
                     weakLabel="{{'auth.form.pwd.feedback.complexity.weak' | translate}}"
                     mediumLabel="{{'auth.form.pwd.feedback.complexity.medium' | translate}}"
                     strongLabel="{{'auth.form.pwd.feedback.complexity.strong' | translate}}">
@@ -77,7 +75,7 @@
                     [feedback]="false"
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
-                    id="confirmation"
+                    inputId="confirmation"
         />
         <small *ngIf="userForm.get('confirmation')?.invalid && userForm.get('confirmation')?.touched" class="text-danger">
           {{'auth.form.error.confirmation' | translate}}
@@ -85,7 +83,7 @@
       </div>
 
       <!-- Checkbox -->
-      <div *ngIf="fieldCheckbox" >
+      <div *ngIf="fieldCheckbox">
         <div class="flex gap-2">
           <p-checkbox formControlName="checkbox"
                       [binary]="true"
@@ -100,10 +98,12 @@
 
     <!-- Actions -->
     <div class="flex gap-3 mt-1">
-      <button [disabled]="userForm.invalid || !userForm.dirty"
+      <button [disabled]="userForm.invalid || !userForm.dirty || loading"
               label="{{ fieldSubmit | translate }}"
-              class="w-full" styleClass="w-full"
-              pButton pRipple type="submit"></button>
+              class="w-full"
+              pButton pRipple
+              type="submit"
+      ></button>
     </div>
   </form>
 

@@ -25,7 +25,7 @@
         "default": "An error has occurred.",
         "required": "This field is required.",
         "email": "Provide a valid email address.",
-        "password-feedback": "Password length must be between 8 and 64 characters.",
+        "password-feedback": "Password length must be from 8 to 64 characters.",
         "confirmation": "Password confirmation does not match.",
         "agreement": "You must agree to the terms and conditions."
       }
