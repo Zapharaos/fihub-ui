@@ -1,0 +1,105 @@
+<div class="flex flex-col items-center justify-center min-h-screen gap-3">
+
+  <p-messages
+    [(value)]="messages"
+    [closable]="false"
+    [enableService]="false"/>
+
+  <p-card header="{{title | translate}}">
+
+    <!--  Form fields  -->
+    <div class="flex flex-col gap-4">
+      <!-- Email -->
+      <div *ngIf="fieldEmail" class="flex flex-col gap-2">
+        <label for="email">{{'auth.form.email' | translate}}</label>
+        <input [(ngModel)]="user.email"
+               [autofocus]="true"
+               [disabled]="loading"
+               [ngClass]="{'ng-invalid': error}"
+               pInputText
+               type="text"
+               id="email"
+        />
+      </div>
+
+      <!-- Password -->
+      <div *ngIf="fieldPassword" class="flex flex-col gap-2">
+        <label for="password">{{'auth.form.pwd.password' | translate}}</label>
+        <p-password [(ngModel)]="user.password"
+                    [disabled]="loading"
+                    [feedback]="false"
+                    [toggleMask]="true"
+                    [ngClass]="{'ng-invalid': error}"
+                    autocomplete="current-password"
+                    id="password"
+        />
+      </div>
+
+      <!-- Password Feedback -->
+      <div *ngIf="fieldPasswordFeedback" class="flex flex-col gap-2">
+        <label for="password-feedback">{{'auth.form.pwd.password' | translate}}</label>
+        <p-password [(ngModel)]="user.password"
+                    [disabled]="loading"
+                    [toggleMask]="true"
+                    [ngClass]="{'ng-invalid': error}"
+                    autocomplete="password"
+                    id="password-feedback"
+                    weakLabel="{{'auth.form.pwd.feedback.complexity.weak' | translate}}"
+                    mediumLabel="{{'auth.form.pwd.feedback.complexity.medium' | translate}}"
+                    strongLabel="{{'auth.form.pwd.feedback.complexity.strong' | translate}}">
+          <ng-template pTemplate="header">
+            <h6 class="text-sm font-semibold">{{'auth.form.pwd.feedback.header' | translate}}</h6>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <p-divider />
+            <p class="mt-2 mb-4">{{'auth.form.pwd.feedback.suggestions.header' | translate}}</p>
+            <ul class="pl-2 ml-2 mt-0 list-disc" style="line-height: 1.5">
+              <li>{{'auth.form.pwd.feedback.suggestions.li-0' | translate}}</li>
+              <li>{{'auth.form.pwd.feedback.suggestions.li-1' | translate}}</li>
+              <li>{{'auth.form.pwd.feedback.suggestions.li-2' | translate}}</li>
+              <li>{{'auth.form.pwd.feedback.suggestions.li-3' | translate}}</li>
+            </ul>
+          </ng-template>
+        </p-password>
+      </div>
+
+      <!-- Confirmation -->
+      <div *ngIf="fieldConfirmation" class="flex flex-col gap-2">
+        <label for="confirmation">{{'auth.form.pwd.confirmation' | translate}}</label>
+        <p-password [(ngModel)]="user.confirmation"
+                    [disabled]="loading"
+                    [feedback]="false"
+                    [toggleMask]="true"
+                    [ngClass]="{'ng-invalid': error}"
+                    id="confirmation"
+        />
+      </div>
+
+      <!-- Checkbox -->
+      <div *ngIf="fieldCheckbox" class="flex gap-2">
+        <p-checkbox [(ngModel)]="user.checkbox"
+                    [binary]="true"
+                    [disabled]="loading"
+                    inputId="checkbox"/>
+        <label for="checkbox">{{fieldCheckbox | translate}}</label>
+      </div>
+    </div>
+
+    <!--  Form footer  -->
+    <ng-template pTemplate="footer">
+      <div class="flex gap-3 mt-1">
+        <p-button (click)="onSubmitWrapper()"
+                  [disabled]="isSubmitDisabled() "
+                  label="{{fieldSubmit | translate}}"
+                  class="w-full" styleClass="w-full"
+                  pRipple/>
+      </div>
+    </ng-template>
+  </p-card>
+
+  <div class="flex items-center justify-center">
+    <p-button routerLink="/auth/register" label="{{'login.register' | translate}}" [link]="true" />
+    or
+    <p-button label="{{'login.forgot' | translate}}" [link]="true" />
+  </div>
+</div>
