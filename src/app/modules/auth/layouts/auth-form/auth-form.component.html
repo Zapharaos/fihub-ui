@@ -1,45 +1,49 @@
 <div class="flex flex-col items-center justify-center min-h-screen gap-3">
 
-  <p-messages
-    [(value)]="messages"
-    [closable]="false"
-    [enableService]="false"/>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmitWrapper()" class="flex flex-col gap-12 rounded-md">
 
-  <p-card header="{{title | translate}}">
+    <!-- Form title -->
+    <h2 class="font-bold text-2xl">
+      {{title | translate}}
+    </h2>
 
-    <!--  Form fields  -->
+    <!-- Form fields -->
     <div class="flex flex-col gap-4">
+
       <!-- Email -->
       <div *ngIf="fieldEmail" class="flex flex-col gap-2">
         <label for="email">{{'auth.form.email' | translate}}</label>
-        <input [(ngModel)]="user.email"
+        <input formControlName="email"
                [autofocus]="true"
-               [disabled]="loading"
                [ngClass]="{'ng-invalid': error}"
                pInputText
                type="text"
                id="email"
         />
+        <small *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="text-danger">
+          {{'auth.form.error.email' | translate}}
+        </small>
       </div>
 
       <!-- Password -->
       <div *ngIf="fieldPassword" class="flex flex-col gap-2">
         <label for="password">{{'auth.form.pwd.password' | translate}}</label>
-        <p-password [(ngModel)]="user.password"
-                    [disabled]="loading"
+        <p-password formControlName="password"
                     [feedback]="false"
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
                     autocomplete="current-password"
                     id="password"
         />
+        <small *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="text-danger">
+          {{'auth.form.error.required' | translate}}
+        </small>
       </div>
 
       <!-- Password Feedback -->
       <div *ngIf="fieldPasswordFeedback" class="flex flex-col gap-2">
         <label for="password-feedback">{{'auth.form.pwd.password' | translate}}</label>
-        <p-password [(ngModel)]="user.password"
-                    [disabled]="loading"
+        <p-password formControlName="password-feedback"
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
                     autocomplete="password"
@@ -61,41 +65,47 @@
             </ul>
           </ng-template>
         </p-password>
+        <small *ngIf="userForm.get('password-feedback')?.invalid && userForm.get('password-feedback')?.touched" class="text-danger">
+          {{'auth.form.error.password-feedback' | translate}}
+        </small>
       </div>
 
       <!-- Confirmation -->
       <div *ngIf="fieldConfirmation" class="flex flex-col gap-2">
         <label for="confirmation">{{'auth.form.pwd.confirmation' | translate}}</label>
-        <p-password [(ngModel)]="user.confirmation"
-                    [disabled]="loading"
+        <p-password formControlName="confirmation"
                     [feedback]="false"
                     [toggleMask]="true"
                     [ngClass]="{'ng-invalid': error}"
                     id="confirmation"
         />
+        <small *ngIf="userForm.get('confirmation')?.invalid && userForm.get('confirmation')?.touched" class="text-danger">
+          {{'auth.form.error.confirmation' | translate}}
+        </small>
       </div>
 
       <!-- Checkbox -->
-      <div *ngIf="fieldCheckbox" class="flex gap-2">
-        <p-checkbox [(ngModel)]="user.checkbox"
-                    [binary]="true"
-                    [disabled]="loading"
-                    inputId="checkbox"/>
-        <label for="checkbox">{{fieldCheckbox | translate}}</label>
+      <div *ngIf="fieldCheckbox" >
+        <div class="flex gap-2">
+          <p-checkbox formControlName="checkbox"
+                      [binary]="true"
+                      inputId="checkbox"/>
+          <label for="checkbox">{{fieldCheckbox | translate}}</label>
+        </div>
+        <small *ngIf="userForm.get('checkbox')?.invalid && userForm.get('checkbox')?.touched" class="text-danger">
+          {{'auth.form.error.agreement' | translate}}
+        </small>
       </div>
     </div>
 
-    <!--  Form footer  -->
-    <ng-template pTemplate="footer">
-      <div class="flex gap-3 mt-1">
-        <p-button (click)="onSubmitWrapper()"
-                  [disabled]="isSubmitDisabled() "
-                  label="{{fieldSubmit | translate}}"
-                  class="w-full" styleClass="w-full"
-                  pRipple/>
-      </div>
-    </ng-template>
-  </p-card>
+    <!-- Actions -->
+    <div class="flex gap-3 mt-1">
+      <button [disabled]="userForm.invalid || !userForm.dirty"
+              label="{{ fieldSubmit | translate }}"
+              class="w-full" styleClass="w-full"
+              pButton pRipple type="submit"></button>
+    </div>
+  </form>
 
   <div class="flex items-center justify-center">
     <p-button routerLink="/auth/register" label="{{'login.register' | translate}}" [link]="true" />
