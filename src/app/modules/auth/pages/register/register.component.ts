@@ -4,6 +4,8 @@ import {finalize} from "rxjs";
 import {AuthFormComponent} from "@modules/auth/layouts/auth-form/auth-form.component";
 import {FormUser} from "@shared/models/form-user";
 import {UsersService} from "@core/api";
+import {MessageService} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-register',
@@ -22,6 +24,8 @@ export class RegisterComponent {
   constructor(
     private router: Router,
     private usersService: UsersService,
+    private translateService: TranslateService,
+    private messageService: MessageService
   ) {
 
   }
@@ -33,7 +37,14 @@ export class RegisterComponent {
       this.loading = false;
     })).subscribe({
       next: () => {
-        this.router.navigate(['/dashboard'])
+        this.messageService.add({
+          key: 'main-toast',
+          severity: 'success',
+          summary: this.translateService.instant('register.toast.success-summary'),
+          detail: this.translateService.instant('register.toast.success-details'),
+          life: 400000
+        });
+        this.router.navigate(['/auth'])
       },
       error: (error: any) => {
         console.log(error)

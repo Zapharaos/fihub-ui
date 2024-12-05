@@ -41,7 +41,11 @@
     "title": "Welcome to Fihub",
     "agreement": "I agree to Fihub's  and .",
     "submit": "Register",
-    "login": "Log in"
+    "login": "Log in",
+    "toast": {
+      "success-summary": "Success",
+      "success-details": "Your account was created."
+    }
   },
   "reset": {
     "title": "Reset password",

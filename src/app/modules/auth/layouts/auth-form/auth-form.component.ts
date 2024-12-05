@@ -2,9 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
-import {MessagesModule} from "primeng/messages";
 import {PasswordModule} from "primeng/password";
-import {Message, PrimeTemplate} from "primeng/api";
+import {MessageService, PrimeTemplate} from "primeng/api";
 import {
   AbstractControl,
   FormBuilder,
@@ -30,7 +29,6 @@ import {FormUser} from "@shared/models/form-user";
     Button,
     CardModule,
     InputTextModule,
-    MessagesModule,
     PasswordModule,
     PrimeTemplate,
     ReactiveFormsModule,
@@ -60,13 +58,13 @@ export class AuthFormComponent implements OnInit {
 
   loading = false;
   error = false;
-  messages: Message[] = [];
   userForm: FormGroup = this.fb.group({});
 
-  // TODO : loading, toast, errors, redirects, links
+  // TODO : loading variable, links
+  // TODO : loading animation, API errors
 
   constructor(
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
   }
 
