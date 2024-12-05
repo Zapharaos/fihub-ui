@@ -22,6 +22,18 @@ import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {FormUser} from "@shared/models/form-user";
 
+export type AuthFormFieldConfig  = {
+  hasEmail?: boolean;
+  hasPassword?: boolean;
+  hasPasswordFeedback?: boolean;
+  hasConfirmation?: boolean;
+  checkboxLabel?: string;
+  submitLabel: string;
+  hasLoginLink?: boolean,
+  hasRegisterLink?: boolean,
+  hasForgotLink?: boolean,
+};
+
 @Component({
   selector: 'app-auth-form',
   standalone: true,
@@ -48,19 +60,13 @@ import {FormUser} from "@shared/models/form-user";
 export class AuthFormComponent implements OnInit {
   @Input() title: string = "";
   @Input() user: FormUser = {};
-  @Input() fieldEmail: boolean = false;
-  @Input() fieldPassword: boolean = false;
-  @Input() fieldPasswordFeedback: boolean = false;
-  @Input() fieldConfirmation: boolean = false;
-  @Input() fieldCheckbox: string = "";
-  @Input() fieldSubmit: string = "";
+  @Input() fieldConfig: AuthFormFieldConfig = {submitLabel: ""};
   @Input() loading = false;
   @Output() onSubmit = new EventEmitter();
 
   userForm: FormGroup = this.fb.group({});
   error = false;
 
-  // TODO : links
   // TODO : API errors
 
   constructor(
@@ -79,7 +85,7 @@ export class AuthFormComponent implements OnInit {
 
   initFormControls() {
     // Email
-    if (this.fieldEmail) {
+    if (this.fieldConfig.hasEmail) {
       this.userForm.addControl('email', new FormControl(this.user.email,
         [
           Validators.email,
@@ -89,7 +95,7 @@ export class AuthFormComponent implements OnInit {
     }
 
     // Password
-    if (this.fieldPassword) {
+    if (this.fieldConfig.hasPassword) {
       this.userForm.addControl('password', new FormControl(this.user.password,
         [
           Validators.required
@@ -98,7 +104,7 @@ export class AuthFormComponent implements OnInit {
     }
 
     // Password Feedback
-    if (this.fieldPasswordFeedback) {
+    if (this.fieldConfig.hasPasswordFeedback) {
       this.userForm.addControl('password-feedback', new FormControl(this.user.password,
         [
           Validators.minLength(8),
@@ -109,7 +115,7 @@ export class AuthFormComponent implements OnInit {
     }
 
     // Confirmation
-    if (this.fieldConfirmation) {
+    if (this.fieldConfig.hasConfirmation) {
 
       this.userForm.addControl('confirmation', new FormControl(this.user.confirmation,
         [
@@ -122,7 +128,7 @@ export class AuthFormComponent implements OnInit {
     }
 
     // Checkbox
-    if (this.fieldCheckbox) {
+    if (this.fieldConfig.checkboxLabel) {
       this.userForm.addControl('checkbox', new FormControl(this.user.checkbox,
         [
           Validators.requiredTrue,

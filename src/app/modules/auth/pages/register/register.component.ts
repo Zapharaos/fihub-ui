@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {finalize} from "rxjs";
-import {AuthFormComponent} from "@modules/auth/layouts/auth-form/auth-form.component";
+import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
 import {FormUser} from "@shared/models/form-user";
 import {UsersService} from "@core/api";
 import {MessageService} from "primeng/api";
@@ -17,6 +17,14 @@ import {TranslateService} from "@ngx-translate/core";
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+  authFormFieldConfig: AuthFormFieldConfig = {
+    hasEmail: true,
+    hasPasswordFeedback: true,
+    hasConfirmation: true,
+    checkboxLabel: "register.agreement",
+    submitLabel: "register.submit",
+    hasLoginLink: true,
+  };
   user: FormUser = {};
   loading = false;
   error = false;

@@ -11,7 +11,7 @@
     <div class="flex flex-col gap-4">
 
       <!-- Email -->
-      <div *ngIf="fieldEmail" class="flex flex-col gap-2">
+      <div *ngIf="fieldConfig.hasEmail" class="flex flex-col gap-2">
         <label for="email">{{'auth.form.email' | translate}}</label>
         <input formControlName="email"
                [autofocus]="true"
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Password -->
-      <div *ngIf="fieldPassword" class="flex flex-col gap-2">
+      <div *ngIf="fieldConfig.hasPassword" class="flex flex-col gap-2">
         <label for="password">{{'auth.form.pwd.password' | translate}}</label>
         <p-password formControlName="password"
                     [feedback]="false"
@@ -40,7 +40,7 @@
       </div>
 
       <!-- Password Feedback -->
-      <div *ngIf="fieldPasswordFeedback" class="flex flex-col gap-2">
+      <div *ngIf="fieldConfig.hasPasswordFeedback" class="flex flex-col gap-2">
         <label for="password-feedback">{{'auth.form.pwd.password' | translate}}</label>
         <p-password formControlName="password-feedback"
                     [toggleMask]="true"
@@ -69,7 +69,7 @@
       </div>
 
       <!-- Confirmation -->
-      <div *ngIf="fieldConfirmation" class="flex flex-col gap-2">
+      <div *ngIf="fieldConfig.hasConfirmation" class="flex flex-col gap-2">
         <label for="confirmation">{{'auth.form.pwd.confirmation' | translate}}</label>
         <p-password formControlName="confirmation"
                     [feedback]="false"
@@ -83,12 +83,12 @@
       </div>
 
       <!-- Checkbox -->
-      <div *ngIf="fieldCheckbox">
+      <div *ngIf="fieldConfig.checkboxLabel">
         <div class="flex gap-2">
           <p-checkbox formControlName="checkbox"
                       [binary]="true"
                       inputId="checkbox"/>
-          <label for="checkbox">{{fieldCheckbox | translate}}</label>
+          <label for="checkbox">{{fieldConfig.checkboxLabel | translate}}</label>
         </div>
         <small *ngIf="userForm.get('checkbox')?.invalid && userForm.get('checkbox')?.touched" class="text-danger">
           {{'auth.form.error.agreement' | translate}}
@@ -99,7 +99,7 @@
     <!-- Actions -->
     <div class="flex gap-3 mt-1">
       <button [disabled]="userForm.invalid || !userForm.dirty || loading"
-              label="{{ fieldSubmit | translate }}"
+              label="{{ fieldConfig.submitLabel | translate }}"
               class="w-full"
               pButton pRipple
               type="submit"
@@ -108,8 +108,20 @@
   </form>
 
   <div class="flex items-center justify-center">
-    <p-button routerLink="/auth/register" label="{{'login.register' | translate}}" [link]="true" />
-    or
-    <p-button label="{{'login.forgot' | translate}}" [link]="true" />
+    <p-button *ngIf="fieldConfig.hasLoginLink"
+              [link]="true"
+              routerLink="/auth/"
+              label="{{'auth.links.login' | translate}}"
+    />
+    <p-button *ngIf="fieldConfig.hasRegisterLink"
+              [link]="true"
+              routerLink="/auth/register"
+              label="{{'auth.links.register' | translate}}"
+    />
+    <span *ngIf="fieldConfig.hasForgotLink" class="dot-separator">⸱</span>
+    <p-button *ngIf="fieldConfig.hasForgotLink"
+              [link]="true"
+              label="{{'auth.links.forgot' | translate}}"
+    />
   </div>
 </div>
