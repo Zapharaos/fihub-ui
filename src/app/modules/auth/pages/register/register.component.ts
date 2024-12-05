@@ -32,7 +32,6 @@ export class RegisterComponent {
 
   register() {
     this.loading = true;
-
     this.usersService.createUser(this.user).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
@@ -48,7 +47,6 @@ export class RegisterComponent {
       },
       error: (error: any) => {
         console.log(error)
-        this.loading = false;
       },
     })
   }
