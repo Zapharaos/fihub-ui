@@ -29,6 +29,11 @@
         "confirmation": "Password confirmation does not match.",
         "agreement": "You must agree to the terms and conditions."
       }
+    },
+    "links": {
+      "login": "Log in",
+      "register": "Create an account",
+      "forgot": "Forgot password"
     }
   },
   "login": {

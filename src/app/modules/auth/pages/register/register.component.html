@@ -1,10 +1,7 @@
 <app-auth-form
   [title]="'register.title'"
-  [fieldEmail]=true
-  [fieldPasswordFeedback]=true
-  [fieldConfirmation]=true
-  [fieldCheckbox]="'register.agreement'"
-  [fieldSubmit]="'register.submit'"
+  [user]="user"
   [loading]="loading"
-  (onSubmit)="register()">
-</app-auth-form>
+  [fieldConfig]="authFormFieldConfig"
+  (onSubmit)="register()"
+></app-auth-form>
