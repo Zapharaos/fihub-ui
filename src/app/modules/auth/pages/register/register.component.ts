@@ -1,55 +1,33 @@
 import {Component} from '@angular/core';
-import {Button} from "primeng/button";
-import {CardModule} from "primeng/card";
-import {DividerModule} from "primeng/divider";
-import {FormBuilder, FormsModule} from "@angular/forms";
-import {InputTextModule} from "primeng/inputtext";
-import {PasswordModule} from "primeng/password";
-import {Message} from "primeng/api";
-import {Router, RouterLink} from "@angular/router";
-import {CheckboxModule} from "primeng/checkbox";
-import {MessagesModule} from "primeng/messages";
-import {Ripple} from "primeng/ripple";
-import {NgClass} from "@angular/common";
-import {UsersService, UsersUserWithPassword} from "@core/api";
+import {Router} from "@angular/router";
 import {finalize} from "rxjs";
-import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {AuthFormComponent} from "@modules/auth/layouts/auth-form/auth-form.component";
+import {FormUser} from "@shared/models/form-user";
+import {UsersService} from "@core/api";
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
-    Button,
-    CardModule,
-    DividerModule,
-    FormsModule,
-    InputTextModule,
-    PasswordModule,
-    RouterLink,
-    CheckboxModule,
-    MessagesModule,
-    Ripple,
-    NgClass,
-    TranslateModule
+    AuthFormComponent
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  user: UsersUserWithPassword = {};
-  confirmation: string = '';
-  agreement = false;
+  user: FormUser = {};
   loading = false;
   error = false;
-  messages: Message[] = [];
 
   constructor(
-    private fb: FormBuilder,
     private router: Router,
     private usersService: UsersService,
-    private translateService: TranslateService
   ) {
 
+  }
+
+  isSubmitDisabled(): boolean {
+    return !this.user.email || !this.user.password || !this.user.confirmation || !this.user.checkbox
   }
 
   register() {
