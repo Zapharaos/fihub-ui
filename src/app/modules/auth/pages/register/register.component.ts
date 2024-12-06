@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import {finalize} from "rxjs";
+import {finalize, forkJoin} from "rxjs";
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
 import {UsersService, UsersUserWithPassword} from "@core/api";
 import {MessageService} from "primeng/api";
@@ -48,12 +48,17 @@ export class RegisterComponent {
       this.authFormComponent.setLoading(false)
     })).subscribe({
       next: () => {
-        this.messageService.add({
-          key: 'main-toast',
-          severity: 'success',
-          summary: this.translateService.instant('register.toast.success-summary'),
-          detail: this.translateService.instant('register.toast.success-details'),
-          life: 5000
+        forkJoin([
+          this.translateService.get('messages.success'),
+          this.translateService.get('auth.messages.register-success', {email: user.email})]
+        ).subscribe(([summary, detail]) => {
+          this.messageService.add({
+            key: 'main-toast',
+            severity: 'success',
+            summary: summary,
+            detail: detail,
+            life: 5000
+          });
         });
         this.router.navigate(['/auth'])
       },

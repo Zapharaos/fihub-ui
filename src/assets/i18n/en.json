@@ -36,6 +36,13 @@
       "login": "Log in",
       "register": "Create an account",
       "forgot": "Forgot password"
+    },
+    "messages": {
+      "login-success": "Logged in as {{email}}",
+      "logout-success": "You have been successfully logged out.",
+      "register-success": "Your account was successfully created.",
+      "session-expired": "Your session has expired. Please log in again.",
+      "not-authenticated": "You must be logged in to access this page."
     }
   },
   "http": {
@@ -44,22 +51,20 @@
       "detail": "We're experiencing technical difficulties. Please try again later or contact support."
     }
   },
+  "messages": {
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information"
+  },
   "login": {
     "title": "Log in",
-    "submit": "Connect",
-    "toast": {
-      "success-summary": "Success",
-      "success-details": "Logged in as {{email}}"
-    }
+    "submit": "Connect"
   },
   "register": {
     "title": "Welcome to Fihub",
     "agreement": "I agree to Fihub's  and .",
-    "submit": "Register",
-    "toast": {
-      "success-summary": "Success",
-      "success-details": "Your account was created."
-    }
+    "submit": "Register"
   },
   "reset": {
     "title": "Reset password",
