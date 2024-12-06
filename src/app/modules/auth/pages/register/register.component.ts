@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {finalize} from "rxjs";
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
-import {FormUser} from "@shared/models/form-user";
-import {UsersService} from "@core/api";
+import {UsersService, UsersUserWithPassword} from "@core/api";
 import {MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-register',
@@ -25,9 +25,8 @@ export class RegisterComponent {
     submitLabel: "register.submit",
     hasLoginLink: true,
   };
-  user: FormUser = {};
-  loading = false;
-  error = false;
+
+  @ViewChild(AuthFormComponent) authFormComponent!: AuthFormComponent;
 
   constructor(
     private router: Router,
@@ -38,10 +37,14 @@ export class RegisterComponent {
 
   }
 
-  register() {
-    this.loading = true;
-    this.usersService.createUser(this.user).pipe(finalize(() => {
-      this.loading = false;
+  register(userForm: FormGroup) {
+    this.authFormComponent.setLoading(true);
+    const user : UsersUserWithPassword = {
+      email: userForm.get('email')?.value,
+      password: userForm.get('password-feedback')?.value,
+    }
+    this.usersService.createUser(user).pipe(finalize(() => {
+      this.authFormComponent.setLoading(false)
     })).subscribe({
       next: () => {
         this.messageService.add({
@@ -49,12 +52,12 @@ export class RegisterComponent {
           severity: 'success',
           summary: this.translateService.instant('register.toast.success-summary'),
           detail: this.translateService.instant('register.toast.success-details'),
-          life: 400000
+          life: 5000
         });
         this.router.navigate(['/auth'])
       },
       error: (error: any) => {
-        console.log(error)
+        this.authFormComponent.handleError(error)
       },
     })
   }

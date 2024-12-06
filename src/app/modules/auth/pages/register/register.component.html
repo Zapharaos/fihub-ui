@@ -1,7 +1,5 @@
 <app-auth-form
   [title]="'register.title'"
-  [user]="user"
-  [loading]="loading"
   [fieldConfig]="authFormFieldConfig"
-  (onSubmit)="register()"
+  (onSubmit)="register($event)"
 ></app-auth-form>
