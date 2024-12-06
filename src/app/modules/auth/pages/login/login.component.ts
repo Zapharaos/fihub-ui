@@ -1,11 +1,12 @@
 import {Component, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import {UsersService, UsersUserWithPassword} from "@core/api";
+import {UsersUserWithPassword} from "@core/api";
 import {finalize} from "rxjs";
 import {MessageService} from 'primeng/api';
 import {FormGroup} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
+import {LoginService} from "@modules/auth/services/login.service";
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,7 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private usersService: UsersService,
+    private loginService: LoginService,
     private translateService: TranslateService,
     private messageService: MessageService
   ) {
@@ -45,16 +46,7 @@ export class LoginComponent {
       password: userForm.get('password')?.value,
     }
 
-    // TODO
-    this.messageService.add({
-      key: 'main-toast',
-      severity: 'success',
-      summary: this.translateService.instant('login.toast.success-summary'),
-      detail: this.translateService.instant('login.toast.success-details', {email: user.email}),
-      life: 5000
-    });
-
-    /*this.usersService.createUser(user).pipe(finalize(() => {
+    this.loginService.login(user).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
       next: () => {
@@ -70,6 +62,6 @@ export class LoginComponent {
       error: (error: any) => {
         this.authFormComponent.handleError(error)
       },
-    })*/
+    })
   }
 }
