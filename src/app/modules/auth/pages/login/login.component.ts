@@ -7,6 +7,7 @@ import {FormGroup} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
 import {LoginService} from "@modules/auth/services/login.service";
+import {AuthService} from "@core/services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -31,6 +32,7 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private loginService: LoginService,
     private translateService: TranslateService,
     private messageService: MessageService
@@ -57,7 +59,15 @@ export class LoginComponent {
           detail: this.translateService.instant('login.toast.success-details', {email: user.email}),
           life: 5000
         });
-        this.router.navigate(['/dashboard'])
+
+        if (this.authService.redirectUrl) {
+          this.router.navigateByUrl(this.authService.redirectUrl).catch(() => {
+            this.router.navigate(['/dashboard']);
+          });
+          this.authService.setRedirectUrl();
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
       },
       error: (error: any) => {
         this.authFormComponent.handleError(error)

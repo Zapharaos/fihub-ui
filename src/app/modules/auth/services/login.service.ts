@@ -34,10 +34,7 @@ export class LoginService {
       this.authService.setToken(jwt.token);
 
       // Get current user
-      // TODO : call service and get current user
-      const user: UsersUser = {
-        email: jwt.token,
-      }
+      const user = await firstValueFrom(this.usersService.getUserSelf());
       this.authService.setCurrentUser(user);
 
       return user;
