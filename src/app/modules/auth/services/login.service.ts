@@ -36,6 +36,7 @@ export class LoginService {
       // Get current user
       const user = await firstValueFrom(this.usersService.getUserSelf());
       this.authService.setCurrentUser(user);
+      this.authService.setLoaded(true);
 
       return user;
     })());
