@@ -1,0 +1,17 @@
+.gitignore
+README.md
+api.module.ts
+api/api.ts
+api/auth.service.ts
+api/users.service.ts
+configuration.ts
+encoder.ts
+git_push.sh
+index.ts
+model/authJwtToken.ts
+model/models.ts
+model/renderErrorResponse.ts
+model/usersUser.ts
+model/usersUserWithPassword.ts
+param.ts
+variables.ts
