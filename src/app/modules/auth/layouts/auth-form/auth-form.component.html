@@ -7,6 +7,11 @@
       {{title | translate}}
     </h2>
 
+    <p-messages
+      [(value)]="messages"
+      [closable]="false"
+      [enableService]="false"/>
+
     <!-- Form fields -->
     <div class="flex flex-col gap-4">
 
@@ -20,8 +25,11 @@
                type="text"
                id="email"
         />
-        <small *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="text-danger">
+        <small *ngIf="userForm.get('email')?.invalid && !userForm.get('email')?.errors?.['used'] && userForm.get('email')?.touched" class="text-danger">
           {{'auth.form.error.email' | translate}}
+        </small>
+        <small *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.errors?.['used']" class="text-danger">
+          {{'auth.form.error.email-used' | translate}}
         </small>
       </div>
 
@@ -107,6 +115,7 @@
     </div>
   </form>
 
+  <!-- Links -->
   <div class="flex items-center justify-center">
     <p-button *ngIf="fieldConfig.hasLoginLink"
               [link]="true"

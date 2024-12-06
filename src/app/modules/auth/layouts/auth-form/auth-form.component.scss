@@ -1,5 +1,18 @@
 form {
   background: #1f2937;
   min-width: 24rem; /* 384px */
+  max-width: 24rem; /* 384px */
   padding: 2.5rem 2.5rem 2rem 2.5rem;
+}
+
+:host ::ng-deep p-messages .p-message {
+  border-width: 0 0 0 3px;
+}
+
+:host ::ng-deep p-messages .p-message-wrapper {
+  padding: 0.75rem;
+}
+
+:host ::ng-deep p-messages .p-message-icon {
+  display: none;
 }

@@ -3,7 +3,7 @@ import {Button, ButtonDirective} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
-import {PrimeTemplate} from "primeng/api";
+import {Message, MessageService, PrimeTemplate} from "primeng/api";
 import {
   AbstractControl,
   FormBuilder,
@@ -16,13 +16,14 @@ import {
 } from "@angular/forms";
 import {Ripple} from "primeng/ripple";
 import {RouterLink} from "@angular/router";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {NgClass, NgIf} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
-import {FormUser} from "@shared/models/form-user";
+import {MessagesModule} from 'primeng/messages';
+import {UsersUserWithPassword} from "@core/api";
 
-export type AuthFormFieldConfig  = {
+export type AuthFormFieldConfig = {
   hasEmail?: boolean;
   hasPassword?: boolean;
   hasPasswordFeedback?: boolean;
@@ -33,6 +34,11 @@ export type AuthFormFieldConfig  = {
   hasRegisterLink?: boolean,
   hasForgotLink?: boolean,
 };
+
+export interface FormUser extends UsersUserWithPassword {
+  confirmation?: string;
+  checkbox?: string;
+}
 
 @Component({
   selector: 'app-auth-form',
@@ -52,25 +58,29 @@ export type AuthFormFieldConfig  = {
     NgClass,
     DividerModule,
     CheckboxModule,
-    ButtonDirective
+    ButtonDirective,
+    MessagesModule
   ],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss'
 })
 export class AuthFormComponent implements OnInit {
   @Input() title: string = "";
-  @Input() user: FormUser = {};
+  @Input() userForm: FormGroup = this.fb.group({});
   @Input() fieldConfig: AuthFormFieldConfig = {submitLabel: ""};
-  @Input() loading = false;
-  @Output() onSubmit = new EventEmitter();
+  @Input() messages: Message[] = [];
+  @Output() onSubmit = new EventEmitter<FormGroup>();
 
-  userForm: FormGroup = this.fb.group({});
-  error = false;
+  user: FormUser = {};
+  loading = false;
+  error = false; // TODO
 
-  // TODO : API errors
+  // TODO : messages
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private translateService: TranslateService,
+    private messageService: MessageService,
   ) {
   }
 
@@ -80,7 +90,50 @@ export class AuthFormComponent implements OnInit {
   }
 
   onSubmitWrapper() {
-    this.onSubmit.emit();
+    // Emit submit event back to parent
+    this.onSubmit.emit(this.userForm);
+  }
+
+  setLoading(loading: boolean) {
+    this.loading = loading;
+  }
+
+  handleError(error: any) {
+    // Handle 400 Bad Request error
+    if (error.status === 400) {
+      switch (error.error.message) {
+
+        // Email - Default
+        case 'email-required':
+        case 'email-invalid':
+          this.userForm.get('email')?.setErrors({ 'required': true });
+          break;
+
+        // Email - Used
+        case 'email-used':
+          this.userForm.get('email')?.setErrors({ 'used': true });
+          break;
+
+        // Password - Default
+        case 'password-required':
+        case 'password-invalid':
+          this.userForm.get('password')?.setErrors({ 'required': true });
+          break;
+
+        // Generic error
+        default:
+          this.messages = [({
+            severity: 'error',
+            detail: this.translateService.instant('http.500.detail')
+          })];
+      }
+    } else {
+      // Likely 500 InternalServerError - Generic enough to handle all other possible errors
+      this.messages = [({
+        severity: 'error',
+        detail: this.translateService.instant('http.500.detail')
+      })];
+    }
   }
 
   initFormControls() {
