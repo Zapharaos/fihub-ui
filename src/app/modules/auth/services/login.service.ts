@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {AuthJwtToken, UsersService, UsersUser, UsersUserWithPassword} from "@core/api";
 import {firstValueFrom, from, Observable} from "rxjs";
 import {AuthService as JwtAuthService} from "@core/api/api/auth.service";
+import {AuthService} from "@core/services/auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import {AuthService as JwtAuthService} from "@core/api/api/auth.service";
 export class LoginService {
 
   constructor(
+    private authService: AuthService,
     private usersService: UsersService,
     private JwtAuthService: JwtAuthService
   ) {
@@ -28,13 +30,15 @@ export class LoginService {
         throw new Error('Token is missing');
       }
 
-      // TODO : set token in authService
+      // Set token
+      this.authService.setToken(jwt.token);
 
       // Get current user
-      // TODO : call service to get current self
+      // TODO : call service and get current user
       const user: UsersUser = {
         email: jwt.token,
       }
+      this.authService.setCurrentUser(user);
 
       return user;
     })());
