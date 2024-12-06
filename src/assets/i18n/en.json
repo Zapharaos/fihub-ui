@@ -24,6 +24,7 @@
       "error": {
         "default": "An error has occurred.",
         "required": "This field is required.",
+        "login": "Invalid email or password.",
         "email": "Provide a valid email address.",
         "email-used": "Email is already used.",
         "password-feedback": "Password length must be from 8 to 64 characters.",

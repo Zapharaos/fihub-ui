@@ -96,9 +96,21 @@ export class AuthFormComponent implements OnInit {
   }
 
   handleError(error: any) {
+
+    // Clear messages array
+    this.messages = [];
+
     // Handle 400 Bad Request error
     if (error.status === 400) {
       switch (error.error.message) {
+
+        // Login credentials - Invalid
+        case 'login-invalid':
+          this.messages = [({
+            severity: 'error',
+            detail: this.translateService.instant('auth.form.error.login')
+          })];
+          break;
 
         // Email - Default
         case 'email-required':
