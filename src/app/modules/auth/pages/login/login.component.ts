@@ -1,101 +1,75 @@
-import {Component} from '@angular/core';
-import { InputTextModule } from 'primeng/inputtext';
-import {CardModule} from "primeng/card";
-import {Button} from "primeng/button";
-import { PasswordModule } from 'primeng/password';
-import { DividerModule } from 'primeng/divider';
-import {Router, RouterLink} from "@angular/router";
-import {Ripple} from "primeng/ripple";
-import {UsersUserWithPassword} from "@core/api";
+import {Component, ViewChild} from '@angular/core';
+import {Router} from "@angular/router";
+import {UsersService, UsersUserWithPassword} from "@core/api";
 import {finalize} from "rxjs";
-import {Message, MessageService} from 'primeng/api';
-import {MessageModule} from "primeng/message";
-import {MessagesModule} from "primeng/messages";
-import {FormsModule} from "@angular/forms";
-import {NgClass} from "@angular/common";
-import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {MessageService} from 'primeng/api';
+import {FormGroup} from "@angular/forms";
+import {TranslateService} from "@ngx-translate/core";
+import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CardModule,
-    Button,
-    InputTextModule,
-    PasswordModule,
-    DividerModule,
-    RouterLink,
-    Ripple,
-    MessageModule,
-    MessagesModule,
-    FormsModule,
-    NgClass,
-    TranslateModule
-  ],
+    imports: [
+        AuthFormComponent
+    ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  user: UsersUserWithPassword = {};
-  loading = false;
-  error = false;
-  messages: Message[] = [];
+
+  authFormFieldConfig: AuthFormFieldConfig = {
+    hasEmail: true,
+    hasPassword: true,
+    submitLabel: "login.submit",
+    hasRegisterLink: true,
+    hasForgotLink: true,
+  };
+
+  @ViewChild(AuthFormComponent) authFormComponent!: AuthFormComponent;
 
   constructor(
-    private translateService: TranslateService
+    private router: Router,
+    private usersService: UsersService,
+    private translateService: TranslateService,
+    private messageService: MessageService
   ) {
+
   }
 
-  /*constructor(private loginService: LoginService,
-              private messageService: MessageService,
-              private authService: AuthService,
-              private router: Router) {
-    this.user = {};
-  }*/
+  login(userForm: FormGroup) {
 
-  login() {
-    this.loading = true;
+    this.authFormComponent.setLoading(true);
+    const user : UsersUserWithPassword = {
+      email: userForm.get('email')?.value,
+      password: userForm.get('password')?.value,
+    }
 
-    /*this.loginService.login(this.user).pipe(finalize(() => {
-      this.loading = false;
+    // TODO
+    this.messageService.add({
+      key: 'main-toast',
+      severity: 'success',
+      summary: this.translateService.instant('login.toast.success-summary'),
+      detail: this.translateService.instant('login.toast.success-details', {email: user.email}),
+      life: 5000
+    });
+
+    /*this.usersService.createUser(user).pipe(finalize(() => {
+      this.authFormComponent.setLoading(false)
     })).subscribe({
-      next: user => {
+      next: () => {
         this.messageService.add({
           key: 'main-toast',
           severity: 'success',
-          detail: 'welcome' + ` ${user.firstName} !`,
-          life: 4000
+          summary: this.translateService.instant('login.toast.success-summary'),
+          detail: this.translateService.instant('login.toast.success-details', {email: user.email}),
+          life: 5000
         });
-
-        if (this.authService.redirectUrl) {
-          this.router.navigateByUrl(this.authService.redirectUrl).catch(() => {
-            this.router.navigate(['/select-dashboard']);
-          });
-          this.authService.setRedirectUrl();
-        } else {
-          this.router.navigate(['/select-dashboard']);
-        }
-
-        this.clearErrors();
+        this.router.navigate(['/dashboard'])
       },
-      error: err => {
-        this.setErrorMode();
-      }
+      error: (error: any) => {
+        this.authFormComponent.handleError(error)
+      },
     })*/
-  }
-
-  private clearErrors() {
-    this.error = false;
-    this.messages = [];
-  }
-
-  private setErrorMode() {
-    this.error = true;
-    if (this.messages.length === 0) {
-      this.messages = [{
-        severity: "error",
-        summary: 'fail'
-      } as Message];
-    }
   }
 }

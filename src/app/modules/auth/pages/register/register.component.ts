@@ -19,6 +19,7 @@ import {FormGroup} from "@angular/forms";
 export class RegisterComponent {
   authFormFieldConfig: AuthFormFieldConfig = {
     hasEmail: true,
+    hasEmailControl: true,
     hasPasswordFeedback: true,
     hasConfirmation: true,
     checkboxLabel: "register.agreement",

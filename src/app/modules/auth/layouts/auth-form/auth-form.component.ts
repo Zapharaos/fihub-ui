@@ -25,6 +25,7 @@ import {UsersUserWithPassword} from "@core/api";
 
 export type AuthFormFieldConfig = {
   hasEmail?: boolean;
+  hasEmailControl?: boolean;
   hasPassword?: boolean;
   hasPasswordFeedback?: boolean;
   hasConfirmation?: boolean;
@@ -65,13 +66,13 @@ export interface FormUser extends UsersUserWithPassword {
 })
 export class AuthFormComponent implements OnInit {
   @Input() title: string = "";
-  @Input() userForm: FormGroup = this.fb.group({});
   @Input() fieldConfig: AuthFormFieldConfig = {submitLabel: ""};
-  @Input() messages: Message[] = [];
   @Output() onSubmit = new EventEmitter<FormGroup>();
 
   user: FormUser = {};
+  userForm: FormGroup = this.fb.group({});
   loading = false;
+  messages: Message[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -137,10 +138,14 @@ export class AuthFormComponent implements OnInit {
     if (this.fieldConfig.hasEmail) {
       this.userForm.addControl('email', new FormControl(this.user.email,
         [
-          Validators.email,
           Validators.required,
         ]
       ));
+
+      // Checking email format
+      if (this.fieldConfig.hasEmailControl) {
+        this.userForm.get('email')?.addValidators(Validators.email);
+      }
     }
 
     // Password

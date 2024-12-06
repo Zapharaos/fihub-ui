@@ -46,14 +46,15 @@
   "login": {
     "title": "Log in",
     "submit": "Connect",
-    "register": "Create an account",
-    "forgot": "Forgot password"
+    "toast": {
+      "success-summary": "Success",
+      "success-details": "Logged in as {{email}}"
+    }
   },
   "register": {
     "title": "Welcome to Fihub",
     "agreement": "I agree to Fihub's  and .",
     "submit": "Register",
-    "login": "Log in",
     "toast": {
       "success-summary": "Success",
       "success-details": "Your account was created."
