@@ -17,7 +17,7 @@ import {
 import {Ripple} from "primeng/ripple";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
-import {NgClass, NgIf} from "@angular/common";
+import {NgIf} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {MessagesModule} from 'primeng/messages';
@@ -55,7 +55,6 @@ export interface FormUser extends UsersUserWithPassword {
     TranslatePipe,
     NgIf,
     FormsModule,
-    NgClass,
     DividerModule,
     CheckboxModule,
     ButtonDirective,
@@ -73,9 +72,6 @@ export class AuthFormComponent implements OnInit {
 
   user: FormUser = {};
   loading = false;
-  error = false; // TODO
-
-  // TODO : messages
 
   constructor(
     private fb: FormBuilder,

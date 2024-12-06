@@ -7,11 +7,6 @@
       {{title | translate}}
     </h2>
 
-    <p-messages
-      [(value)]="messages"
-      [closable]="false"
-      [enableService]="false"/>
-
     <!-- Form fields -->
     <div class="flex flex-col gap-4">
 
@@ -20,7 +15,6 @@
         <label for="email">{{'auth.form.email' | translate}}</label>
         <input formControlName="email"
                [autofocus]="true"
-               [ngClass]="{'ng-invalid': error}"
                pInputText
                type="text"
                id="email"
@@ -39,7 +33,6 @@
         <p-password formControlName="password"
                     [feedback]="false"
                     [toggleMask]="true"
-                    [ngClass]="{'ng-invalid': error}"
                     inputId="password"
         />
         <small *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="text-danger">
@@ -52,7 +45,6 @@
         <label for="password-feedback">{{'auth.form.pwd.password' | translate}}</label>
         <p-password formControlName="password-feedback"
                     [toggleMask]="true"
-                    [ngClass]="{'ng-invalid': error}"
                     inputId="password-feedback"
                     weakLabel="{{'auth.form.pwd.feedback.complexity.weak' | translate}}"
                     mediumLabel="{{'auth.form.pwd.feedback.complexity.medium' | translate}}"
@@ -82,7 +74,6 @@
         <p-password formControlName="confirmation"
                     [feedback]="false"
                     [toggleMask]="true"
-                    [ngClass]="{'ng-invalid': error}"
                     inputId="confirmation"
         />
         <small *ngIf="userForm.get('confirmation')?.invalid && userForm.get('confirmation')?.touched" class="text-danger">
@@ -105,7 +96,13 @@
     </div>
 
     <!-- Actions -->
-    <div class="flex gap-3 mt-1">
+    <div class="flex flex-col gap-3">
+
+      <p-messages
+        [(value)]="messages"
+        [closable]="false"
+        [enableService]="false"/>
+
       <button [disabled]="userForm.invalid || !userForm.dirty || loading"
               label="{{ fieldConfig.submitLabel | translate }}"
               class="w-full"
