@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {AuthService} from "@core/services/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -13,8 +14,9 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
 export class DashboardComponent {
 
   constructor(
+    private authService: AuthService,
     private translateService: TranslateService
   ) {
-
+    console.log(authService.getToken());
   }
 }
