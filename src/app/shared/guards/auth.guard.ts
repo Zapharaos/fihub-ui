@@ -56,6 +56,20 @@ import {TranslateService} from "@ngx-translate/core";
   return true;
 }*/
 
+export const noAuthGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  // If there is a user or token, then redirect to the dashboard's guard
+  // If not, then there is no way to retrieve any user's data so pass
+  if (authService.isAuthenticated() || authService.getToken()) {
+    router.navigate(['/dashboard']);
+    return false;
+  }
+
+  return true;
+}
+
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const userService = inject(UsersService);
