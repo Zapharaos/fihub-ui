@@ -11,6 +11,10 @@
   @tailwind utilities;
 }
 
+:root {
+  --secondary: #1f2937;
+}
+
 html {
   font-size: 14px;
 }
@@ -26,8 +30,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.bg {
+  background-color: var(--surface-ground);
+}
+
 .text-danger {
   color: #dc2626;
+}
+
+// Icon buttons
+.p-button.p-button-icon-only.p-button-rounded {
+  height: 2.5rem;
+}
+.p-button.p-button-icon-only {
+  width: 2.5rem;
+  padding: 0.5rem 0;
 }
 
 // Password

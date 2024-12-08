@@ -1,0 +1,17 @@
+.menu-active {
+  background-color: var(--secondary);
+  color: var(--primary-color);
+}
+
+.menu-active .item-label {
+  font-weight: 600;
+}
+
+.menu-hover:hover {
+  background-color: var(--secondary);
+}
+
+// First LI missing space-y-2
+li li:first-of-type {
+  margin-top: 0.5rem;
+}
