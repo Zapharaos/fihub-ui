@@ -1,0 +1,108 @@
+<div class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div class="fixed top-0 left-0 w-full z-10 touch-pan-x touch-pan-y">
+    <div class="flex justify-between items-center h-16 px-6">
+
+      <!-- Left side -->
+      <div>
+        <!-- Title -->
+        <p class="text-xl font-bold">
+          {{ 'app.title' | translate }}
+        </p>
+      </div>
+
+      <!-- Right side -->
+      <div class="flex gap-5">
+
+        <!-- Account -->
+        <p-button [routerLink]="'/settings'" icon="pi pi-user" [rounded]="true" severity="primary"/>
+
+        <!-- Toggle Sidebar -->
+        <!-- Hidden starting from MEDIUM size -->
+        <button (click)="toggleSidebar()" class="md:hidden flex items-center justify-center">
+          <i *ngIf="!sidebarVisible" class="pi pi-bars text-2xl"></i>
+          <i *ngIf="sidebarVisible" class="pi pi-times text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar and Content Container -->
+  <div class="flex flex-row pt-24">
+
+    <!-- Sidebar -->
+    <!-- Always visible. Hidden only when chosen until before MEDIUM size -->
+    <div [ngClass]="{'max-md:hidden': !sidebarVisible}"
+         class="bg z-10 fixed h-full touch-pan-x touch-pan-y w-64 max-md:w-full" pRipple>
+      <div class="overflow-y-auto overflow-x-hidden flex-grow">
+
+        <!-- Menu -->
+        <ul class="flex flex-col space-y-2">
+
+          <!-- Items -->
+          <li *ngFor="let item of items">
+
+            <!-- Item : single -->
+            <a *ngIf="!item.items"
+               [routerLink]="item.route"
+               routerLinkActive="menu-active"
+               [routerLinkActiveOptions]="{exact: item.routeActiveExact ?? false }"
+               class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover">
+
+              <!-- Icon + Label -->
+              <div class="flex py-3">
+                <span class="inline-flex justify-center items-center">
+                  <i class="pi {{item.icon}} text-xl"></i>
+                </span>
+                <p class="item-label mx-3 break-all">
+                  {{ item.label | translate }}
+                </p>
+              </div>
+            </a>
+
+            <!-- Item : with sub-items -->
+            <div *ngIf="item.items" (click)="toggleSubItems(item)"
+               class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover select-none hover:cursor-pointer">
+
+              <!-- Icon + Label -->
+              <div class="flex py-3">
+                <span class="inline-flex justify-center items-center">
+                  <i class="pi {{item.icon}} text-xl"></i>
+                </span>
+                <span class="mx-3 break-all">
+                  {{ item.label | translate }}
+                </span>
+              </div>
+
+              <!-- Toggle Icon -->
+              <i class="pi" [ngClass]="{'pi-angle-down': !item.subItemsInvisible, 'pi-angle-right': item.subItemsInvisible}"></i>
+            </div>
+
+            <!-- Menu : Sub items -->
+            <ul *ngIf="item.items && !item.subItemsInvisible" class="flex flex-col space-y-2">
+
+              <!-- Sub - Item -->
+              <li *ngFor="let subItem of item.items">
+                <a [routerLink]="subItem.route" routerLinkActive="menu-active"
+                   class="flex flex-row justify-between items-center px-6 rounded-r-xl menu-hover">
+
+                  <!-- Label -->
+                  <div class="flex py-3 ml-5">
+                    <p class="item-label mx-3 break-all">
+                      {{ subItem.label | translate }}
+                    </p>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div [ngClass]="{'max-md:ml-0': !sidebarVisible}" class="ml-64 flex-grow p-3">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

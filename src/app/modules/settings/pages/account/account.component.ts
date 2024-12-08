@@ -1,23 +1,21 @@
 import { Component } from '@angular/core';
-import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {AuthService} from "@core/services/auth.service";
-import { ButtonModule } from 'primeng/button';
+import {Button} from "primeng/button";
 import {Router} from "@angular/router";
+import {AuthService} from "@core/services/auth.service";
+import {TranslateService} from "@ngx-translate/core";
 import {MessageService} from "primeng/api";
 import {forkJoin} from "rxjs";
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-account',
   standalone: true,
   imports: [
-    TranslateModule,
-    ButtonModule
+    Button
   ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  templateUrl: './account.component.html',
+  styleUrl: './account.component.scss'
 })
-export class DashboardComponent {
-
+export class AccountComponent {
   constructor(
     private router: Router,
     private authService: AuthService,

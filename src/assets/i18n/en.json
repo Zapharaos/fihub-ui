@@ -1,4 +1,7 @@
 {
+  "app": {
+    "title": "Fihub"
+  },
   "auth": {
     "form": {
       "email": "Email",

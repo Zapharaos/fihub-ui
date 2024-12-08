@@ -54,7 +54,7 @@ export class LoginComponent {
       next: () => {
         forkJoin([
           this.translateService.get('messages.success'),
-          this.translateService.get('auth.messages.register-success', {email: user.email})]
+          this.translateService.get('auth.messages.login-success', {email: user.email})]
         ).subscribe(([summary, detail]) => {
           this.messageService.add({
             key: 'main-toast',
