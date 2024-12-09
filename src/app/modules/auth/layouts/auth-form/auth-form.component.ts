@@ -4,7 +4,7 @@ import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import { Message } from 'primeng/message';
-import {MessageService, PrimeTemplate} from "primeng/api";
+import {PrimeTemplate} from "primeng/api";
 import {
   AbstractControl,
   FormBuilder,
@@ -23,6 +23,8 @@ import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {MessagesModule} from 'primeng/messages';
 import {UsersUserWithPassword} from "@core/api";
+import {IconField} from "primeng/iconfield";
+import {InputIcon} from "primeng/inputicon";
 
 export type AuthFormFieldConfig = {
   hasEmail?: boolean;
@@ -62,6 +64,7 @@ export interface FormUser extends UsersUserWithPassword {
     ButtonDirective,
     MessagesModule,
     Message,
+    InputIcon, IconField
   ],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss'
@@ -75,12 +78,11 @@ export class AuthFormComponent implements OnInit {
   user: FormUser = {};
   userForm: FormGroup = this.fb.group({});
   loading = false;
-  messages = signal<any[]>([]);
+  messageError: string = "";
 
   constructor(
     private fb: FormBuilder,
     private translateService: TranslateService,
-    private messageService: MessageService
   ) {
   }
 
@@ -100,8 +102,8 @@ export class AuthFormComponent implements OnInit {
 
   handleError(error: any) {
 
-    // Clear messages array
-    this.messages.set([]);
+    // Clear messageError
+    this.messageError = "";
 
     // Handle 400 Bad Request error
     if (error.status === 400) {
@@ -109,10 +111,7 @@ export class AuthFormComponent implements OnInit {
 
         // Login credentials - Invalid
         case 'login-invalid':
-          this.messages.set([{
-            severity: 'error',
-            content: this.translateService.instant('auth.form.error.login')
-          }]);
+          this.messageError = this.translateService.instant('auth.form.error.login');
           break;
 
         // Email - Default
@@ -134,17 +133,11 @@ export class AuthFormComponent implements OnInit {
 
         // Generic error
         default:
-          this.messages.set([{
-            severity: 'error',
-            content: this.translateService.instant('http.500.detail')
-          }]);
+          this.messageError = this.translateService.instant('http.500.detail');
       }
     } else {
       // Likely 500 InternalServerError - Generic enough to handle all other possible errors
-      this.messages.set([{
-        severity: 'error',
-        content: this.translateService.instant('http.500.detail')
-      }]);
+      this.messageError = this.translateService.instant('http.500.detail');
     }
   }
 
@@ -224,5 +217,13 @@ export class AuthFormComponent implements OnInit {
         return null;
       }
     }
+  }
+
+  ctrlHasError(fieldName: string): boolean {
+    const ctrl = this.userForm.get(fieldName)
+    if (ctrl) {
+      return ctrl.invalid && ctrl.touched
+    }
+    return false;
   }
 }
