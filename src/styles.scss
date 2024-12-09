@@ -104,29 +104,15 @@ body {
   padding: 0.5rem 0;
 }
 
-// Password
+// PrimeNG - Password
 
 p-password,
-p-password div.p-password,
-p-password .p-component {
+.p-password,
+.p-password-input
+{
   width: 100%;
 }
 
-.p-password-panel .p-password-meter {
+.p-password-overlay .p-password-content {
   margin-top: 1rem;
-}
-
-.p-password-panel .p-password-meter,
-.p-password-panel .p-password-meter .p-password-strength{
-  border-radius: 6px;
-}
-
-// Toast
-
-.p-toast .p-toast-message .p-toast-message-content {
-  border-width: 0;
-}
-
-p-message-detail {
-  text-align: justify;
 }
