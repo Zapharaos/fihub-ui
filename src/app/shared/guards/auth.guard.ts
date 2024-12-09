@@ -6,56 +6,6 @@ import {UsersService} from "@core/api";
 import {MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
 
-/*export const noAuthGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
-  const userService = inject(UsersService);
-  const messageService = inject(MessageService);
-  const translateService = inject(TranslateService);
-  const router = inject(Router);
-
-  console.log("no", authService.isLoaded(), authService.getToken(), authService.isAuthenticated())
-  if (authService.getToken()) {
-    return new Observable<boolean>(subscriber => {
-      userService.getUserSelf().pipe(
-        finalize(() => {
-          authService.setLoaded(true);
-        })
-      ).subscribe({
-        next: user => {
-          authService.setCurrentUser(user);
-          subscriber.next(false);
-          subscriber.complete();
-        },
-        error: error => {
-          if (error.status === 401) {
-            authService.logout();
-            forkJoin([
-              translateService.get('messages.warning'),
-              translateService.get('auth.messages.session-expired')]
-            ).subscribe(([summary, detail]) => {
-              router.navigate(['/auth']).then(() => {
-                messageService.add({
-                  severity: 'warning',
-                  summary: summary,
-                  detail: detail,
-                  life: 5000
-                });
-              });
-            });
-          }
-          subscriber.next(true);
-          subscriber.complete();
-        }
-      });
-    });
-  }
-
-  if (authService.isAuthenticated()) {
-    return false;
-  }
-  return true;
-}*/
-
 export const noAuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);

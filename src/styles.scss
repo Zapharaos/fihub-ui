@@ -106,13 +106,16 @@ body {
 
 // PrimeNG - Password
 
-p-password,
-.p-password,
-.p-password-input
-{
-  width: 100%;
-}
-
 .p-password-overlay .p-password-content {
   margin-top: 1rem;
+}
+
+// PrimeNG - IconField
+
+p-inputicon {
+  z-index: 2;
+}
+
+.p-iconfield .p-password-input {
+  padding-inline-start: calc((var(--p-form-field-padding-x)* 2) + var(--p-icon-size));
 }
