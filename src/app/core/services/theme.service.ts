@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class ThemeService {
   private isDarkTheme = false;
 
-  constructor() {
+  init() {
     // Trying to retrieve the theme from local storage
     const storedTheme = this.getTheme();
     if (storedTheme) {
@@ -16,7 +16,6 @@ export class ThemeService {
     else {
       this.isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
-
     // Apply theme without saving
     this.applyTheme();
   }

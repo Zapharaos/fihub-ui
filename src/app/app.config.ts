@@ -2,7 +2,7 @@ import {ApplicationConfig, importProvidersFrom} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
-import {provideHttpClient, HttpClient, withInterceptors} from "@angular/common/http";
+import {provideHttpClient, HttpClient, withInterceptors, withFetch} from "@angular/common/http";
 import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
@@ -12,7 +12,6 @@ import {AuthService} from "@core/services/auth.service";
 import {authInterceptor} from "@core/interceptors/auth.interceptor";
 import {providePrimeNG} from "primeng/config";
 import {FihubDefault} from "../assets/presets/fihub-default";
-import {ThemeService} from "@core/services/theme.service";
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,7 +33,7 @@ export const appConfig: ApplicationConfig = {
         }
       }
     }),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     importProvidersFrom([TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -54,6 +53,5 @@ export const appConfig: ApplicationConfig = {
       multi: false
     },
     MessageService,
-    ThemeService
   ]
 };

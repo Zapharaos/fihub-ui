@@ -18,7 +18,7 @@ import {
 import {Ripple} from "primeng/ripple";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
-import {NgIf, NgOptimizedImage} from "@angular/common";
+import {NgIf} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {MessagesModule} from 'primeng/messages';
@@ -80,7 +80,7 @@ export class AuthFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private translateService: TranslateService,
-    private messageService: MessageService,
+    private messageService: MessageService
   ) {
   }
 
