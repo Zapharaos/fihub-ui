@@ -98,10 +98,7 @@
     <!-- Actions -->
     <div class="flex flex-col gap-3">
 
-      <p-messages
-        [(value)]="messages"
-        [closable]="false"
-        [enableService]="false"/>
+      <p-message></p-message>
 
       <button [disabled]="userForm.invalid || !userForm.dirty || loading"
               label="{{ fieldConfig.submitLabel | translate }}"
@@ -124,7 +121,7 @@
               routerLink="/auth/register"
               label="{{'auth.links.register' | translate}}"
     />
-    <span *ngIf="fieldConfig.hasForgotLink" class="dot-separator">⸱</span>
+    <span *ngIf="fieldConfig.hasForgotLink" class="font-black">⸱</span>
     <p-button *ngIf="fieldConfig.hasForgotLink"
               [link]="true"
               label="{{'auth.links.forgot' | translate}}"

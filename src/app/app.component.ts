@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {ToastModule} from "primeng/toast";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
@@ -12,7 +12,10 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(private translate: TranslateService) {
+  constructor(
+    private translate: TranslateService
+  ) {
+    // Translations
     this.translate.addLangs(['fr', 'en']);
     this.translate.setDefaultLang('en');
     this.translate.use(this.translate.getBrowserLang() || "en");

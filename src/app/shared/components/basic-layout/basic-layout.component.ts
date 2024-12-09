@@ -35,4 +35,9 @@ export class BasicLayoutComponent {
   toggleSubItems(item: LayoutItem) {
     item.subItemsInvisible = !item.subItemsInvisible;
   }
+
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element?.classList.toggle('p-dark');
+  }
 }

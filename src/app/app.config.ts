@@ -10,6 +10,8 @@ import {MessageService} from "primeng/api";
 import {ApiModule, Configuration} from "@core/api";
 import {AuthService} from "@core/services/auth.service";
 import {authInterceptor} from "@core/interceptors/auth.interceptor";
+import {providePrimeNG} from "primeng/config";
+import {FihubDefault} from "../assets/presets/fihub-default";
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -19,6 +21,17 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: FihubDefault,
+        options: {
+          cssLayer: {
+            name: 'primeng',
+            order: 'tailwind-base, primeng, tailwind-utilities'
+          }
+        }
+      }
+    }),
     provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom([TranslateModule.forRoot({
       loader: {
