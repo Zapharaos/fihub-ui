@@ -25,6 +25,7 @@ import {ThemeService} from "@core/services/theme.service";
   styleUrl: './basic-layout.component.scss'
 })
 export class BasicLayoutComponent {
+  protected readonly logoPath = "assets/svg/logo-initial.svg";
   sidebarVisible: boolean = true;
   @Input() items: LayoutItem[] = [];
 
