@@ -13,11 +13,11 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
 })
 export class AppComponent {
   constructor(
-    private translate: TranslateService
+    private translateService: TranslateService,
   ) {
     // Translations
-    this.translate.addLangs(['fr', 'en']);
-    this.translate.setDefaultLang('en');
-    this.translate.use(this.translate.getBrowserLang() || "en");
+    this.translateService.addLangs(['fr', 'en']);
+    this.translateService.setDefaultLang('en');
+    this.translateService.use(this.translateService.getBrowserLang() || "en");
   }
 }

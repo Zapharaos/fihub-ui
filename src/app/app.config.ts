@@ -12,6 +12,7 @@ import {AuthService} from "@core/services/auth.service";
 import {authInterceptor} from "@core/interceptors/auth.interceptor";
 import {providePrimeNG} from "primeng/config";
 import {FihubDefault} from "../assets/presets/fihub-default";
+import {ThemeService} from "@core/services/theme.service";
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -25,6 +26,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: FihubDefault,
         options: {
+          darkModeSelector: '.p-dark',
           cssLayer: {
             name: 'primeng',
             order: 'tailwind-base, primeng, tailwind-utilities'
@@ -51,6 +53,7 @@ export const appConfig: ApplicationConfig = {
       deps: [AuthService],
       multi: false
     },
-    MessageService
+    MessageService,
+    ThemeService
   ]
 };
