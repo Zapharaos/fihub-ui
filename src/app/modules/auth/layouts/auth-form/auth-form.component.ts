@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, signal} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
-import {Message, MessageService, PrimeTemplate} from "primeng/api";
+import { Message } from 'primeng/message';
+import {MessageService, PrimeTemplate} from "primeng/api";
 import {
   AbstractControl,
   FormBuilder,
@@ -59,7 +60,8 @@ export interface FormUser extends UsersUserWithPassword {
     DividerModule,
     CheckboxModule,
     ButtonDirective,
-    MessagesModule
+    MessagesModule,
+    Message
   ],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss'
@@ -72,7 +74,7 @@ export class AuthFormComponent implements OnInit {
   user: FormUser = {};
   userForm: FormGroup = this.fb.group({});
   loading = false;
-  messages: Message[] = [];
+  messages = signal<any[]>([]);
 
   constructor(
     private fb: FormBuilder,
@@ -98,7 +100,7 @@ export class AuthFormComponent implements OnInit {
   handleError(error: any) {
 
     // Clear messages array
-    this.messages = [];
+    this.messages.set([]);
 
     // Handle 400 Bad Request error
     if (error.status === 400) {
@@ -106,10 +108,10 @@ export class AuthFormComponent implements OnInit {
 
         // Login credentials - Invalid
         case 'login-invalid':
-          this.messages = [({
+          this.messages.set([{
             severity: 'error',
-            detail: this.translateService.instant('auth.form.error.login')
-          })];
+            content: this.translateService.instant('auth.form.error.login')
+          }]);
           break;
 
         // Email - Default
@@ -131,17 +133,17 @@ export class AuthFormComponent implements OnInit {
 
         // Generic error
         default:
-          this.messages = [({
+          this.messages.set([{
             severity: 'error',
-            detail: this.translateService.instant('http.500.detail')
-          })];
+            content: this.translateService.instant('http.500.detail')
+          }]);
       }
     } else {
       // Likely 500 InternalServerError - Generic enough to handle all other possible errors
-      this.messages = [({
+      this.messages.set([{
         severity: 'error',
-        detail: this.translateService.instant('http.500.detail')
-      })];
+        content: this.translateService.instant('http.500.detail')
+      }]);
     }
   }
 

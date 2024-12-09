@@ -1,6 +1,6 @@
 .menu-active {
-  background-color: var(--secondary);
-  color: var(--primary-color);
+  background-color: var(--p-button-primary-background);
+  color: var(--p-button-primary-color);
 }
 
 .menu-active .item-label {
@@ -8,7 +8,7 @@
 }
 
 .menu-hover:hover {
-  background-color: var(--secondary);
+  background-color: var(--p-button-primary-hover-background);
 }
 
 // First LI missing space-y-2
