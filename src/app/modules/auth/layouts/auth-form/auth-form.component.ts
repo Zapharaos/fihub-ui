@@ -18,7 +18,7 @@ import {
 import {Ripple} from "primeng/ripple";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
-import {NgIf} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {MessagesModule} from 'primeng/messages';
@@ -61,7 +61,7 @@ export interface FormUser extends UsersUserWithPassword {
     CheckboxModule,
     ButtonDirective,
     MessagesModule,
-    Message
+    Message,
   ],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss'
@@ -71,6 +71,7 @@ export class AuthFormComponent implements OnInit {
   @Input() fieldConfig: AuthFormFieldConfig = {submitLabel: ""};
   @Output() onSubmit = new EventEmitter<FormGroup>();
 
+  protected readonly logoPath = "assets/svg/logo-initial.svg";
   user: FormUser = {};
   userForm: FormGroup = this.fb.group({});
   loading = false;

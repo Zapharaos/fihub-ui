@@ -1,6 +1,8 @@
 <div class="flex flex-col items-center justify-center min-h-screen gap-3">
 
-  <form [formGroup]="userForm" (ngSubmit)="onSubmitWrapper()" class="flex flex-col gap-12 rounded-md">
+  <img [src]="logoPath" alt="Fihub Logo"/>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmitWrapper()" class="flex flex-col gap-12 rounded-md mt-8">
 
     <!-- Form title -->
     <h2 class="font-bold text-2xl">

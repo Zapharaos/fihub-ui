@@ -24,6 +24,11 @@ export class DashboardLayoutComponent {
         icon: 'pi-th-large',
         routeActiveExact: true
       },
+      {
+        label: 'settings.title',
+        route: '/settings',
+        icon: 'pi-cog',
+      },
     ];
   }
 }

@@ -1,14 +1,35 @@
-.menu-active {
-  background-color: var(--p-button-primary-background);
-  color: var(--p-button-primary-color);
+// Header logo
+img {
+  fill: var(--primary-color);
+  width: 69px;
+  height: 49px;
 }
 
+// Default item
+li {
+  color: var(--p-text-muted-color);
+}
+
+// Active item
+.menu-active {
+  background-color:
+    color-mix(in srgb, var(--p-primary-color) calc(100%), transparent);
+  color: var(--p-button-primary-color);
+}
 .menu-active .item-label {
   font-weight: 600;
 }
 
-.menu-hover:hover {
-  background-color: var(--p-button-primary-hover-background);
+// Active item hover
+.menu-active.menu-hover:hover  {
+  background-color:
+    color-mix(in srgb, var(--p-primary-hover-color) calc(100%), transparent);
+}
+
+// Hover default item
+:not(.menu-active).menu-hover:hover {
+  background: var(--p-content-hover-background);
+  color: var(--p-content-hover-color);
 }
 
 // First LI missing space-y-2
