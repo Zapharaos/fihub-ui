@@ -12,6 +12,7 @@ import {finalize, forkJoin} from "rxjs";
 import {UserBrokerService, BrokersBroker, BrokersUserBroker, BrokersService} from "@core/api";
 import {Dialog} from "primeng/dialog";
 import {Select} from "primeng/select";
+import {NotificationService} from "@shared/services/notification.service";
 
 // TODO : temp fields
 export interface TableBroker extends BrokersBroker {
@@ -51,7 +52,7 @@ export class BrokersComponent implements OnInit {
 
   constructor(
     private translateService: TranslateService,
-    private messageService: MessageService,
+    private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
     private brokersService: BrokersService,
     private userBrokerService: UserBrokerService,
@@ -83,18 +84,7 @@ export class BrokersComponent implements OnInit {
         this.brokers = brokers;
       },
       error: () => {
-        forkJoin([
-          this.translateService.get('http.500.summary'),
-          this.translateService.get('http.500.detail')]
-        ).subscribe(([summary, detail]) => {
-          this.messageService.add({
-            key: 'main-toast',
-            severity: 'error',
-            summary: summary,
-            detail: detail,
-            life: 5000
-          });
-        });
+        this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
       }
     })
   }
@@ -106,48 +96,15 @@ export class BrokersComponent implements OnInit {
     })).subscribe({
       next: (brokers: TableBroker[]) => {
         this.brokers = brokers
-        forkJoin([
-          this.translateService.get('messages.success'),
-          this.translateService.get('dashboard.brokers.messages.delete-success', {name: broker.name})]
-        ).subscribe(([summary, detail]) => {
-          this.messageService.add({
-            key: 'main-toast',
-            severity: 'success',
-            summary: summary,
-            detail: detail,
-            life: 5000
-          });
-        });
+        this.notificationService.showToastSuccess('dashboard.brokers.messages.delete-success', {name: broker.name})
       },
       error: (error: any) => {
         switch (error.status) {
           case 400:
-            forkJoin([
-              this.translateService.get('http.400.summary'),
-              this.translateService.get('http.400.detail')]
-            ).subscribe(([summary, detail]) => {
-              this.messageService.add({
-                key: 'main-toast',
-                severity: 'error',
-                summary: summary,
-                detail: detail,
-                life: 5000
-              });
-            });
+            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
             break;
           default:
-            forkJoin([
-              this.translateService.get('http.500.summary'),
-              this.translateService.get('http.500.detail')]
-            ).subscribe(([summary, detail]) => {
-              this.messageService.add({
-                key: 'main-toast',
-                severity: 'error',
-                summary: summary,
-                detail: detail,
-                life: 5000
-              });
-            });
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
             break;
         }
       },
@@ -164,48 +121,15 @@ export class BrokersComponent implements OnInit {
     })).subscribe({
       next: (brokers: TableBroker[]) => {
         this.brokers = brokers
-        forkJoin([
-          this.translateService.get('messages.success'),
-          this.translateService.get('dashboard.brokers.messages.add-success')]
-        ).subscribe(([summary, detail]) => {
-          this.messageService.add({
-            key: 'main-toast',
-            severity: 'success',
-            summary: summary,
-            detail: detail,
-            life: 5000
-          });
-        });
+        this.notificationService.showToastSuccess('dashboard.brokers.messages.add-success')
       },
       error: (error: any) => {
         switch (error.status) {
           case 400:
-            forkJoin([
-              this.translateService.get('http.400.summary'),
-              this.translateService.get('http.400.detail')]
-            ).subscribe(([summary, detail]) => {
-              this.messageService.add({
-                key: 'main-toast',
-                severity: 'error',
-                summary: summary,
-                detail: detail,
-                life: 5000
-              });
-            });
+            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
             break;
           default:
-            forkJoin([
-              this.translateService.get('http.500.summary'),
-              this.translateService.get('http.500.detail')]
-            ).subscribe(([summary, detail]) => {
-              this.messageService.add({
-                key: 'main-toast',
-                severity: 'error',
-                summary: summary,
-                detail: detail,
-                life: 5000
-              });
-            });
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
             break;
         }
       },
@@ -223,18 +147,8 @@ export class BrokersComponent implements OnInit {
   onRowEditSave(broker: TableBroker) {
     delete this.clonedBrokers[broker.id as string];
 
-    forkJoin([
-      this.translateService.get('messages.success'),
-      this.translateService.get('dashboard.brokers.messages.edit-success', {name: broker.name})]
-    ).subscribe(([summary, detail]) => {
-      this.messageService.add({
-        key: 'main-toast',
-        severity: 'success',
-        summary: summary,
-        detail: detail,
-        life: 5000
-      });
-    });
+    // TODO : PUT
+    this.notificationService.showToastSuccess('dashboard.brokers.messages.edit-success', {name: broker.name})
   }
 
   onRowEditCancel(broker: TableBroker, index: number) {

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {ToastModule} from "primeng/toast";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {ThemeService} from "@core/services/theme.service";
+import {ThemeService} from "@shared/services/theme.service";
 import {ConfirmDialog} from "primeng/confirmdialog";
 import {Button} from "primeng/button";
 

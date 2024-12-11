@@ -1,10 +1,9 @@
 import {CanActivateFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
-import {finalize, forkJoin, Observable} from "rxjs";
+import {finalize, Observable} from "rxjs";
 import {AuthService} from "@core/services/auth.service";
 import {UsersService} from "@core/api";
-import {MessageService} from "primeng/api";
-import {TranslateService} from "@ngx-translate/core";
+import {NotificationService} from "@shared/services/notification.service";
 
 export const noAuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -23,14 +22,13 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const userService = inject(UsersService);
-  const messageService = inject(MessageService);
-  const translateService = inject(TranslateService);
+  const notificationService = inject(NotificationService);
   const router = inject(Router);
 
   if (!authService.isLoaded()) {
     const token = authService.getToken();
     if (!token) {
-      return redirectToLogin(router, authService, messageService, translateService, state.url);
+      return redirectToLogin(router, authService, notificationService, state.url);
     }
 
     return new Observable<boolean>(subscriber => {
@@ -47,19 +45,9 @@ export const authGuard: CanActivateFn = (route, state) => {
         error: error => {
           if (error.status === 401) {
             authService.logout();
-            forkJoin([
-              translateService.get('messages.warning'),
-              translateService.get('auth.messages.session-expired')]
-            ).subscribe(([summary, detail]) => {
-              router.navigate(['/auth']).then(() => {
-                messageService.add({
-                  severity: 'warning',
-                  summary: summary,
-                  detail: detail,
-                  life: 5000
-                });
-              });
-            });
+            router.navigate(['/auth']).then(() => {
+              notificationService.showToastWarning('auth.messages.session-expired');
+            })
           }
           subscriber.next(false);
           subscriber.complete();
@@ -69,29 +57,18 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 
   if (!authService.isAuthenticated()) {
-    return redirectToLogin(router, authService, messageService, translateService, state.url);
+    return redirectToLogin(router, authService, notificationService, state.url);
   }
 
   return true;
 };
 
-function redirectToLogin(router: Router, authService: AuthService, messageService: MessageService, translateService: TranslateService, url: string): boolean {
+function redirectToLogin(router: Router, authService: AuthService, notificationService: NotificationService, url: string): boolean {
   // Set the redirect url so that the auth-guard can redirect after login
   authService.setRedirectUrl(url);
   // Redirect to the login page
-  forkJoin([
-    translateService.get('messages.error'),
-    translateService.get('auth.messages.not-authenticated')
-  ]).subscribe(([summary, detail]) => {
-    router.navigate(['/auth']).then(() => {
-      messageService.add({
-        key: 'main-toast',
-        severity: 'error',
-        summary: summary,
-        detail: detail,
-        life: 4000
-      });
-    });
+  router.navigate(['/auth']).then(() => {
+    notificationService.showToastError('auth.messages.not-authenticated');
   });
   return false;
 }
