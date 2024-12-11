@@ -5,7 +5,7 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {Ripple} from "primeng/ripple";
 import {TranslateModule} from "@ngx-translate/core";
 import {LayoutItem} from "@shared/models/layout-item";
-import {ThemeService} from "@core/services/theme.service";
+import {ThemeService} from "@shared/services/theme.service";
 
 @Component({
   selector: 'app-basic-layout',
@@ -31,8 +31,7 @@ export class BasicLayoutComponent {
 
   constructor(
     protected themeService: ThemeService,
-  ) {
-  }
+  ) { }
 
   toggleSidebar() {
     this.sidebarVisible = !this.sidebarVisible;

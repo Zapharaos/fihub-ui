@@ -25,6 +25,7 @@ import {MessagesModule} from 'primeng/messages';
 import {UsersUserWithPassword} from "@core/api";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
+import {passwordMatchValidator} from "@shared/validators/password-match";
 
 export type AuthFormFieldConfig = {
   hasEmail?: boolean;
@@ -83,8 +84,7 @@ export class AuthFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private translateService: TranslateService,
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     // Form controls depends on the @Input fields which have yet to be passed in the constructor
@@ -186,7 +186,7 @@ export class AuthFormComponent implements OnInit {
       ));
 
       // Validate that confirmation corresponds to the password
-      this.userForm.addValidators(this.passwordMatchValidator('password-feedback', 'confirmation'))
+      this.userForm.addValidators(passwordMatchValidator('password-feedback', 'confirmation'))
     }
 
     // Checkbox
@@ -196,26 +196,6 @@ export class AuthFormComponent implements OnInit {
           Validators.requiredTrue,
         ]
       ));
-    }
-  }
-
-  passwordMatchValidator(controlName: string, matchingControlName: string): ValidatorFn {
-    return (abstractControl: AbstractControl) => {
-      const control = abstractControl.get(controlName);
-      const matchingControl = abstractControl.get(matchingControlName);
-
-      if (matchingControl!.errors && !matchingControl!.errors?.['confirmedValidator']) {
-        return null;
-      }
-
-      if (control!.value !== matchingControl!.value) {
-        const error = {confirmedValidator: 'Passwords do not match.'};
-        matchingControl!.setErrors(error);
-        return error;
-      } else {
-        matchingControl!.setErrors(null);
-        return null;
-      }
     }
   }
 

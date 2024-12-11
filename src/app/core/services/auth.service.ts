@@ -9,8 +9,7 @@ export class AuthService {
   private loaded = false;
   redirectUrl?: string;
 
-  constructor() {
-  }
+  constructor() {}
 
   /**
    * Returns whether the authentication service has been loaded
