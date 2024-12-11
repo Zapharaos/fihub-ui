@@ -3,12 +3,14 @@ import {RouterOutlet} from '@angular/router';
 import {ToastModule} from "primeng/toast";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {ThemeService} from "@core/services/theme.service";
+import {ConfirmDialog} from "primeng/confirmdialog";
+import {Button} from "primeng/button";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastModule, TranslateModule],
+  imports: [RouterOutlet, ToastModule, TranslateModule, ConfirmDialog, Button],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

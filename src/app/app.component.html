@@ -1,2 +1,29 @@
 <p-toast key="main-toast" />
+<p-confirmdialog #cd>
+  <ng-template #headless let-message let-onAccept="onAccept" let-onReject="onReject">
+    <div class="flex flex-col items-center p-8  rounded">
+      <div
+        class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-16 w-16 -mt-20"
+      >
+        <i class="pi pi-question !text-3xl"></i>
+      </div>
+      <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+      <p class="mb-0">{{ message.message }}</p>
+      <div class="flex items-center gap-2 mt-6">
+        <p-button styleClass="w-32"
+                  (onClick)="onReject()"
+                  label="{{ message.rejectButtonProps.label }}"
+                  [severity]="message.rejectButtonProps.severity"
+                  [outlined]="message.rejectButtonProps.outlined"
+        ></p-button>
+        <p-button styleClass="w-32"
+                  (onClick)="onAccept()"
+                  label="{{ message.acceptButtonProps.label }}"
+                  [severity]="message.acceptButtonProps.severity"
+                  [outlined]="message.acceptButtonProps.outlined"
+        ></p-button>
+      </div>
+    </div>
+  </ng-template>
+</p-confirmdialog>
 <router-outlet />

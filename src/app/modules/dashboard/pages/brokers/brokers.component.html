@@ -75,7 +75,7 @@
                       severity="secondary"
                       [rounded]="true" />
             <p-button *ngIf="!editing"
-                      (click)="onRowDelete(broker)"
+                      (click)="onRowDelete($event, broker)"
                       icon="pi pi-trash"
                       severity="danger"
                       [rounded]="true"
