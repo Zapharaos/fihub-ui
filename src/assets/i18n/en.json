@@ -49,6 +49,10 @@
     }
   },
   "http": {
+    "400": {
+      "summary": "Bad Request",
+      "detail": "Your request is invalid. Please check your input and try again."
+    },
     "500": {
       "summary": "Server Error",
       "detail": "We're experiencing technical difficulties. Please try again later or contact support."
@@ -85,8 +89,12 @@
     "title": "Dashboard",
     "brokers": {
       "title": "Brokers",
-      "add": "Add a broker",
+      "add-button": "Add a broker",
+      "add-dialog": {
+        "title": "Add a broker"
+      },
       "messages": {
+        "add-success": "Broker has been added.",
         "edit-success": "Broker {{name}} has been edited.",
         "delete-success": "Broker {{name}} was removed."
       }

@@ -6,16 +6,18 @@ import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
 import {CommonModule} from "@angular/common";
-import { FormsModule } from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ConfirmationService, MessageService} from "primeng/api";
-import {forkJoin} from "rxjs";
+import {finalize, forkJoin} from "rxjs";
+import {UserBrokerService, BrokersBroker, BrokersUserBroker, BrokersService} from "@core/api";
+import {Dialog} from "primeng/dialog";
+import {Select} from "primeng/select";
 
-export type Broker = {
-  id: string;
-  name: string;
+// TODO : temp fields
+export interface TableBroker extends BrokersBroker {
   apiKey?: string;
   apiSecret?: string;
-};
+}
 
 @Component({
   selector: 'app-brokers',
@@ -28,72 +30,197 @@ export type Broker = {
     InputTextModule,
     CommonModule,
     ButtonModule,
-    FormsModule
+    FormsModule,
+    Dialog,
+    ReactiveFormsModule,
+    Select
   ],
   templateUrl: './brokers.component.html',
   styleUrl: './brokers.component.scss'
 })
 export class BrokersComponent implements OnInit {
-  brokers!: Broker[];
-  clonedBrokers: { [s: string]: Broker } = {};
+  rawBrokers!: BrokersBroker[];
+  brokers!: TableBroker[];
+  clonedBrokers: { [s: string]: TableBroker } = {};
   loading: boolean = true;
+  dialogAddBrokerVisible: boolean = false;
   @ViewChild('dt') dt: Table | undefined;
+  formBroker: FormGroup;
 
-  // TODO : brokers get
-  // TODO : broker add
+  /*userBroker: BrokersUserBroker*/
 
   constructor(
     private translateService: TranslateService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-  ) { }
+    private brokersService: BrokersService,
+    private userBrokerService: UserBrokerService,
+    private fb: FormBuilder
+  ) {
+    this.formBroker = this.fb.group({
+      broker: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
-    this.brokers = [
-      {
-        id: '0',
-        name: 'BpZbtUok',
-        apiKey: '71FM4x7VtmvZiElf',
-        apiSecret: '1YM0WfKB87cH3pq5',
-      },
-      {
-        id: '1',
-        name: 'BpSXzrcp',
-        apiKey: '1YM0WfKB87cH3pq5',
-        apiSecret: 'ql227V66nu0yAmkA',
-      },
-      {
-        id: '2',
-        name: 'nGTnQyvl',
-        apiKey: 'ql227V66nu0yAmkA',
-        apiSecret: '03icwgLJ5OXoyq3o',
-      },
-      {
-        id: '3',
-        name: 'rxvAuBOf',
-        apiKey: 'EqZBS4IzH0O7GT79',
-        apiSecret: 'N3E2Uj2jlDp1wuus',
-      },
-      {
-        id: '4',
-        name: 'XqcPWWJh',
-        apiKey: 'd0afNTX5f4mpUupB',
-        apiSecret: 'Y4Z7hntX386OS1Jv',
-      },
-    ]
+    this.loadBrokers()
+  }
 
-    this.loading = false;
+  loadRawBrokers() {
+    this.brokersService.getBrokers().subscribe({
+      next: rawBrokers => {
+        this.rawBrokers = rawBrokers
+      }
+    })
+  }
+
+  loadBrokers() {
+    this.loading = true;
+    this.userBrokerService.getUserBrokers().pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe({
+      next: (brokers: TableBroker[]) => {
+        this.brokers = brokers;
+      },
+      error: () => {
+        forkJoin([
+          this.translateService.get('http.500.summary'),
+          this.translateService.get('http.500.detail')]
+        ).subscribe(([summary, detail]) => {
+          this.messageService.add({
+            key: 'main-toast',
+            severity: 'error',
+            summary: summary,
+            detail: detail,
+            life: 5000
+          });
+        });
+      }
+    })
+  }
+
+  deleteBroker(broker: TableBroker) {
+    this.loading = true;
+    this.userBrokerService.deleteUserBroker(broker.id ?? '').pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe({
+      next: (brokers: TableBroker[]) => {
+        this.brokers = brokers
+        forkJoin([
+          this.translateService.get('messages.success'),
+          this.translateService.get('dashboard.brokers.messages.delete-success', {name: broker.name})]
+        ).subscribe(([summary, detail]) => {
+          this.messageService.add({
+            key: 'main-toast',
+            severity: 'success',
+            summary: summary,
+            detail: detail,
+            life: 5000
+          });
+        });
+      },
+      error: (error: any) => {
+        switch (error.status) {
+          case 400:
+            forkJoin([
+              this.translateService.get('http.400.summary'),
+              this.translateService.get('http.400.detail')]
+            ).subscribe(([summary, detail]) => {
+              this.messageService.add({
+                key: 'main-toast',
+                severity: 'error',
+                summary: summary,
+                detail: detail,
+                life: 5000
+              });
+            });
+            break;
+          default:
+            forkJoin([
+              this.translateService.get('http.500.summary'),
+              this.translateService.get('http.500.detail')]
+            ).subscribe(([summary, detail]) => {
+              this.messageService.add({
+                key: 'main-toast',
+                severity: 'error',
+                summary: summary,
+                detail: detail,
+                life: 5000
+              });
+            });
+            break;
+        }
+      },
+    })
+  }
+
+  addBroker() {
+    this.loading = true;
+    const userBroker : BrokersUserBroker = {
+      broker_id: this.formBroker.value.broker.id,
+    }
+    this.userBrokerService.createUserBroker(userBroker).pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe({
+      next: (brokers: TableBroker[]) => {
+        this.brokers = brokers
+        forkJoin([
+          this.translateService.get('messages.success'),
+          this.translateService.get('dashboard.brokers.messages.add-success')]
+        ).subscribe(([summary, detail]) => {
+          this.messageService.add({
+            key: 'main-toast',
+            severity: 'success',
+            summary: summary,
+            detail: detail,
+            life: 5000
+          });
+        });
+      },
+      error: (error: any) => {
+        switch (error.status) {
+          case 400:
+            forkJoin([
+              this.translateService.get('http.400.summary'),
+              this.translateService.get('http.400.detail')]
+            ).subscribe(([summary, detail]) => {
+              this.messageService.add({
+                key: 'main-toast',
+                severity: 'error',
+                summary: summary,
+                detail: detail,
+                life: 5000
+              });
+            });
+            break;
+          default:
+            forkJoin([
+              this.translateService.get('http.500.summary'),
+              this.translateService.get('http.500.detail')]
+            ).subscribe(([summary, detail]) => {
+              this.messageService.add({
+                key: 'main-toast',
+                severity: 'error',
+                summary: summary,
+                detail: detail,
+                life: 5000
+              });
+            });
+            break;
+        }
+      },
+    })
   }
 
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
-  onRowEditInit(broker: Broker) {
+  onRowEditInit(broker: TableBroker) {
     this.clonedBrokers[broker.id as string] = { ...broker };
   }
 
-  onRowEditSave(broker: Broker) {
+  onRowEditSave(broker: TableBroker) {
     delete this.clonedBrokers[broker.id as string];
 
     forkJoin([
@@ -110,12 +237,12 @@ export class BrokersComponent implements OnInit {
     });
   }
 
-  onRowEditCancel(broker: Broker, index: number) {
+  onRowEditCancel(broker: TableBroker, index: number) {
     this.brokers[index] = this.clonedBrokers[broker.id as string];
     delete this.clonedBrokers[broker.id as string];
   }
 
-  onRowDelete(event: Event, broker: Broker) {
+  onRowDelete(event: Event, broker: TableBroker) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       header: this.translateService.instant('confirmation.delete.header'),
@@ -131,24 +258,14 @@ export class BrokersComponent implements OnInit {
       },
 
       accept: () => {
-
-        // TODO : call service
-        // TODO : get brokers
-
-        forkJoin([
-          this.translateService.get('messages.success'),
-          this.translateService.get('dashboard.brokers.messages.delete-success', {name: broker.name})]
-        ).subscribe(([summary, detail]) => {
-          this.messageService.add({
-            key: 'main-toast',
-            severity: 'success',
-            summary: summary,
-            detail: detail,
-            life: 5000
-          });
-        });
+        this.deleteBroker(broker)
       }
     });
 
+  }
+
+  openDialogAddBroker() {
+    this.loadRawBrokers()
+    this.dialogAddBrokerVisible = true;
   }
 }

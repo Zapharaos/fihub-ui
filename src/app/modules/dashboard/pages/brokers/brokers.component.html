@@ -15,7 +15,8 @@
                placeholder="{{'actions.search-placeholder' | translate}}"
         />
       </p-iconfield>
-      <p-button label="{{'dashboard.brokers.add' | translate}}" icon="pi pi-plus" [rounded]="true"/>
+      <p-button (click)="openDialogAddBroker()"
+        label="{{'dashboard.brokers.add-button' | translate}}" icon="pi pi-plus" [rounded]="true"/>
     </div>
   </div>
 
@@ -98,5 +99,19 @@
       </tr>
     </ng-template>
   </p-table>
+
+  <!-- Dialog - Add broker -->
+  <p-dialog [modal]="true" [(visible)]="dialogAddBrokerVisible"
+            header="{{'dashboard.brokers.add-dialog.title' | translate}}">
+
+    <form [formGroup]="formBroker" class="flex flex-col gap-12 rounded-md mt-8">
+
+      <!--[loading]="true"-->
+      <p-select formControlName="broker" [options]="rawBrokers" optionLabel="name" placeholder="Select a City" class="w-full md:w-56" />
+
+      <p-button label="Configure" severity="secondary" (click)="addBroker()"/>
+
+    </form>
+  </p-dialog>
 
 </div>
