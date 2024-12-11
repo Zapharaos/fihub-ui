@@ -1,0 +1,102 @@
+<div class="flex flex-col gap-10">
+  <!--  Header  -->
+  <div class="flex justify-between">
+    <!--  Title  -->
+    <h1 class="text-3xl font-semibold">
+      {{'dashboard.brokers.title' | translate}}
+    </h1>
+
+    <!--  Actions  -->
+    <div class="flex gap-5">
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search" />
+        <input pInputText type="text"
+               (input)="applyFilterGlobal($event, 'contains')"
+               placeholder="{{'actions.search-placeholder' | translate}}"
+        />
+      </p-iconfield>
+      <p-button label="{{'dashboard.brokers.add' | translate}}" icon="pi pi-plus" [rounded]="true"/>
+    </div>
+  </div>
+
+  <!--  Content  -->
+  <p-table
+    #dt
+    dataKey="id"
+    editMode="row"
+    [value]="brokers"
+    [globalFilterFields]="['name']"
+    [loading]="loading"
+    [styleClass]="'p-datatable-lg'"
+    [rowHover]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>API Key</th>
+        <th>API Secret</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-broker let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="broker">
+        <td>{{ broker.name }}</td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input
+                pInputText type="text"
+                [(ngModel)]="broker.apiKey"
+                required />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{broker.apiKey || '-' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input
+                pInputText type="text"
+                [(ngModel)]="broker.apiSecret"
+                required />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{broker.apiSecret || '-' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <div class="flex items-center justify-center gap-2">
+            <p-button *ngIf="!editing"
+                      pInitEditableRow
+                      (click)="onRowEditInit(broker)"
+                      icon="pi pi-pencil"
+                      severity="secondary"
+                      [rounded]="true" />
+            <p-button *ngIf="!editing"
+                      (click)="onRowDelete(broker)"
+                      icon="pi pi-trash"
+                      severity="danger"
+                      [rounded]="true"
+                      [outlined]="true"/>
+            <p-button *ngIf="editing"
+                      pCancelEditableRow
+                      (click)="onRowEditCancel(broker, ri)"
+                      icon="pi pi-times"
+                      severity="secondary"
+                      [rounded]="true"/>
+            <p-button *ngIf="editing"
+                      pSaveEditableRow
+                      (click)="onRowEditSave(broker)"
+                      icon="pi pi-check"
+                      severity="success"
+                      [outlined]="true"
+                      [rounded]="true"/>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>
