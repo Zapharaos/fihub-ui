@@ -30,6 +30,42 @@ body {
 }
 
 :root {
+  --header-height: 4rem;
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    --dynamic-container-padding:24px
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  :root {
+    --dynamic-container-padding:32px
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  :root {
+    --dynamic-container-padding:64px
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  :root {
+    --dynamic-container-padding:160px
+  }
+}
+
+@media screen and (min-width: 1921px) {
+  :root {
+    --dynamic-container-padding:0
+  }
+}
+
+// Themes
+
+:root {
   --primary-text-color: var(--p-primary-600);
   --primary-color: var(--p-primary-color);
   --primary-contrast-color: var(--p-primary-contrast-color);
@@ -87,12 +123,10 @@ body {
   --logo-color: var(--text-secondary-color);
 }
 
+// Utils
+
 .bg {
   background-color: var(--ground-background);
-}
-
-.text-danger {
-  color: #dc2626;
 }
 
 // Icon buttons
@@ -119,3 +153,17 @@ p-inputicon {
 .p-iconfield .p-password-input {
   padding-inline-start: calc((var(--p-form-field-padding-x)* 2) + var(--p-icon-size));
 }
+
+// Context Wrapper - Card
+.content-wrapper .p-card {
+  background: transparent;
+  // border: solid 1px var(--border-color);
+  box-shadow: none;
+  padding: 16px;
+}
+
+.content-wrapper .p-datatable-thead > tr > th,
+.content-wrapper .p-datatable-tbody > tr {
+  background: transparent !important;
+}
+

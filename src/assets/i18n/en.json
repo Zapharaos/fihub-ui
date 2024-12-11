@@ -74,9 +74,20 @@
     "submit": "Reset password"
   },
   "dashboard": {
-    "title": "Dashboard"
+    "title": "Dashboard",
+    "brokers": {
+      "title": "Brokers",
+      "add": "Add a broker",
+      "messages": {
+        "edit-success": "Broker {{name}} has been edited.",
+        "delete-success": "Broker {{name}} was removed."
+      }
+    }
   },
   "settings": {
     "title": "Settings"
+  },
+  "actions": {
+    "search-placeholder": "Search..."
   }
 }

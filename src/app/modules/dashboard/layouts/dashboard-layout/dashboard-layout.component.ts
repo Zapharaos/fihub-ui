@@ -20,9 +20,14 @@ export class DashboardLayoutComponent {
     this.items = [
       {
         label: 'dashboard.title',
-        route: '/dashboard',
+        route: '/dashboard/',
         icon: 'pi-th-large',
         routeActiveExact: true
+      },
+      {
+        label: 'dashboard.brokers.title',
+        route: '/dashboard/brokers',
+        icon: 'pi-wallet',
       },
       {
         label: 'settings.title',

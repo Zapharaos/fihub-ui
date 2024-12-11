@@ -1,16 +1,35 @@
-// Header logo
-img {
+// Header
+header div:first-of-type {
+  height: var(--header-height);
+}
+header img {
   fill: var(--primary-color);
-  width: 69px;
-  height: 49px;
+  height: var(--header-height);
+  max-width: 100%;
 }
 
-// Default item
+// Content
+header + div {
+  margin-top: var(--header-height);
+}
+.content-wrapper {
+  padding-left: var(--dynamic-container-padding);
+  padding-right: var(--dynamic-container-padding)
+}
+@media screen and (min-width: 1921px) {
+  .content-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1352px !important;
+  }
+}
+
+// Sidebar - Default item
 li {
   color: var(--p-text-muted-color);
 }
 
-// Active item
+// Sidebar - Active item
 .menu-active {
   background-color:
     color-mix(in srgb, var(--p-primary-color) calc(100%), transparent);
@@ -20,19 +39,19 @@ li {
   font-weight: 600;
 }
 
-// Active item hover
+// Sidebar - Active item hover
 .menu-active.menu-hover:hover  {
   background-color:
     color-mix(in srgb, var(--p-primary-hover-color) calc(100%), transparent);
 }
 
-// Hover default item
+// Sidebar - Hover default item
 :not(.menu-active).menu-hover:hover {
   background: var(--p-content-hover-background);
   color: var(--p-content-hover-color);
 }
 
-// First LI missing space-y-2
+// Sidebar - First LI missing space-y-2
 li li:first-of-type {
   margin-top: 0.5rem;
 }

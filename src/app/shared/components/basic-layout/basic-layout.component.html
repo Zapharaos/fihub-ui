@@ -1,7 +1,7 @@
 <div class="min-h-screen flex flex-col">
   <!-- Header -->
-  <div class="fixed top-0 left-0 w-full z-10 touch-pan-x touch-pan-y">
-    <div class="flex justify-between items-center h-16 px-6">
+  <header class="fixed bg w-full touch-pan-x touch-pan-y">
+    <div class="flex justify-between items-center px-6">
 
       <!-- Left side -->
       <div>
@@ -12,7 +12,7 @@
       <!-- Right side -->
       <div class="flex gap-5">
 
-        <p-button label="Toggle theme" (onClick)="themeService.toggleTheme()"/>
+        <p-button label="Toggle theme" (onClick)="themeService.toggleTheme()" [outlined]="true"/>
 
         <!-- Account -->
         <p-button [routerLink]="'/settings'" icon="pi pi-user" [rounded]="true" severity="primary"/>
@@ -25,10 +25,10 @@
         </button>
       </div>
     </div>
-  </div>
+  </header>
 
   <!-- Sidebar and Content Container -->
-  <div class="flex flex-row pt-24">
+  <div class="flex flex-row pt-12">
 
     <!-- Sidebar -->
     <!-- Always visible. Hidden only when chosen until before MEDIUM size -->
@@ -101,8 +101,10 @@
     </div>
 
     <!-- Main Content -->
-    <div [ngClass]="{'max-md:ml-0': !sidebarVisible}" class="ml-64 flex-grow p-3">
-      <router-outlet></router-outlet>
+    <div [ngClass]="{'max-md:ml-0': !sidebarVisible}" class="ml-64 flex-grow">
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
 </div>
