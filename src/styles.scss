@@ -30,7 +30,12 @@ body {
 }
 
 :root {
+  // Header
   --header-height: 4rem;
+
+  // Table
+  --p-datatable-row-color: var(--p-text-muted-color);
+  --p-datatable-column-title-font-weight: 700;
 }
 
 @media screen and (min-width: 768px) {
@@ -127,15 +132,6 @@ body {
 
 .bg {
   background-color: var(--ground-background);
-}
-
-// Icon buttons
-.p-button.p-button-icon-only.p-button-rounded {
-  height: 2.5rem;
-}
-.p-button.p-button-icon-only {
-  width: 2.5rem;
-  padding: 0.5rem 0;
 }
 
 // PrimeNG - Password

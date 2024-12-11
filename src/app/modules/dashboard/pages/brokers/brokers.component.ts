@@ -7,7 +7,7 @@ import {InputIcon} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
 import {CommonModule} from "@angular/common";
 import { FormsModule } from '@angular/forms';
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {forkJoin} from "rxjs";
 
 export type Broker = {
@@ -39,9 +39,13 @@ export class BrokersComponent implements OnInit {
   loading: boolean = true;
   @ViewChild('dt') dt: Table | undefined;
 
+  // TODO : brokers get
+  // TODO : broker add
+
   constructor(
     private translateService: TranslateService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit() {
@@ -111,18 +115,40 @@ export class BrokersComponent implements OnInit {
     delete this.clonedBrokers[broker.id as string];
   }
 
-  onRowDelete(broker: Broker) {
-    forkJoin([
-      this.translateService.get('messages.success'),
-      this.translateService.get('dashboard.brokers.messages.delete-success', {name: broker.name})]
-    ).subscribe(([summary, detail]) => {
-      this.messageService.add({
-        key: 'main-toast',
-        severity: 'success',
-        summary: summary,
-        detail: detail,
-        life: 5000
-      });
+  onRowDelete(event: Event, broker: Broker) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      header: this.translateService.instant('confirmation.delete.header'),
+      message: this.translateService.instant('confirmation.delete.message'),
+      rejectButtonProps: {
+        label: this.translateService.instant('confirmation.cancel'),
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: this.translateService.instant('confirmation.delete.button'),
+        severity: 'danger',
+      },
+
+      accept: () => {
+
+        // TODO : call service
+        // TODO : get brokers
+
+        forkJoin([
+          this.translateService.get('messages.success'),
+          this.translateService.get('dashboard.brokers.messages.delete-success', {name: broker.name})]
+        ).subscribe(([summary, detail]) => {
+          this.messageService.add({
+            key: 'main-toast',
+            severity: 'success',
+            summary: summary,
+            detail: detail,
+            life: 5000
+          });
+        });
+      }
     });
+
   }
 }

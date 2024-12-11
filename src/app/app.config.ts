@@ -6,7 +6,7 @@ import {provideHttpClient, HttpClient, withInterceptors, withFetch} from "@angul
 import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {ApiModule, Configuration} from "@core/api";
 import {AuthService} from "@core/services/auth.service";
 import {authInterceptor} from "@core/interceptors/auth.interceptor";
@@ -53,5 +53,6 @@ export const appConfig: ApplicationConfig = {
       multi: false
     },
     MessageService,
+    ConfirmationService,
   ]
 };
