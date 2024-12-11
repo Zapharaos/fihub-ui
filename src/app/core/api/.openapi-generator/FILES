@@ -3,12 +3,16 @@ README.md
 api.module.ts
 api/api.ts
 api/auth.service.ts
+api/brokers.service.ts
+api/userBroker.service.ts
 api/users.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
 model/authJwtToken.ts
+model/brokersBroker.ts
+model/brokersUserBroker.ts
 model/models.ts
 model/renderErrorResponse.ts
 model/usersUser.ts
