@@ -4,13 +4,14 @@ import {BasicLayoutComponent} from "@shared/components/basic-layout/basic-layout
 import {LayoutItem} from "@shared/models/layout-item";
 
 @Component({
-    selector: 'app-overview-layout',
-    imports: [
-        TranslateModule,
-        BasicLayoutComponent,
-    ],
-    templateUrl: './dashboard-layout.component.html',
-    styleUrl: './dashboard-layout.component.scss'
+  selector: 'app-overview-layout',
+  standalone: true,
+  imports: [
+    TranslateModule,
+    BasicLayoutComponent,
+  ],
+  templateUrl: './dashboard-layout.component.html',
+  styleUrl: './dashboard-layout.component.scss',
 })
 export class DashboardLayoutComponent {
   items: LayoutItem[] = [];

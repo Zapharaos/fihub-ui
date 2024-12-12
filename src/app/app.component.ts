@@ -8,10 +8,11 @@ import {Button} from "primeng/button";
 
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet, ToastModule, TranslateModule, ConfirmDialog, Button],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, ToastModule, TranslateModule, ConfirmDialog, Button],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
 

@@ -12,18 +12,19 @@ export type RadioCardItem = {
 }
 
 @Component({
-    selector: 'app-radio-cards',
-    imports: [
-        NgIf,
-        TranslatePipe,
-        NgClass,
-        NgForOf,
-        RadioButton,
-        FormsModule,
-        ReactiveFormsModule,
-    ],
-    templateUrl: './radio-cards.component.html',
-    styleUrl: './radio-cards.component.scss'
+  selector: 'app-radio-cards',
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslatePipe,
+    NgClass,
+    NgForOf,
+    RadioButton,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  templateUrl: './radio-cards.component.html',
+  styleUrl: './radio-cards.component.scss'
 })
 export class RadioCardsComponent {
 
