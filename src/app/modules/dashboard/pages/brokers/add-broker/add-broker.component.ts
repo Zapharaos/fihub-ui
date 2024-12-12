@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {BrokersBroker, BrokersService, BrokersUserBroker, UserBrokerService} from "@core/api";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {finalize} from "rxjs";
-import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
 import {NotificationService} from "@shared/services/notification.service";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {CommonModule} from "@angular/common";
@@ -11,6 +10,21 @@ import {Select} from "primeng/select";
 import {
   DashboardItemLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-item-layout/dashboard-item-layout.component";
+import {InputText} from "primeng/inputtext";
+import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards/radio-cards.component";
+
+const configManual: RadioCardItem = {
+  key: 'M',
+  name: 'dashboard.brokers.add.radio-type.manual-name',
+  detail: 'dashboard.brokers.add.radio-type.manual-detail',
+  icon: 'pi-pencil'
+}
+const configSynchronized: RadioCardItem = {
+  key: 'S',
+  name: 'dashboard.brokers.add.radio-type.sync-name',
+  detail: 'dashboard.brokers.add.radio-type.sync-detail',
+  icon: 'pi-sync'
+}
 
 @Component({
   selector: 'app-add-broker',
@@ -23,6 +37,8 @@ import {
     ReactiveFormsModule,
     Select,
     DashboardItemLayoutComponent,
+    InputText,
+    RadioCardsComponent
   ],
   templateUrl: './add-broker.component.html',
   styleUrl: './add-broker.component.scss'
@@ -33,6 +49,11 @@ export class AddBrokerComponent implements OnInit {
   brokers!: BrokersBroker[];
   formBroker: FormGroup;
 
+  configs: RadioCardItem[] = [
+    configManual,
+    configSynchronized
+  ];
+
   constructor(
     private translateService: TranslateService,
     private notificationService: NotificationService,
@@ -42,6 +63,9 @@ export class AddBrokerComponent implements OnInit {
   ) {
     this.formBroker = this.fb.group({
       broker: ['', Validators.required],
+      config: ['', Validators.required],
+      apiKey: ['', Validators.required],
+      apiSecret: ['', Validators.required],
     });
   }
 
@@ -61,7 +85,8 @@ export class AddBrokerComponent implements OnInit {
   }
 
   addBroker() {
-    this.loading = true;
+    console.log(this.formBroker.get('mode')?.value.key)
+    /*this.loading = true;
     const userBroker : BrokersUserBroker = {
       broker_id: this.formBroker.value.broker.id,
     }
@@ -82,6 +107,10 @@ export class AddBrokerComponent implements OnInit {
             break;
         }
       },
-    })
+    })*/
+  }
+
+  isConfigSynchronized() {
+    return this.formBroker.get('config')?.value === configSynchronized;
   }
 }

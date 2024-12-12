@@ -36,6 +36,8 @@ body {
   // Table
   --p-datatable-row-color: var(--p-text-muted-color);
   --p-datatable-column-title-font-weight: 700;
+
+  // Text
 }
 
 @media screen and (min-width: 768px) {
@@ -161,5 +163,10 @@ p-inputicon {
 .content-wrapper .p-datatable-thead > tr > th,
 .content-wrapper .p-datatable-tbody > tr {
   background: transparent !important;
+}
+
+// Text
+.text-light {
+  color: var(--text-secondary-color);
 }
 

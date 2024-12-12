@@ -1,0 +1,40 @@
+<div [formGroup]="form">
+
+  <!-- Field label -->
+  <p *ngIf="fieldLabel">
+    {{fieldLabel | translate}}
+  </p>
+
+  <!-- Radio field -->
+  <div class="flex gap-5 mt-2">
+
+    <!-- Radio fields -->
+    <div *ngFor="let item of items"
+         (click)="activate(item)"
+         class="field-checkbox flex gap-5 p-5 border rounded-md hover:cursor-pointer"
+         [ngClass]="{'active': isActive(item)}">
+
+      <!-- Icon -->
+      <span *ngIf="item.icon" class="inline-flex justify-center items-center">
+        <i class="pi {{item.icon}} text-xl"></i>
+      </span>
+
+      <!-- Content -->
+      <div class="flex flex-col gap-1 px-2">
+        <!-- Label -->
+        <label [for]="item.key" class="font-medium text-lg hover:cursor-pointer">
+          {{ item.name | translate }}
+        </label>
+        <!-- Detail -->
+        <p *ngIf="item.detail" class="text-light">
+          {{ item.detail | translate }}
+        </p>
+      </div>
+
+      <!-- RadioButton -->
+      <div class="inline-flex justify-center items-center">
+        <p-radioButton [inputId]="item.key" [value]="item" formControlName="{{control}}" />
+      </div>
+    </div>
+  </div>
+</div>

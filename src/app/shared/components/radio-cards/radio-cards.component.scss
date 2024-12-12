@@ -1,0 +1,17 @@
+.field-checkbox {
+  border-color: var(--border-color);
+}
+
+.field-checkbox:focus {
+  border-color: var(--border-color-focus);
+}
+
+.field-checkbox:hover:not(.active) {
+  background-color: var(--hover-background);
+  border-color: var(--hover-border-color);
+}
+
+.field-checkbox.active {
+  background-color: var(--primary-contrast-color);
+  border-color: var(--primary-color);
+}

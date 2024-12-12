@@ -46,7 +46,7 @@ export const authGuard: CanActivateFn = (route, state) => {
           if (error.status === 401) {
             authService.logout();
             router.navigate(['/auth']).then(() => {
-              notificationService.showToastWarning('auth.messages.session-expired');
+              notificationService.showToastWarn('auth.messages.session-expired');
             })
           }
           subscriber.next(false);

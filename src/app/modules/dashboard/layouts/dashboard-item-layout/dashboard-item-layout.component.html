@@ -19,6 +19,11 @@
     </div>
   </div>
 
+  <!-- Subtitle -->
+  <div *ngIf="subTitle" class="whitespace-pre-line">
+    {{subTitle | translate}}
+  </div>
+
   <!--  Content  -->
   <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
 
