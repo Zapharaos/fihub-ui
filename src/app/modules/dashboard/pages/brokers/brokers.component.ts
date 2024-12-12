@@ -23,23 +23,22 @@ export interface TableBroker extends BrokersBroker {
 }
 
 @Component({
-  selector: 'app-brokers',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    TableModule,
-    IconField,
-    InputIcon,
-    InputTextModule,
-    CommonModule,
-    ButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterLink,
-    DashboardItemLayoutComponent,
-  ],
-  templateUrl: './brokers.component.html',
-  styleUrl: './brokers.component.scss'
+    selector: 'app-brokers',
+    imports: [
+        TranslatePipe,
+        TableModule,
+        IconField,
+        InputIcon,
+        InputTextModule,
+        CommonModule,
+        ButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterLink,
+        DashboardItemLayoutComponent,
+    ],
+    templateUrl: './brokers.component.html',
+    styleUrl: './brokers.component.scss'
 })
 export class BrokersComponent implements OnInit {
 
