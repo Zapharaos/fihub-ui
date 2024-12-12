@@ -9,12 +9,13 @@ import {AuthService} from "@core/services/auth.service";
 import {NotificationService} from "@shared/services/notification.service";
 
 @Component({
-    selector: 'app-login',
+  selector: 'app-login',
+  standalone: true,
     imports: [
         AuthFormComponent
     ],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.scss'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 

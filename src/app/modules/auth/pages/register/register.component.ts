@@ -7,12 +7,13 @@ import {FormGroup} from "@angular/forms";
 import {NotificationService} from "@shared/services/notification.service";
 
 @Component({
-    selector: 'app-register',
-    imports: [
-        AuthFormComponent
-    ],
-    templateUrl: './register.component.html',
-    styleUrl: './register.component.scss'
+  selector: 'app-register',
+  standalone: true,
+  imports: [
+    AuthFormComponent
+  ],
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
 

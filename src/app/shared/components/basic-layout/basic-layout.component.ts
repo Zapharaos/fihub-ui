@@ -8,20 +8,21 @@ import {LayoutItem} from "@shared/models/layout-item";
 import {ThemeService} from "@shared/services/theme.service";
 
 @Component({
-    selector: 'app-basic-layout',
-    imports: [
-        ButtonModule,
-        NgIf,
-        Ripple,
-        RouterLink,
-        RouterLinkActive,
-        RouterOutlet,
-        TranslateModule,
-        NgClass,
-        NgForOf,
-    ],
-    templateUrl: './basic-layout.component.html',
-    styleUrl: './basic-layout.component.scss'
+  selector: 'app-basic-layout',
+  standalone: true,
+  imports: [
+    ButtonModule,
+    NgIf,
+    Ripple,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+    TranslateModule,
+    NgClass,
+    NgForOf,
+  ],
+  templateUrl: './basic-layout.component.html',
+  styleUrl: './basic-layout.component.scss'
 })
 export class BasicLayoutComponent {
   protected readonly logoPath = "assets/svg/logo-initial.svg";
