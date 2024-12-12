@@ -1,26 +1,19 @@
-<div class="flex flex-col gap-10">
-  <!--  Header  -->
-  <div class="flex justify-between">
-    <!--  Title  -->
-    <h1 class="text-3xl font-semibold">
-      {{'dashboard.brokers.title' | translate}}
-    </h1>
+<ng-template #actionsTemplate>
+  <p-iconfield>
+    <p-inputicon styleClass="pi pi-search" />
+    <input pInputText type="text"
+           (input)="applyFilterGlobal($event, 'contains')"
+           placeholder="{{'actions.search-placeholder' | translate}}"
+    />
+  </p-iconfield>
+  <p-button [routerLink]="'/dashboard/brokers/add'"
+            [disabled]="loading"
+            [rounded]="true"
+            label="{{'dashboard.brokers.add-button' | translate}}"
+            icon="pi pi-plus" />
+</ng-template>
 
-    <!--  Actions  -->
-    <div class="flex gap-5">
-      <p-iconfield>
-        <p-inputicon styleClass="pi pi-search" />
-        <input pInputText type="text"
-               (input)="applyFilterGlobal($event, 'contains')"
-               placeholder="{{'actions.search-placeholder' | translate}}"
-        />
-      </p-iconfield>
-      <p-button (click)="openDialogAddBroker()"
-        label="{{'dashboard.brokers.add-button' | translate}}" icon="pi pi-plus" [rounded]="true"/>
-    </div>
-  </div>
-
-  <!--  Content  -->
+<ng-template #contentTemplate>
   <p-table
     #dt
     dataKey="id"
@@ -99,19 +92,10 @@
       </tr>
     </ng-template>
   </p-table>
+</ng-template>
 
-  <!-- Dialog - Add broker -->
-  <p-dialog [modal]="true" [(visible)]="dialogAddBrokerVisible"
-            header="{{'dashboard.brokers.add-dialog.title' | translate}}">
-
-    <form [formGroup]="formBroker" class="flex flex-col gap-12 rounded-md mt-8">
-
-      <!--[loading]="true"-->
-      <p-select formControlName="broker" [options]="rawBrokers" optionLabel="name" placeholder="Select a City" class="w-full md:w-56" />
-
-      <p-button label="Configure" severity="secondary" (click)="addBroker()"/>
-
-    </form>
-  </p-dialog>
-
-</div>
+<app-dashboard-item-layout
+  title="dashboard.brokers.title"
+  [actionsTemplate]="actionsTemplate"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-item-layout>
