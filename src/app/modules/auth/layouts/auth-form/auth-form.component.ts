@@ -46,29 +46,28 @@ export interface FormUser extends UsersUserWithPassword {
 }
 
 @Component({
-  selector: 'app-auth-form',
-  standalone: true,
-  imports: [
-    Button,
-    CardModule,
-    InputTextModule,
-    PasswordModule,
-    PrimeTemplate,
-    ReactiveFormsModule,
-    Ripple,
-    RouterLink,
-    TranslatePipe,
-    NgIf,
-    FormsModule,
-    DividerModule,
-    CheckboxModule,
-    ButtonDirective,
-    MessagesModule,
-    Message,
-    InputIcon, IconField
-  ],
-  templateUrl: './auth-form.component.html',
-  styleUrl: './auth-form.component.scss'
+    selector: 'app-auth-form',
+    imports: [
+        Button,
+        CardModule,
+        InputTextModule,
+        PasswordModule,
+        PrimeTemplate,
+        ReactiveFormsModule,
+        Ripple,
+        RouterLink,
+        TranslatePipe,
+        NgIf,
+        FormsModule,
+        DividerModule,
+        CheckboxModule,
+        ButtonDirective,
+        MessagesModule,
+        Message,
+        InputIcon, IconField
+    ],
+    templateUrl: './auth-form.component.html',
+    styleUrl: './auth-form.component.scss'
 })
 export class AuthFormComponent implements OnInit {
   @Input() title: string = "";

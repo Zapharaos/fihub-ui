@@ -7,19 +7,18 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-dashboard-item-layout',
-  standalone: true,
-  imports: [
-    FormsModule,
-    TableModule,
-    TranslatePipe,
-    NgTemplateOutlet,
-    NgIf,
-    Button,
-    RouterLink,
-  ],
-  templateUrl: './dashboard-item-layout.component.html',
-  styleUrl: './dashboard-item-layout.component.scss'
+    selector: 'app-dashboard-item-layout',
+    imports: [
+        FormsModule,
+        TableModule,
+        TranslatePipe,
+        NgTemplateOutlet,
+        NgIf,
+        Button,
+        RouterLink,
+    ],
+    templateUrl: './dashboard-item-layout.component.html',
+    styleUrl: './dashboard-item-layout.component.scss'
 })
 export class DashboardItemLayoutComponent {
   @Input() title: string = "";

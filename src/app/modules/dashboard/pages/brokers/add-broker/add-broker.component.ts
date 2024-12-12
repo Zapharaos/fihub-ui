@@ -27,21 +27,20 @@ const configSynchronized: RadioCardItem = {
 }
 
 @Component({
-  selector: 'app-add-broker',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    CommonModule,
-    ButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    Select,
-    DashboardItemLayoutComponent,
-    InputText,
-    RadioCardsComponent
-  ],
-  templateUrl: './add-broker.component.html',
-  styleUrl: './add-broker.component.scss'
+    selector: 'app-add-broker',
+    imports: [
+        TranslatePipe,
+        CommonModule,
+        ButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        Select,
+        DashboardItemLayoutComponent,
+        InputText,
+        RadioCardsComponent
+    ],
+    templateUrl: './add-broker.component.html',
+    styleUrl: './add-broker.component.scss'
 })
 export class AddBrokerComponent implements OnInit {
 
