@@ -72,6 +72,9 @@
       "button": "Delete"
     }
   },
+  "router": {
+    "back": "Back"
+  },
   "login": {
     "title": "Log in",
     "submit": "Connect"
@@ -89,9 +92,12 @@
     "title": "Dashboard",
     "brokers": {
       "title": "Brokers",
-      "add-button": "Add a broker",
-      "add-dialog": {
-        "title": "Add a broker"
+      "add-button": "Add broker",
+      "add": {
+        "back": "Brokers",
+        "title": "Add a broker",
+        "next": "Next",
+        "broker-placeholder": "Select a broker"
       },
       "messages": {
         "add-success": "Broker has been added.",

@@ -28,6 +28,7 @@ export class DashboardLayoutComponent {
         label: 'dashboard.brokers.title',
         route: '/dashboard/brokers',
         icon: 'pi-wallet',
+        routeActiveExact: true
       },
       {
         label: 'settings.title',

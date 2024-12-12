@@ -6,13 +6,15 @@ import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
 import {CommonModule} from "@angular/common";
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ConfirmationService, MessageService} from "primeng/api";
-import {finalize, forkJoin} from "rxjs";
-import {UserBrokerService, BrokersBroker, BrokersUserBroker, BrokersService} from "@core/api";
-import {Dialog} from "primeng/dialog";
-import {Select} from "primeng/select";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ConfirmationService} from "primeng/api";
+import {finalize} from "rxjs";
+import {UserBrokerService, BrokersBroker} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
+import {RouterLink} from "@angular/router";
+import {
+  DashboardItemLayoutComponent
+} from "@modules/dashboard/layouts/dashboard-item-layout/dashboard-item-layout.component";
 
 // TODO : temp fields
 export interface TableBroker extends BrokersBroker {
@@ -32,47 +34,29 @@ export interface TableBroker extends BrokersBroker {
     CommonModule,
     ButtonModule,
     FormsModule,
-    Dialog,
     ReactiveFormsModule,
-    Select
+    RouterLink,
+    DashboardItemLayoutComponent,
   ],
   templateUrl: './brokers.component.html',
   styleUrl: './brokers.component.scss'
 })
 export class BrokersComponent implements OnInit {
-  rawBrokers!: BrokersBroker[];
+
+  loading: boolean = true;
   brokers!: TableBroker[];
   clonedBrokers: { [s: string]: TableBroker } = {};
-  loading: boolean = true;
-  dialogAddBrokerVisible: boolean = false;
   @ViewChild('dt') dt: Table | undefined;
-  formBroker: FormGroup;
-
-  /*userBroker: BrokersUserBroker*/
 
   constructor(
     private translateService: TranslateService,
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
-    private brokersService: BrokersService,
     private userBrokerService: UserBrokerService,
-    private fb: FormBuilder
-  ) {
-    this.formBroker = this.fb.group({
-      broker: ['', Validators.required],
-    });
-  }
+  ) { }
 
   ngOnInit() {
     this.loadBrokers()
-  }
-
-  loadRawBrokers() {
-    this.brokersService.getBrokers().subscribe({
-      next: rawBrokers => {
-        this.rawBrokers = rawBrokers
-      }
-    })
   }
 
   loadBrokers() {
@@ -97,31 +81,6 @@ export class BrokersComponent implements OnInit {
       next: (brokers: TableBroker[]) => {
         this.brokers = brokers
         this.notificationService.showToastSuccess('dashboard.brokers.messages.delete-success', {name: broker.name})
-      },
-      error: (error: any) => {
-        switch (error.status) {
-          case 400:
-            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
-      },
-    })
-  }
-
-  addBroker() {
-    this.loading = true;
-    const userBroker : BrokersUserBroker = {
-      broker_id: this.formBroker.value.broker.id,
-    }
-    this.userBrokerService.createUserBroker(userBroker).pipe(finalize(() => {
-      this.loading = false;
-    })).subscribe({
-      next: (brokers: TableBroker[]) => {
-        this.brokers = brokers
-        this.notificationService.showToastSuccess('dashboard.brokers.messages.add-success')
       },
       error: (error: any) => {
         switch (error.status) {
@@ -176,10 +135,5 @@ export class BrokersComponent implements OnInit {
       }
     });
 
-  }
-
-  openDialogAddBroker() {
-    this.loadRawBrokers()
-    this.dialogAddBrokerVisible = true;
   }
 }

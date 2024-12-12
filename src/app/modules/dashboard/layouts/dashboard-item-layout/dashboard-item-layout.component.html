@@ -1,0 +1,25 @@
+<div class="flex flex-col gap-10">
+  <!--  Header  -->
+  <div class="flex flex-col gap-8">
+    <p-button *ngIf="backRoute"
+              [link]="true"
+              [routerLink]="backRoute"
+              label="{{backTitle | translate}}"
+              icon="pi pi-angle-left" />
+    <div class="flex justify-between">
+      <!--  Title  -->
+      <h1 class="text-3xl font-semibold">
+        {{title | translate}}
+      </h1>
+
+      <!--  Actions  -->
+      <div class="flex gap-5">
+        <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!--  Content  -->
+  <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+
+</div>
