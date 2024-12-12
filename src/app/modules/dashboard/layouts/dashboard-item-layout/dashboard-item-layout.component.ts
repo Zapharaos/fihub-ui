@@ -23,6 +23,7 @@ import {RouterLink} from "@angular/router";
 })
 export class DashboardItemLayoutComponent {
   @Input() title: string = "";
+  @Input() subTitle: string = "";
   @Input() backRoute: string = "";
   @Input() backTitle: string = "";
   @Input() actionsTemplate!: TemplateRef<any>;

@@ -25,9 +25,9 @@
     [rowHover]="true">
     <ng-template pTemplate="header">
       <tr>
-        <th>Name</th>
-        <th>API Key</th>
-        <th>API Secret</th>
+        <th>{{ 'dashboard.brokers.table-column.name' | translate }}</th>
+        <th>{{ 'dashboard.brokers.table-column.api-key' | translate }}</th>
+        <th>{{ 'dashboard.brokers.table-column.api-secret' | translate }}</th>
         <th></th>
       </tr>
     </ng-template>
@@ -96,6 +96,7 @@
 
 <app-dashboard-item-layout
   title="dashboard.brokers.title"
+  subTitle="dashboard.brokers.sub-title"
   [actionsTemplate]="actionsTemplate"
   [contentTemplate]="contentTemplate"
 ></app-dashboard-item-layout>

@@ -61,7 +61,7 @@
   "messages": {
     "error": "Error",
     "success": "Success",
-    "warning": "Warning",
+    "warn": "Warning",
     "info": "Information"
   },
   "confirmation": {
@@ -84,20 +84,32 @@
     "agreement": "I accept the Terms of Use & Privacy Policy.",
     "submit": "Register"
   },
-  "reset": {
-    "title": "Reset password",
-    "submit": "Reset password"
-  },
   "dashboard": {
     "title": "Dashboard",
     "brokers": {
       "title": "Brokers",
+      "sub-title": "A broker is a third-party service that facilitates transactions between buyers and sellers.",
       "add-button": "Add broker",
+      "table-column": {
+        "name": "Name",
+        "api-key": "API Key",
+        "api-secret": "API Secret"
+      },
       "add": {
         "back": "Brokers",
         "title": "Add a broker",
+        "sub-title": "Linking to one of the brokers you are personally using will allow us to list your transactions from the selected broker.",
         "next": "Next",
-        "broker-placeholder": "Select a broker"
+        "broker-placeholder": "Select a broker",
+        "radio-type": {
+          "manual-name": "Manual",
+          "manual-detail": "You will need to manually import each of your transactions.",
+          "sync-name": "Synchronized",
+          "sync-detail": "We will automatically retrieve each of your transactions."
+        },
+        "label-type": "Choose a configuration type",
+        "label-api-key": "API Key",
+        "label-api-secret": "API Secret"
       },
       "messages": {
         "add-success": "Broker has been added.",

@@ -22,8 +22,8 @@ export class NotificationService {
     this.translateAndShowToast('success', translateKey, translateParams, summary ?? 'messages.success');
   }
 
-  showToastWarning(translateKey: TranslationKey, translateParams?:  TranslationParams, summary?: string) {
-    this.translateAndShowToast('warning', translateKey, translateParams, summary ?? 'messages.warning');
+  showToastWarn(translateKey: TranslationKey, translateParams?:  TranslationParams, summary?: string) {
+    this.translateAndShowToast('warn', translateKey, translateParams, summary ?? 'messages.warn');
   }
 
   showToastError(translateKey: TranslationKey, translateParams?:  TranslationParams, summary?: string) {
