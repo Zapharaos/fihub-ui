@@ -33,11 +33,12 @@
                  fluid
           />
         </p-iconfield>
-        <p-message *ngIf="ctrlHasErrorTouchedExceptSpecified(userForm, 'email', 'used')"
+        <p-message *ngIf="ctrlHasSpecifiedErrorTouched(userForm, 'email', 'required') ||
+                          ctrlHasSpecifiedError(userForm, 'email', 'submit-required')"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.email' | translate}}
         </p-message>
-        <p-message *ngIf="ctrlHasSpecifiedError(userForm, 'email', 'used')"
+        <p-message *ngIf="ctrlHasSpecifiedError(userForm, 'email', 'submit-used')"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.email-used' | translate}}
         </p-message>
@@ -55,7 +56,9 @@
                       fluid
           />
         </p-iconfield>
-        <p-message *ngIf="ctrlHasErrorTouched(userForm, 'password')" severity="error" variant="simple" size="small">
+        <p-message *ngIf="ctrlHasErrorTouched(userForm, 'password') ||
+                          ctrlHasSpecifiedError(userForm, 'password', 'submit-required')"
+                   severity="error" variant="simple" size="small">
           {{'error.required' | translate}}
         </p-message>
       </div>

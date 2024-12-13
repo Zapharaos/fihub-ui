@@ -1,5 +1,5 @@
 <ng-template #contentTemplate>
-  <form [formGroup]="formBroker" (ngSubmit)="addBroker()" class="flex flex-col gap-10">
+  <form [formGroup]="formBroker" (ngSubmit)="addBroker()" class="flex flex-col gap-10 w-full">
 
     <!--  Form fields  -->
     <div class="grid grid-cols-12 gap-x-4 gap-y-8">
@@ -8,7 +8,6 @@
       <div class="col-span-12 lg:col-span-6 flex flex-col gap-2">
         <label for="broker" class="font-medium">{{'brokers.add.label.broker' | translate}}</label>
         <p-select formControlName="broker"
-                  [autofocus]="true"
                   [options]="brokers"
                   [loading]="loading"
                   [filter]="true"
@@ -16,8 +15,14 @@
                   optionLabel="name"
                   placeholder="{{'brokers.add.label.broker' | translate}}"
                   id="broker"/>
-        <p-message *ngIf="ctrlHasErrorTouched(formBroker, 'broker')" severity="error" variant="simple" size="small">
-          {{'brokers.add.error.broker' | translate}}
+        <p-message *ngIf="ctrlHasSpecifiedErrorTouched(formBroker, 'broker', 'required') ||
+                          ctrlHasSpecifiedError(formBroker, 'broker', 'submit-required')"
+                   severity="error" variant="simple" size="small">
+          {{'brokers.add.error.broker-required' | translate}}
+        </p-message>
+        <p-message *ngIf="ctrlHasSpecifiedError(formBroker, 'broker', 'submit-used')"
+                   severity="error" variant="simple" size="small">
+          {{'brokers.add.error.broker-used' | translate}}
         </p-message>
       </div>
 

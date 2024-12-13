@@ -26,8 +26,9 @@ import {InputIcon} from "primeng/inputicon";
 import {passwordMatchValidator} from "@shared/validators/password-match";
 import {
   ctrlHasErrorTouched,
-  ctrlHasErrorTouchedExceptSpecified,
-  ctrlHasSpecifiedError, isFormInvalid,
+  ctrlHasSpecifiedError,
+  ctrlHasSpecifiedErrorTouched,
+  isFormInvalid,
   isSubmitDisabled
 } from "@shared/utils/form";
 
@@ -125,18 +126,18 @@ export class AuthFormComponent implements OnInit {
         // Email - Default
         case 'email-required':
         case 'email-invalid':
-          this.userForm.get('email')?.setErrors({ 'required': true });
+          this.userForm.get('email')?.setErrors({ 'submit-required': true });
           break;
 
         // Email - Used
         case 'email-used':
-          this.userForm.get('email')?.setErrors({ 'used': true });
+          this.userForm.get('email')?.setErrors({ 'submit-used': true });
           break;
 
         // Password - Default
         case 'password-required':
         case 'password-invalid':
-          this.userForm.get('password')?.setErrors({ 'required': true });
+          this.userForm.get('password')?.setErrors({ 'submit-required': true });
           break;
 
         // Generic error
@@ -208,7 +209,7 @@ export class AuthFormComponent implements OnInit {
   }
 
   protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
-  protected readonly ctrlHasErrorTouchedExceptSpecified = ctrlHasErrorTouchedExceptSpecified;
   protected readonly ctrlHasSpecifiedError = ctrlHasSpecifiedError;
   protected readonly isSubmitDisabled = isSubmitDisabled;
+  protected readonly ctrlHasSpecifiedErrorTouched = ctrlHasSpecifiedErrorTouched;
 }
