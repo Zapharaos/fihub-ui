@@ -12,10 +12,11 @@ git_push.sh
 index.ts
 model/authJwtToken.ts
 model/brokersBroker.ts
-model/brokersUserBroker.ts
+model/brokersUserBrokerInput.ts
 model/models.ts
 model/renderErrorResponse.ts
 model/usersUser.ts
+model/usersUserInput.ts
 model/usersUserWithPassword.ts
 param.ts
 variables.ts

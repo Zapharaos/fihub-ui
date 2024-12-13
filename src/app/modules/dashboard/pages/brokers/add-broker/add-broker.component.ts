@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BrokersBroker, BrokersService, BrokersUserBroker, UserBrokerService} from "@core/api";
+import {BrokersBroker, BrokersService, BrokersUserBrokerInput, UserBrokerService} from "@core/api";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
@@ -124,7 +124,7 @@ export class AddBrokerComponent implements OnInit {
 
     // Prepare
     this.loading = true;
-    const userBroker : BrokersUserBroker = {
+    const userBroker : BrokersUserBrokerInput = {
       broker_id: this.formBroker.value.broker.id,
     }
 

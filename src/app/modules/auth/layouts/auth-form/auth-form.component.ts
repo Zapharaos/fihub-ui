@@ -20,7 +20,7 @@ import {NgIf} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {MessagesModule} from 'primeng/messages';
-import {UsersUserWithPassword} from "@core/api";
+import {UsersUserInput, UsersUserWithPassword} from "@core/api";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {passwordMatchValidator} from "@shared/validators/password-match";
@@ -44,11 +44,6 @@ export type AuthFormFieldConfig = {
   hasRegisterLink?: boolean,
   hasForgotLink?: boolean,
 };
-
-export interface FormUser extends UsersUserWithPassword {
-  confirmation?: string;
-  checkbox?: string;
-}
 
 @Component({
   selector: 'app-auth-form',
@@ -81,7 +76,7 @@ export class AuthFormComponent implements OnInit {
   @Output() onSubmit = new EventEmitter<FormGroup>();
 
   protected readonly logoPath = "assets/svg/logo-initial.svg";
-  user: FormUser = {};
+  user: UsersUserInput = {};
   userForm: FormGroup = this.fb.group({});
   loading = false;
   messageError: string = "";
@@ -89,9 +84,14 @@ export class AuthFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private translateService: TranslateService,
-  ) { }
+  ) {  }
 
   ngOnInit() {
+    // Can't have default password field AND password field with feedback at the same time
+    if (this.fieldConfig.hasPassword && this.fieldConfig.hasPasswordFeedback) {
+      throw new Error("Can't have both fieldConfig.hasPassword and fieldConfig.hasPasswordFeedback set to true");
+    }
+
     // Form controls depends on the @Input fields which have yet to be passed in the constructor
     this.initFormControls();
   }
@@ -137,7 +137,22 @@ export class AuthFormComponent implements OnInit {
         // Password - Default
         case 'password-required':
         case 'password-invalid':
-          this.userForm.get('password')?.setErrors({ 'submit-required': true });
+          if (this.fieldConfig.hasPassword) {
+            this.userForm.get('password')?.setErrors({ 'submit-required': true });
+          } else if (this.fieldConfig.hasPasswordFeedback){
+            this.userForm.get('password-feedback')?.setErrors({ 'submit-required': true });
+          }
+          break;
+
+        // Confirmation - Default
+        case 'confirmation-required':
+        case 'confirmation-invalid':
+          this.userForm.get('confirmation')?.setErrors({ 'submit-invalid': true });
+          break;
+
+        // Checkbox - Default
+        case 'checkbox-invalid':
+          this.userForm.get('checkbox')?.setErrors({ 'submit-invalid': true });
           break;
 
         // Generic error
@@ -208,7 +223,6 @@ export class AuthFormComponent implements OnInit {
     }
   }
 
-  protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
   protected readonly ctrlHasSpecifiedError = ctrlHasSpecifiedError;
   protected readonly isSubmitDisabled = isSubmitDisabled;
   protected readonly ctrlHasSpecifiedErrorTouched = ctrlHasSpecifiedErrorTouched;
