@@ -9,7 +9,7 @@
   <p-button [routerLink]="'/dashboard/brokers/add'"
             [disabled]="loading"
             [rounded]="true"
-            label="{{'dashboard.brokers.add-button' | translate}}"
+            label="{{'brokers.add-button' | translate}}"
             icon="pi pi-plus" />
 </ng-template>
 
@@ -25,9 +25,9 @@
     [rowHover]="true">
     <ng-template pTemplate="header">
       <tr>
-        <th>{{ 'dashboard.brokers.table-column.name' | translate }}</th>
-        <th>{{ 'dashboard.brokers.table-column.api-key' | translate }}</th>
-        <th>{{ 'dashboard.brokers.table-column.api-secret' | translate }}</th>
+        <th>{{ 'brokers.table-column.name' | translate }}</th>
+        <th>{{ 'brokers.table-column.api-key' | translate }}</th>
+        <th>{{ 'brokers.table-column.api-secret' | translate }}</th>
         <th></th>
       </tr>
     </ng-template>
@@ -95,8 +95,8 @@
 </ng-template>
 
 <app-dashboard-item-layout
-  title="dashboard.brokers.title"
-  subTitle="dashboard.brokers.sub-title"
+  title="brokers.title"
+  subTitle="brokers.sub-title"
   [actionsTemplate]="actionsTemplate"
   [contentTemplate]="contentTemplate"
 ></app-dashboard-item-layout>

@@ -12,18 +12,35 @@ import {
 } from "@modules/dashboard/layouts/dashboard-item-layout/dashboard-item-layout.component";
 import {InputText} from "primeng/inputtext";
 import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards/radio-cards.component";
+import {Ripple} from "primeng/ripple";
+import {
+  ctrlHasErrorTouched,
+  isFieldValuable,
+  isFieldValueEqual,
+  isFormInvalid,
+  isSubmitDisabled
+} from "@shared/utils/form";
+import {Message} from "primeng/message";
+import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
 
 const configManual: RadioCardItem = {
   key: 'M',
-  name: 'dashboard.brokers.add.radio-type.manual-name',
-  detail: 'dashboard.brokers.add.radio-type.manual-detail',
+  name: 'brokers.add.radio-type.manual-name',
+  detail: 'brokers.add.radio-type.manual-detail',
   icon: 'pi-pencil'
 }
 const configSynchronized: RadioCardItem = {
   key: 'S',
-  name: 'dashboard.brokers.add.radio-type.sync-name',
-  detail: 'dashboard.brokers.add.radio-type.sync-detail',
+  name: 'brokers.add.radio-type.sync-name',
+  detail: 'brokers.add.radio-type.sync-detail',
   icon: 'pi-sync'
+}
+
+type FormType = {
+  broker: BrokersBroker[],
+  config: RadioCardItem,
+  apiKey: string,
+  apiSecret: string,
 }
 
 @Component({
@@ -38,7 +55,9 @@ const configSynchronized: RadioCardItem = {
     Select,
     DashboardItemLayoutComponent,
     InputText,
-    RadioCardsComponent
+    RadioCardsComponent,
+    Ripple,
+    Message
   ],
   templateUrl: './add-broker.component.html',
   styleUrl: './add-broker.component.scss'
@@ -54,6 +73,8 @@ export class AddBrokerComponent implements OnInit {
     configSynchronized
   ];
 
+  // TODO : validators on submit
+
   constructor(
     private translateService: TranslateService,
     private notificationService: NotificationService,
@@ -61,12 +82,31 @@ export class AddBrokerComponent implements OnInit {
     private userBrokerService: UserBrokerService,
     private fb: FormBuilder
   ) {
-    this.formBroker = this.fb.group({
+    this.formBroker = this.initForm()
+  }
+
+  initForm(): FormGroup {
+    const form = this.fb.group({
       broker: ['', Validators.required],
       config: ['', Validators.required],
-      apiKey: ['', Validators.required],
-      apiSecret: ['', Validators.required],
+      apiKey: [],
+      apiSecret: [],
     });
+
+    // Dynamic validators depending on the broker config
+    form.get('config')?.valueChanges.subscribe((value) => {
+      if (value && typeof value === 'object' && value === configSynchronized) {
+        form.get('apiKey')?.addValidators(Validators.required);
+        form.get('apiSecret')?.addValidators(Validators.required);
+      } else {
+        form.get('apiKey')?.clearValidators();
+        form.get('apiSecret')?.clearValidators();
+      }
+      form.get('apiKey')?.updateValueAndValidity();
+      form.get('apiSecret')?.updateValueAndValidity();
+    })
+
+    return form;
   }
 
   ngOnInit() {
@@ -85,17 +125,26 @@ export class AddBrokerComponent implements OnInit {
   }
 
   addBroker() {
-    console.log(this.formBroker.get('mode')?.value.key)
-    /*this.loading = true;
+    // Skip if form invalid
+    if (isFormInvalid(this.formBroker)) {
+      return;
+    }
+
+    // Prepare
+    this.loading = true;
     const userBroker : BrokersUserBroker = {
       broker_id: this.formBroker.value.broker.id,
     }
+
+    // Call API
     this.userBrokerService.createUserBroker(userBroker).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (brokers: TableBroker[]) => {
-        this.brokers = brokers
-        this.notificationService.showToastSuccess('dashboard.brokers.messages.add-success')
+        // Success
+        this.brokers = brokers // update data
+        this.formBroker = this.initForm() // clear form
+        this.notificationService.showToastSuccess('brokers.messages.add-success')
       },
       error: (error: any) => {
         switch (error.status) {
@@ -107,10 +156,12 @@ export class AddBrokerComponent implements OnInit {
             break;
         }
       },
-    })*/
+    })
   }
 
-  isConfigSynchronized() {
-    return this.formBroker.get('config')?.value === configSynchronized;
-  }
+  protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
+  protected readonly isSubmitDisabled = isSubmitDisabled;
+  protected readonly isFieldValuable = isFieldValuable;
+  protected readonly isFieldValueEqual = isFieldValueEqual;
+  protected readonly configSynchronized = configSynchronized;
 }

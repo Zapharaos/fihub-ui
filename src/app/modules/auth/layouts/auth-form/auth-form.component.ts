@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, signal} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
@@ -6,13 +6,11 @@ import {PasswordModule} from "primeng/password";
 import { Message } from 'primeng/message';
 import {PrimeTemplate} from "primeng/api";
 import {
-  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidatorFn,
   Validators
 } from "@angular/forms";
 import {Ripple} from "primeng/ripple";
@@ -26,6 +24,12 @@ import {UsersUserWithPassword} from "@core/api";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {passwordMatchValidator} from "@shared/validators/password-match";
+import {
+  ctrlHasErrorTouched,
+  ctrlHasErrorTouchedExceptSpecified,
+  ctrlHasSpecifiedError, isFormInvalid,
+  isSubmitDisabled
+} from "@shared/utils/form";
 
 export type AuthFormFieldConfig = {
   hasEmail?: boolean;
@@ -92,6 +96,10 @@ export class AuthFormComponent implements OnInit {
   }
 
   onSubmitWrapper() {
+    // Skip if form invalid
+    if (isFormInvalid(this.userForm)) {
+      return
+    }
     // Emit submit event back to parent
     this.onSubmit.emit(this.userForm);
   }
@@ -199,11 +207,8 @@ export class AuthFormComponent implements OnInit {
     }
   }
 
-  ctrlHasError(fieldName: string): boolean {
-    const ctrl = this.userForm.get(fieldName)
-    if (ctrl) {
-      return ctrl.invalid && ctrl.touched
-    }
-    return false;
-  }
+  protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
+  protected readonly ctrlHasErrorTouchedExceptSpecified = ctrlHasErrorTouchedExceptSpecified;
+  protected readonly ctrlHasSpecifiedError = ctrlHasSpecifiedError;
+  protected readonly isSubmitDisabled = isSubmitDisabled;
 }
