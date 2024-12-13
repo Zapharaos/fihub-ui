@@ -15,6 +15,8 @@ import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards
 import {Ripple} from "primeng/ripple";
 import {
   ctrlHasErrorTouched,
+  ctrlHasSpecifiedError,
+  ctrlHasSpecifiedErrorTouched,
   isFieldValuable,
   isFieldValueEqual,
   isFormInvalid,
@@ -22,26 +24,6 @@ import {
 } from "@shared/utils/form";
 import {Message} from "primeng/message";
 import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
-
-const configManual: RadioCardItem = {
-  key: 'M',
-  name: 'brokers.add.radio-type.manual-name',
-  detail: 'brokers.add.radio-type.manual-detail',
-  icon: 'pi-pencil'
-}
-const configSynchronized: RadioCardItem = {
-  key: 'S',
-  name: 'brokers.add.radio-type.sync-name',
-  detail: 'brokers.add.radio-type.sync-detail',
-  icon: 'pi-sync'
-}
-
-type FormType = {
-  broker: BrokersBroker[],
-  config: RadioCardItem,
-  apiKey: string,
-  apiSecret: string,
-}
 
 @Component({
   selector: 'app-add-broker',
@@ -64,16 +46,26 @@ type FormType = {
 })
 export class AddBrokerComponent implements OnInit {
 
+  private readonly configManual: RadioCardItem = {
+    key: 'M',
+    name: 'brokers.add.radio-type.manual-name',
+    detail: 'brokers.add.radio-type.manual-detail',
+    icon: 'pi-pencil'
+  }
+  protected readonly configSynchronized: RadioCardItem = {
+    key: 'S',
+    name: 'brokers.add.radio-type.sync-name',
+    detail: 'brokers.add.radio-type.sync-detail',
+    icon: 'pi-sync'
+  }
+  protected readonly configs: RadioCardItem[] = [
+    this.configManual,
+    this.configSynchronized
+  ];
+
   loading: boolean = true;
   brokers!: BrokersBroker[];
   formBroker: FormGroup;
-
-  configs: RadioCardItem[] = [
-    configManual,
-    configSynchronized
-  ];
-
-  // TODO : validators on submit
 
   constructor(
     private translateService: TranslateService,
@@ -95,7 +87,7 @@ export class AddBrokerComponent implements OnInit {
 
     // Dynamic validators depending on the broker config
     form.get('config')?.valueChanges.subscribe((value) => {
-      if (value && typeof value === 'object' && value === configSynchronized) {
+      if (value && typeof value === 'object' && value === this.configSynchronized) {
         form.get('apiKey')?.addValidators(Validators.required);
         form.get('apiSecret')?.addValidators(Validators.required);
       } else {
@@ -142,14 +134,14 @@ export class AddBrokerComponent implements OnInit {
     })).subscribe({
       next: (brokers: TableBroker[]) => {
         // Success
-        this.brokers = brokers // update data
-        this.formBroker = this.initForm() // clear form
         this.notificationService.showToastSuccess('brokers.messages.add-success')
+        this.formBroker = this.initForm() // clear form
+        this.loadBrokers() // update data
       },
       error: (error: any) => {
         switch (error.status) {
           case 400:
-            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
+            this.handleErrors400(error)
             break;
           default:
             this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
@@ -159,9 +151,24 @@ export class AddBrokerComponent implements OnInit {
     })
   }
 
+  handleErrors400(error: any) {
+    switch (error.error.message) {
+      case 'broker-required':
+        this.formBroker.get('broker')?.setErrors({ 'submit-required': true });
+        break;
+      case 'broker-used':
+        this.formBroker.get('broker')?.setErrors({ 'submit-used': true });
+        break;
+      default:
+        this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
+        break;
+    }
+  }
+
   protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
   protected readonly isSubmitDisabled = isSubmitDisabled;
   protected readonly isFieldValuable = isFieldValuable;
   protected readonly isFieldValueEqual = isFieldValueEqual;
-  protected readonly configSynchronized = configSynchronized;
+  protected readonly ctrlHasSpecifiedError = ctrlHasSpecifiedError;
+  protected readonly ctrlHasSpecifiedErrorTouched = ctrlHasSpecifiedErrorTouched;
 }

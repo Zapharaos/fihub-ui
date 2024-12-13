@@ -109,7 +109,8 @@
         "submit": "Add broker"
       },
       "error": {
-        "broker": "Please select a broker.",
+        "broker-required": "Please select a broker.",
+        "broker-used": "Broker has already been configured.",
         "type": "Please select a configuration type."
       }
     },

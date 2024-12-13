@@ -32,10 +32,10 @@ export function ctrlHasSpecifiedError(form: FormGroup, fieldName: string, specif
   return false;
 }
 
-export function ctrlHasErrorTouchedExceptSpecified(form: FormGroup, fieldName: string, specifiedError: string): boolean {
+export function ctrlHasSpecifiedErrorTouched(form: FormGroup, fieldName: string, specifiedError: string): boolean {
   const ctrl = form.get(fieldName);
   if (ctrl) {
-    return ctrl.invalid && ctrl.touched && !ctrl.errors?.[specifiedError];
+    return ctrl.invalid && ctrl.touched && ctrl.errors?.[specifiedError];
   }
   return false;
 }
