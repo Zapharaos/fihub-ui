@@ -1,18 +1,18 @@
-<div [formGroup]="form">
+<div [formGroup]="form" class="flex flex-col gap-2">
 
   <!-- Field label -->
-  <p *ngIf="fieldLabel">
+  <p *ngIf="fieldLabel" class="font-medium">
     {{fieldLabel | translate}}
   </p>
 
   <!-- Radio field -->
-  <div class="flex gap-5 mt-2">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
     <!-- Radio fields -->
     <div *ngFor="let item of items"
-         (click)="activate(item)"
-         class="field-checkbox flex gap-5 p-5 border rounded-md hover:cursor-pointer"
-         [ngClass]="{'active': isActive(item)}">
+         (click)="activate(item)" (keydown.enter)="activate(item)"
+         class="field-checkbox flex gap-3 p-5 border rounded-md hover:cursor-pointer"
+         [ngClass]="{'active': isActive(item)}" tabindex="0">
 
       <!-- Icon -->
       <span *ngIf="item.icon" class="inline-flex justify-center items-center">
@@ -20,7 +20,7 @@
       </span>
 
       <!-- Content -->
-      <div class="flex flex-col gap-1 px-2">
+      <div class="flex flex-col w-full gap-1 px-2">
         <!-- Label -->
         <label [for]="item.key" class="font-medium text-lg hover:cursor-pointer">
           {{ item.name | translate }}
@@ -33,8 +33,12 @@
 
       <!-- RadioButton -->
       <div class="inline-flex justify-center items-center">
-        <p-radioButton [inputId]="item.key" [value]="item" formControlName="{{control}}" />
+        <p-radioButton [inputId]="item.key" [value]="item" formControlName="{{control}}" tabindex="-1" />
       </div>
     </div>
   </div>
+
+  <p-message *ngIf="ctrlHasErrorTouched(form, control)" severity="error" variant="simple" size="small">
+    {{controlError | translate}}
+  </p-message>
 </div>

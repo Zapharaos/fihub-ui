@@ -1,8 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, HostListener, Input} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {RadioButton} from "primeng/radiobutton";
 import {FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ctrlHasErrorTouched} from "@shared/utils/form";
+import {Message} from "primeng/message";
 
 export type RadioCardItem = {
   key: string;
@@ -22,6 +24,7 @@ export type RadioCardItem = {
     RadioButton,
     FormsModule,
     ReactiveFormsModule,
+    Message,
   ],
   templateUrl: './radio-cards.component.html',
   styleUrl: './radio-cards.component.scss'
@@ -32,6 +35,7 @@ export class RadioCardsComponent {
   @Input() items!: RadioCardItem[];
   @Input() form!: FormGroup;
   @Input() control!: string;
+  @Input() controlError!: string;
 
   activate(item: RadioCardItem) {
     this.form.get(this.control)?.setValue(item)
@@ -40,4 +44,6 @@ export class RadioCardsComponent {
   isActive(item: RadioCardItem): boolean {
     return this.form.get(this.control)?.value.key === item.key;
   }
+
+  protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
 }

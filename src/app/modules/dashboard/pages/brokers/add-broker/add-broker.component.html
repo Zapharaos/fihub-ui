@@ -1,64 +1,88 @@
 <ng-template #contentTemplate>
-  <form [formGroup]="formBroker" class="flex flex-col gap-12 rounded-md mt-8">
+  <form [formGroup]="formBroker" (ngSubmit)="addBroker()" class="flex flex-col gap-10">
 
-    <div class="flex flex-col gap-2">
-      <label for="broker">{{'dashboard.brokers.add.broker-placeholder' | translate}}</label>
-      <p-select formControlName="broker"
-                [options]="brokers"
-                [loading]="loading"
-                [filter]="true"
-                filterBy="name"
-                optionLabel="name"
-                placeholder="{{'dashboard.brokers.add.broker-placeholder' | translate}}"
-                class="w-full md:w-56"
-                id="broker"/>
-    </div>
+    <!--  Form fields  -->
+    <div class="grid grid-cols-12 gap-x-4 gap-y-8">
 
-    <!-- Broker selected -->
-    <app-radio-cards *ngIf="formBroker.get('broker')?.value"
-                     [fieldLabel]="'dashboard.brokers.add.label-type'"
-                     [items]="configs"
-                     [form]="formBroker"
-                     [control]="'config'"
-    ></app-radio-cards>
-
-    <!-- ConfigurationType - Synchronized -->
-    <div *ngIf="isConfigSynchronized()">
-
-      <!-- API Key -->
-      <div class="flex flex-col gap-2">
-        <label for="apiKey">{{'dashboard.brokers.add.label-api-key' | translate}}</label>
-        <input formControlName="apiKey"
-               [autofocus]="true"
-               pInputText
-               type="text"
-               id="apiKey"
-        />
+      <!-- Select broker -->
+      <div class="col-span-12 lg:col-span-6 flex flex-col gap-2">
+        <label for="broker" class="font-medium">{{'brokers.add.label.broker' | translate}}</label>
+        <p-select formControlName="broker"
+                  [autofocus]="true"
+                  [options]="brokers"
+                  [loading]="loading"
+                  [filter]="true"
+                  filterBy="name"
+                  optionLabel="name"
+                  placeholder="{{'brokers.add.label.broker' | translate}}"
+                  id="broker"/>
+        <p-message *ngIf="ctrlHasErrorTouched(formBroker, 'broker')" severity="error" variant="simple" size="small">
+          {{'brokers.add.error.broker' | translate}}
+        </p-message>
       </div>
 
-      <!-- API Secret -->
-      <div class="flex flex-col gap-2">
-        <label for="apiSecret">{{'dashboard.brokers.add.label-api-secret' | translate}}</label>
-        <input formControlName="apiSecret"
-               [autofocus]="true"
-               pInputText
-               type="text"
-               id="apiSecret"
-        />
+      <!-- Configuration selection -->
+      <app-radio-cards *ngIf="isFieldValuable(formBroker, 'broker')"
+                       [fieldLabel]="'brokers.add.label.type'"
+                       [items]="configs"
+                       [form]="formBroker"
+                       [control]="'config'"
+                       [controlError]="'brokers.add.error.type'"
+                       class="col-span-12"
+      ></app-radio-cards>
+
+      <!-- ConfigurationType - Synchronized -->
+      <div *ngIf="isFieldValueEqual(formBroker, 'config', configSynchronized)"
+        class="col-span-12 grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+        <!-- API Key -->
+        <div class="flex flex-col gap-2">
+          <label for="apiKey" class="font-medium">{{'brokers.add.label.api-key' | translate}}</label>
+          <input formControlName="apiKey"
+                 [autofocus]="true"
+                 pInputText
+                 type="text"
+                 id="apiKey"
+          />
+          <p-message *ngIf="ctrlHasErrorTouched(formBroker, 'apiKey')" severity="error" variant="simple" size="small">
+            {{'error.required' | translate}}
+          </p-message>
+        </div>
+
+        <!-- API Secret -->
+        <div class="flex flex-col gap-2">
+          <label for="apiSecret" class="font-medium">{{'brokers.add.label.api-secret' | translate}}</label>
+          <input formControlName="apiSecret"
+                 [autofocus]="true"
+                 pInputText
+                 type="text"
+                 id="apiSecret"
+          />
+          <p-message *ngIf="ctrlHasErrorTouched(formBroker, 'apiSecret')" severity="error" variant="simple" size="small">
+            {{'error.required' | translate}}
+          </p-message>
+        </div>
       </div>
+
     </div>
 
-    <p-button (click)="addBroker()"
-              severity="secondary"
-              label="{{'dashboard.brokers.add.next' | translate}}"/>
+    <!--  Submit  -->
+    <button [disabled]="isSubmitDisabled(formBroker)"
+            [loading]="loading"
+            icon="pi pi-plus"
+            label="{{'brokers.add.label.submit' | translate}}"
+            pButton pRipple
+            type="submit"
+            class="w-fit"
+    ></button>
 
   </form>
 </ng-template>
 
 <app-dashboard-item-layout
-  title="dashboard.brokers.add.title"
-  subTitle="dashboard.brokers.add.sub-title"
+  title="brokers.add.title"
+  subTitle="brokers.add.sub-title"
   backRoute="/dashboard/brokers"
-  backTitle="dashboard.brokers.add.back"
+  backTitle="brokers.add.back"
   [contentTemplate]="contentTemplate"
 ></app-dashboard-item-layout>

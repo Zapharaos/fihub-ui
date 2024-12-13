@@ -33,14 +33,11 @@
                  fluid
           />
         </p-iconfield>
-        <p-message *ngIf="userForm.get('email')?.invalid &&
-                          !userForm.get('email')?.errors?.['used'] &&
-                          userForm.get('email')?.touched"
+        <p-message *ngIf="ctrlHasErrorTouchedExceptSpecified(userForm, 'email', 'used')"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.email' | translate}}
         </p-message>
-        <p-message *ngIf="userForm.get('email')?.invalid &&
-                          userForm.get('email')?.errors?.['used']"
+        <p-message *ngIf="ctrlHasSpecifiedError(userForm, 'email', 'used')"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.email-used' | translate}}
         </p-message>
@@ -58,8 +55,8 @@
                       fluid
           />
         </p-iconfield>
-        <p-message *ngIf="ctrlHasError('password')" severity="error" variant="simple" size="small">
-          {{'auth.form.error.required' | translate}}
+        <p-message *ngIf="ctrlHasErrorTouched(userForm, 'password')" severity="error" variant="simple" size="small">
+          {{'error.required' | translate}}
         </p-message>
       </div>
 
@@ -90,7 +87,7 @@
             </ng-template>
           </p-password>
         </p-iconfield>
-        <p-message *ngIf="ctrlHasError('password-feedback')" severity="error" variant="simple" size="small">
+        <p-message *ngIf="ctrlHasErrorTouched(userForm, 'password-feedback')" severity="error" variant="simple" size="small">
           {{'auth.form.error.password-feedback' | translate}}
         </p-message>
       </div>
@@ -107,7 +104,7 @@
                       fluid
           />
         </p-iconfield>
-        <p-message *ngIf="ctrlHasError('confirmation')" severity="error" variant="simple" size="small">
+        <p-message *ngIf="ctrlHasErrorTouched(userForm, 'confirmation')" severity="error" variant="simple" size="small">
           {{'auth.form.error.confirmation' | translate}}
         </p-message>
       </div>
@@ -120,7 +117,7 @@
                       inputId="checkbox"/>
           <label for="checkbox">{{fieldConfig.checkboxLabel | translate}}</label>
         </div>
-        <p-message *ngIf="ctrlHasError('checkbox')" severity="error" variant="simple" size="small">
+        <p-message *ngIf="ctrlHasErrorTouched(userForm, 'checkbox')" severity="error" variant="simple" size="small">
           {{'auth.form.error.agreement' | translate}}
         </p-message>
       </div>
@@ -128,7 +125,8 @@
 
     <!-- Actions -->
     <div class="flex flex-col gap-3">
-      <button [disabled]="userForm.invalid || !userForm.dirty || loading"
+      <button [disabled]="isSubmitDisabled(userForm)"
+              [loading]="loading"
               label="{{ fieldConfig.submitLabel | translate }}"
               class="w-full"
               pButton pRipple

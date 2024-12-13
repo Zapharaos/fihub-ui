@@ -33,11 +33,12 @@ body {
   // Header
   --header-height: 4rem;
 
+  // Container
+  --dynamic-container-padding: 16px;
+
   // Table
   --p-datatable-row-color: var(--p-text-muted-color);
   --p-datatable-column-title-font-weight: 700;
-
-  // Text
 }
 
 @media screen and (min-width: 768px) {

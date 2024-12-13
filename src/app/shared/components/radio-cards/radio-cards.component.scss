@@ -3,7 +3,10 @@
 }
 
 .field-checkbox:focus {
-  border-color: var(--border-color-focus);
+  border-color: var(--p-inputtext-focus-border-color);
+  box-shadow: var(--p-inputtext-focus-ring-shadow);
+  outline: var(--p-inputtext-focus-ring-width) var(--p-inputtext-focus-ring-style) var(--p-inputtext-focus-ring-color);
+  outline-offset: var(--p-inputtext-focus-ring-offset);
 }
 
 .field-checkbox:hover:not(.active) {

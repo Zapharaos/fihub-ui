@@ -80,7 +80,7 @@ export class BrokersComponent implements OnInit {
     })).subscribe({
       next: (brokers: TableBroker[]) => {
         this.brokers = brokers
-        this.notificationService.showToastSuccess('dashboard.brokers.messages.delete-success', {name: broker.name})
+        this.notificationService.showToastSuccess('brokers.messages.delete-success', {name: broker.name})
       },
       error: (error: any) => {
         switch (error.status) {
@@ -107,7 +107,7 @@ export class BrokersComponent implements OnInit {
     delete this.clonedBrokers[broker.id as string];
 
     // TODO : PUT
-    this.notificationService.showToastSuccess('dashboard.brokers.messages.edit-success', {name: broker.name})
+    this.notificationService.showToastSuccess('brokers.messages.edit-success', {name: broker.name})
   }
 
   onRowEditCancel(broker: TableBroker, index: number) {

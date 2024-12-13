@@ -2,6 +2,41 @@
   "app": {
     "title": "Fihub"
   },
+  "actions": {
+    "search-placeholder": "Search..."
+  },
+  "confirmation": {
+    "cancel": "Cancel",
+    "delete": {
+      "header": "Confirmation",
+      "message": "You cannot undo this action. Are you sure?",
+      "button": "Delete"
+    }
+  },
+  "error": {
+    "default": "An error has occurred.",
+    "required": "This field is required."
+  },
+  "http": {
+    "400": {
+      "summary": "Bad Request",
+      "detail": "Your request is invalid. Please check your input and try again."
+    },
+    "500": {
+      "summary": "Server Error",
+      "detail": "We're experiencing technical difficulties. Please try again later or contact support."
+    }
+  },
+  "messages": {
+    "error": "Error",
+    "success": "Success",
+    "warn": "Warning",
+    "info": "Information"
+  },
+  "router": {
+    "back": "Back"
+  },
+
   "auth": {
     "form": {
       "email": "Email",
@@ -25,8 +60,6 @@
         }
       },
       "error": {
-        "default": "An error has occurred.",
-        "required": "This field is required.",
         "login": "Invalid email or password.",
         "email": "Provide a valid email address.",
         "email-used": "Email is already used.",
@@ -48,32 +81,46 @@
       "not-authenticated": "You must be logged in to access this page."
     }
   },
-  "http": {
-    "400": {
-      "summary": "Bad Request",
-      "detail": "Your request is invalid. Please check your input and try again."
+  "brokers": {
+    "title": "Brokers",
+    "sub-title": "A broker is a third-party service that facilitates transactions between buyers and sellers.",
+    "add-button": "Add broker",
+    "table-column": {
+      "name": "Name",
+      "api-key": "API Key",
+      "api-secret": "API Secret"
     },
-    "500": {
-      "summary": "Server Error",
-      "detail": "We're experiencing technical difficulties. Please try again later or contact support."
+    "add": {
+      "back": "Brokers",
+      "title": "Add a broker",
+      "sub-title": "Linking to one of the brokers you are personally using will allow us to list your transactions from the selected broker.",
+      "next": "Next",
+      "radio-type": {
+        "manual-name": "Manual",
+        "manual-detail": "You will need to manually import each of your transactions.",
+        "sync-name": "Synchronized",
+        "sync-detail": "We will automatically retrieve each of your transactions."
+      },
+      "label": {
+        "broker": "Select a broker",
+        "type": "Select a configuration type",
+        "api-key": "API Key",
+        "api-secret": "API Secret",
+        "submit": "Add broker"
+      },
+      "error": {
+        "broker": "Please select a broker.",
+        "type": "Please select a configuration type."
+      }
+    },
+    "messages": {
+      "add-success": "Broker has been added.",
+      "edit-success": "Broker {{name}} has been edited.",
+      "delete-success": "Broker {{name}} was removed."
     }
   },
-  "messages": {
-    "error": "Error",
-    "success": "Success",
-    "warn": "Warning",
-    "info": "Information"
-  },
-  "confirmation": {
-    "cancel": "Cancel",
-    "delete": {
-      "header": "Confirmation",
-      "message": "You cannot undo this action. Are you sure?",
-      "button": "Delete"
-    }
-  },
-  "router": {
-    "back": "Back"
+  "dashboard": {
+    "title": "Dashboard"
   },
   "login": {
     "title": "Log in",
@@ -84,44 +131,7 @@
     "agreement": "I accept the Terms of Use & Privacy Policy.",
     "submit": "Register"
   },
-  "dashboard": {
-    "title": "Dashboard",
-    "brokers": {
-      "title": "Brokers",
-      "sub-title": "A broker is a third-party service that facilitates transactions between buyers and sellers.",
-      "add-button": "Add broker",
-      "table-column": {
-        "name": "Name",
-        "api-key": "API Key",
-        "api-secret": "API Secret"
-      },
-      "add": {
-        "back": "Brokers",
-        "title": "Add a broker",
-        "sub-title": "Linking to one of the brokers you are personally using will allow us to list your transactions from the selected broker.",
-        "next": "Next",
-        "broker-placeholder": "Select a broker",
-        "radio-type": {
-          "manual-name": "Manual",
-          "manual-detail": "You will need to manually import each of your transactions.",
-          "sync-name": "Synchronized",
-          "sync-detail": "We will automatically retrieve each of your transactions."
-        },
-        "label-type": "Choose a configuration type",
-        "label-api-key": "API Key",
-        "label-api-secret": "API Secret"
-      },
-      "messages": {
-        "add-success": "Broker has been added.",
-        "edit-success": "Broker {{name}} has been edited.",
-        "delete-success": "Broker {{name}} was removed."
-      }
-    }
-  },
   "settings": {
     "title": "Settings"
-  },
-  "actions": {
-    "search-placeholder": "Search..."
   }
 }
