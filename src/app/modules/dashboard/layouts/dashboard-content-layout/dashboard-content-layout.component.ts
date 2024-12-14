@@ -7,7 +7,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-dashboard-item-layout',
+  selector: 'app-dashboard-content-layout',
   standalone: true,
   imports: [
     FormsModule,
@@ -18,10 +18,10 @@ import {RouterLink} from "@angular/router";
     Button,
     RouterLink,
   ],
-  templateUrl: './dashboard-item-layout.component.html',
-  styleUrl: './dashboard-item-layout.component.scss'
+  templateUrl: './dashboard-content-layout.component.html',
+  styleUrl: './dashboard-content-layout.component.scss'
 })
-export class DashboardItemLayoutComponent {
+export class DashboardContentLayoutComponent {
   @Input() title: string = "";
   @Input() subTitle: string = "";
   @Input() backRoute: string = "";

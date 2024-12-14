@@ -13,8 +13,9 @@ import {UserBrokerService, BrokersBroker} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {RouterLink} from "@angular/router";
 import {
-  DashboardItemLayoutComponent
-} from "@modules/dashboard/layouts/dashboard-item-layout/dashboard-item-layout.component";
+  DashboardContentLayoutComponent
+} from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
+import {applyFilterGlobal, onRowEditCancel, onRowEditInit, onRowEditSave} from "@shared/utils/table";
 
 // TODO : temp fields
 export interface TableBroker extends BrokersBroker {
@@ -36,7 +37,7 @@ export interface TableBroker extends BrokersBroker {
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
-    DashboardItemLayoutComponent,
+    DashboardContentLayoutComponent,
   ],
   templateUrl: './brokers.component.html',
   styleUrl: './brokers.component.scss'
@@ -95,24 +96,11 @@ export class BrokersComponent implements OnInit {
     })
   }
 
-  applyFilterGlobal($event: any, stringVal: any) {
-    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
-  }
-
-  onRowEditInit(broker: TableBroker) {
-    this.clonedBrokers[broker.id as string] = { ...broker };
-  }
-
-  onRowEditSave(broker: TableBroker) {
-    delete this.clonedBrokers[broker.id as string];
-
+  onWrapperRowEditSave(broker: TableBroker) {
     // TODO : PUT
     this.notificationService.showToastSuccess('brokers.messages.edit-success', {name: broker.name})
-  }
 
-  onRowEditCancel(broker: TableBroker, index: number) {
-    this.brokers[index] = this.clonedBrokers[broker.id as string];
-    delete this.clonedBrokers[broker.id as string];
+    onRowEditSave(this.clonedBrokers, broker)
   }
 
   onRowDelete(event: Event, broker: TableBroker) {
@@ -136,4 +124,9 @@ export class BrokersComponent implements OnInit {
     });
 
   }
+
+  // Utils - Table
+  protected readonly onRowEditInit = onRowEditInit;
+  protected readonly applyFilterGlobal = applyFilterGlobal;
+  protected readonly onRowEditCancel = onRowEditCancel;
 }

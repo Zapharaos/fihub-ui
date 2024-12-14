@@ -1,14 +1,20 @@
+<app-dashboard-content-layout
+  title="brokers.title"
+  subTitle="brokers.sub-title"
+  [actionsTemplate]="actionsTemplate"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
 <ng-template #actionsTemplate>
   <p-iconfield>
     <p-inputicon styleClass="pi pi-search" />
     <input pInputText type="text"
-           (input)="applyFilterGlobal($event, 'contains')"
+           (input)="applyFilterGlobal($event, dt, 'contains')"
            placeholder="{{'actions.search-placeholder' | translate}}"
     />
   </p-iconfield>
   <p-button [routerLink]="'/dashboard/brokers/add'"
             [disabled]="loading"
-            [rounded]="true"
             label="{{'brokers.add-button' | translate}}"
             icon="pi pi-plus" />
 </ng-template>
@@ -64,7 +70,7 @@
           <div class="flex items-center justify-center gap-2">
             <p-button *ngIf="!editing"
                       pInitEditableRow
-                      (click)="onRowEditInit(broker)"
+                      (click)="onRowEditInit(clonedBrokers, broker)"
                       icon="pi pi-pencil"
                       severity="secondary"
                       [rounded]="true" />
@@ -76,13 +82,13 @@
                       [outlined]="true"/>
             <p-button *ngIf="editing"
                       pCancelEditableRow
-                      (click)="onRowEditCancel(broker, ri)"
+                      (click)="onRowEditCancel(brokers, clonedBrokers, broker, ri)"
                       icon="pi pi-times"
                       severity="secondary"
                       [rounded]="true"/>
             <p-button *ngIf="editing"
                       pSaveEditableRow
-                      (click)="onRowEditSave(broker)"
+                      (click)="onWrapperRowEditSave(broker)"
                       icon="pi pi-check"
                       severity="success"
                       [outlined]="true"
@@ -93,10 +99,3 @@
     </ng-template>
   </p-table>
 </ng-template>
-
-<app-dashboard-item-layout
-  title="brokers.title"
-  subTitle="brokers.sub-title"
-  [actionsTemplate]="actionsTemplate"
-  [contentTemplate]="contentTemplate"
-></app-dashboard-item-layout>
