@@ -8,8 +8,8 @@ import {CommonModule} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {Select} from "primeng/select";
 import {
-  DashboardItemLayoutComponent
-} from "@modules/dashboard/layouts/dashboard-item-layout/dashboard-item-layout.component";
+  DashboardContentLayoutComponent
+} from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {InputText} from "primeng/inputtext";
 import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards/radio-cards.component";
 import {Ripple} from "primeng/ripple";
@@ -26,7 +26,7 @@ import {Message} from "primeng/message";
 import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
 
 @Component({
-  selector: 'app-add-broker',
+  selector: 'app-brokers-add',
   standalone: true,
   imports: [
     TranslatePipe,
@@ -35,16 +35,16 @@ import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
     FormsModule,
     ReactiveFormsModule,
     Select,
-    DashboardItemLayoutComponent,
+    DashboardContentLayoutComponent,
     InputText,
     RadioCardsComponent,
     Ripple,
     Message
   ],
-  templateUrl: './add-broker.component.html',
-  styleUrl: './add-broker.component.scss'
+  templateUrl: './brokers-add.component.html',
+  styleUrl: './brokers-add.component.scss'
 })
-export class AddBrokerComponent implements OnInit {
+export class BrokersAddComponent implements OnInit {
 
   private readonly configManual: RadioCardItem = {
     key: 'M',
@@ -165,6 +165,7 @@ export class AddBrokerComponent implements OnInit {
     }
   }
 
+  // Utils - Form
   protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
   protected readonly isSubmitDisabled = isSubmitDisabled;
   protected readonly isFieldValuable = isFieldValuable;

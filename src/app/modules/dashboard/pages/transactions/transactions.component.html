@@ -1,0 +1,69 @@
+<app-dashboard-content-layout
+  title="transactions.title"
+  subTitle="transactions.sub-title"
+  [actionsTemplate]="actionsTemplate"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
+<ng-template #actionsTemplate>
+  <p-iconfield>
+    <p-inputicon styleClass="pi pi-search" />
+    <input pInputText type="text"
+           (input)="applyFilterGlobal($event, dt, 'contains')"
+           placeholder="{{'actions.search-placeholder' | translate}}"
+    />
+  </p-iconfield>
+  <p-button [routerLink]="'/dashboard/transactions/add'"
+            [disabled]="loading"
+            label="{{'transactions.add-button' | translate}}"
+            icon="pi pi-plus" />
+</ng-template>
+
+<ng-template #contentTemplate>
+  <p-table
+    #dt
+    dataKey="id"
+    editMode="row"
+    [value]="transactions"
+    [globalFilterFields]="tablePropertiesFilter"
+    [loading]="loading"
+    [styleClass]="'p-datatable-lg'"
+    [rowHover]="true"
+    [sortMode]="'multiple'"
+    [multiSortMeta]="[{field: 'date', order: -1}]">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="date">{{ 'transactions.table-column.date' | translate }} <p-sortIcon field="date" /></th>
+        <th pSortableColumn="type">{{ 'transactions.table-column.type' | translate }} <p-sortIcon field="type" /></th>
+        <th pSortableColumn="asset">{{ 'transactions.table-column.asset' | translate }} <p-sortIcon field="asset" /></th>
+        <th pSortableColumn="price">{{ 'transactions.table-column.price' | translate }} <p-sortIcon field="price" /></th>
+        <th pSortableColumn="quantity">{{ 'transactions.table-column.quantity' | translate }} <p-sortIcon field="quantity" /></th>
+        <th pSortableColumn="priceUnit">{{ 'transactions.table-column.priceUnit' | translate }} <p-sortIcon field="priceUnit" /></th>
+        <th pSortableColumn="broker">{{ 'transactions.table-column.broker' | translate }} <p-sortIcon field="broker" /></th>
+        <th pSortableColumn="fee">{{ 'transactions.table-column.fee' | translate }} <p-sortIcon field="fee" /></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-transaction>
+      <tr>
+        <td>{{ transaction.date }}</td>
+        <td>
+          <p-tag [value]="transaction.type"
+            [severity]="getTypeSeverity(transaction.type)" />
+        </td>
+        <td>{{ transaction.asset }}</td>
+        <td>{{ transaction.price }}</td>
+        <td>{{ transaction.quantity }}</td>
+        <td>{{ transaction.priceUnit }}</td>
+        <td>{{ transaction.broker }}</td>
+        <td>{{ transaction.fee }}</td>
+        <td>
+          <p-button (click)="onRowOpen(transaction)"
+                    icon="pi pi-cog"
+                    severity="secondary"
+                    [rounded]="true" />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>

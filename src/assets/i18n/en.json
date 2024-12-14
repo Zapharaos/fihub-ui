@@ -94,7 +94,6 @@
       "back": "Brokers",
       "title": "Add a broker",
       "sub-title": "Linking to one of the brokers you are personally using will allow us to list your transactions from the selected broker.",
-      "next": "Next",
       "radio-type": {
         "manual-name": "Manual",
         "manual-detail": "You will need to manually import each of your transactions.",
@@ -134,5 +133,26 @@
   },
   "settings": {
     "title": "Settings"
+  },
+  "transactions": {
+    "title": "Transactions",
+    "sub-title": "View all your transactions from your linked brokers.",
+    "add-button": "Add transaction",
+    "table-column": {
+      "date": "Date",
+      "broker": "Broker",
+      "type": "Type",
+      "assets-type": "Assets type",
+      "asset": "Asset",
+      "quantity": "Quantity",
+      "price": "Price",
+      "priceUnit": "Price/unit",
+      "fee": "Fee"
+    },
+    "add": {
+      "back": "Transactions",
+      "title": "Add a transaction",
+      "sub-title": "Manually add a new transaction with all the data you have."
+    }
   }
 }

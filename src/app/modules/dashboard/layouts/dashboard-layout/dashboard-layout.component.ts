@@ -30,6 +30,11 @@ export class DashboardLayoutComponent {
         icon: 'pi-wallet',
       },
       {
+        label: 'transactions.title',
+        route: '/dashboard/transactions',
+        icon: 'pi-book',
+      },
+      {
         label: 'settings.title',
         route: '/settings',
         icon: 'pi-cog',

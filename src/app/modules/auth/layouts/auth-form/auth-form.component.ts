@@ -223,6 +223,7 @@ export class AuthFormComponent implements OnInit {
     }
   }
 
+  // Utils - Form
   protected readonly ctrlHasSpecifiedError = ctrlHasSpecifiedError;
   protected readonly isSubmitDisabled = isSubmitDisabled;
   protected readonly ctrlHasSpecifiedErrorTouched = ctrlHasSpecifiedErrorTouched;

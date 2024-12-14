@@ -37,6 +37,9 @@ body {
   --dynamic-container-padding: 16px;
 
   // Table
+  --p-datatable-header-background: transparent;
+  --p-datatable-header-cell-background: transparent;
+  --p-datatable-row-background: transparent;
   --p-datatable-row-color: var(--p-text-muted-color);
   --p-datatable-column-title-font-weight: 700;
 }
@@ -100,6 +103,11 @@ body {
   --code-button-text-color: var(--p-surface-300);
   --docsearch-mask-background: var(--p-mask-background);
   --logo-color: var(--text-secondary-color);
+
+  // Table
+  --p-datatable-header-cell-selected-background: var(--p-primary-100);
+  --p-datatable-header-cell-hover-background: var(--p-surface-100);
+  --p-datatable-row-hover-background: var(--p-surface-100);
 }
 
 :root[class=p-dark] {
@@ -129,6 +137,11 @@ body {
   --code-button-text-color: var(--p-surface-300);
   --docsearch-mask-background: var(--p-mask-background);
   --logo-color: var(--text-secondary-color);
+
+  // Table
+  --p-datatable-header-cell-selected-background: var(--p-primary-900);
+  --p-datatable-header-cell-hover-background: var(--p-surface-900);
+  --p-datatable-row-hover-background: var(--p-surface-900);
 }
 
 // Utils
@@ -153,17 +166,18 @@ p-inputicon {
   padding-inline-start: calc((var(--p-form-field-padding-x)* 2) + var(--p-icon-size));
 }
 
+// PrimeNG - SortIcon
+
+p-sorticon {
+  color: var(--text-secondary-color);
+}
+
 // Context Wrapper - Card
 .content-wrapper .p-card {
   background: transparent;
   // border: solid 1px var(--border-color);
   box-shadow: none;
   padding: 16px;
-}
-
-.content-wrapper .p-datatable-thead > tr > th,
-.content-wrapper .p-datatable-tbody > tr {
-  background: transparent !important;
 }
 
 // Text
