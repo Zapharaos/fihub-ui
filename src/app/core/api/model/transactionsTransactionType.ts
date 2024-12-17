@@ -9,9 +9,10 @@
  */
 
 
-export interface BrokersBroker { 
-    id?: string;
-    image_id?: string;
-    name?: string;
-}
+export type TransactionsTransactionType = 'BUY' | 'SELL';
+
+export const TransactionsTransactionType = {
+    BUY: 'BUY' as TransactionsTransactionType,
+    SELL: 'SELL' as TransactionsTransactionType
+};
 

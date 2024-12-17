@@ -16,6 +16,7 @@ import {
   DashboardContentLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {applyFilterGlobal, onRowEditCancel, onRowEditInit, onRowEditSave} from "@shared/utils/table";
+import {OverlayService} from "@shared/services/overlay.service";
 
 // TODO : temp fields
 export interface TableBroker extends BrokersBroker {
@@ -52,13 +53,13 @@ export class BrokersComponent implements OnInit {
   constructor(
     private translateService: TranslateService,
     private notificationService: NotificationService,
-    private confirmationService: ConfirmationService,
+    private overlayService: OverlayService,
     private userBrokerService: UserBrokerService,
   ) { }
 
-  ngOnInit() {
-    this.loadBrokers()
-  }
+    ngOnInit() {
+      this.loadBrokers()
+    }
 
   loadBrokers() {
     this.loading = true;
@@ -75,7 +76,7 @@ export class BrokersComponent implements OnInit {
   }
 
   deleteBroker(broker: TableBroker) {
-    this.loading = true;
+    /*this.loading = true;
     this.userBrokerService.deleteUserBroker(broker.id ?? '').pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
@@ -93,7 +94,7 @@ export class BrokersComponent implements OnInit {
             break;
         }
       },
-    })
+    })*/
   }
 
   onWrapperRowEditSave(broker: TableBroker) {
@@ -104,25 +105,7 @@ export class BrokersComponent implements OnInit {
   }
 
   onRowDelete(event: Event, broker: TableBroker) {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      header: this.translateService.instant('confirmation.delete.header'),
-      message: this.translateService.instant('confirmation.delete.message'),
-      rejectButtonProps: {
-        label: this.translateService.instant('confirmation.cancel'),
-        severity: 'secondary',
-        outlined: true,
-      },
-      acceptButtonProps: {
-        label: this.translateService.instant('confirmation.delete.button'),
-        severity: 'danger',
-      },
-
-      accept: () => {
-        this.deleteBroker(broker)
-      }
-    });
-
+    this.overlayService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
   }
 
   // Utils - Table

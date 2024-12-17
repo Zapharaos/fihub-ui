@@ -9,9 +9,9 @@
  */
 
 
-export interface BrokersBroker { 
+export interface BrokersBrokerImage { 
+    broker_id?: string;
     id?: string;
-    image_id?: string;
     name?: string;
 }
 

@@ -13,6 +13,7 @@ import {authInterceptor} from "@core/interceptors/auth.interceptor";
 import {providePrimeNG} from "primeng/config";
 import {FihubDefault} from "../assets/presets/fihub-default";
 import {NotificationService} from "@shared/services/notification.service";
+import {OverlayService} from "@shared/services/overlay.service";
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -55,6 +56,7 @@ export const appConfig: ApplicationConfig = {
     },
     MessageService,
     ConfirmationService,
-    NotificationService
+    NotificationService,
+    OverlayService
   ]
 };
