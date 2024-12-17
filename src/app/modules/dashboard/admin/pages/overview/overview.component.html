@@ -1,0 +1,23 @@
+<app-dashboard-content-layout
+  title="admin.overview.title"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
+<ng-template #contentTemplate>
+  <div>
+    Work In Progress : Analytics, etc.
+  </div>
+  <div class="flex flex-col gap-5">
+    <h2 class="text-2xl font-medium">
+      {{ 'admin.overview.actions.title' | translate }}
+    </h2>
+    <div class="flex flex-col">
+      <p-button [routerLink]="'/dashboard/admin/brokers'"
+                [outlined]="true"
+                [raised]="true"
+                size="large"
+                label="{{ 'admin.overview.actions.brokers' | translate }}"
+                icon="pi pi-chevron-right" iconPos="right" />
+    </div>
+  </div>
+</ng-template>

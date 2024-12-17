@@ -26,4 +26,8 @@ export const routes: Routes = [
     path: 'transactions/add',
     component: TransactionsAddComponent,
   },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes').then(m => m.routes),
+  },
 ];

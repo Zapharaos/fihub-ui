@@ -52,9 +52,9 @@
             [severity]="getTypeSeverity(transaction.type)" />
         </td>
         <td>{{ transaction.asset }}</td>
-        <td>{{ transaction.price }}</td>
+        <td>{{ transaction.price | currency: 'USD' }}</td>
         <td>{{ transaction.quantity }}</td>
-        <td>{{ transaction.priceUnit }}</td>
+        <td>{{ transaction.priceUnit | currency: 'USD' }}</td>
         <td>{{ transaction.broker }}</td>
         <td>{{ transaction.fee }}</td>
         <td>
