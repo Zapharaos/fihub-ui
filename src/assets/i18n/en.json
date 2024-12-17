@@ -37,6 +37,19 @@
     "back": "Back"
   },
 
+  "admin": {
+    "title": "Admin",
+    "overview": {
+      "title": "Overview",
+      "actions": {
+        "title": "Actions",
+        "brokers": "Manage the brokers"
+      }
+    },
+    "brokers": {
+      "title": "Brokers"
+    }
+  },
   "auth": {
     "form": {
       "email": "Email",

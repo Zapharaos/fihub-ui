@@ -12,6 +12,7 @@ import {InputIcon} from "primeng/inputicon";
 import {applyFilterGlobal} from "@shared/utils/table";
 import {InputTextModule} from "primeng/inputtext";
 import {RouterLink} from "@angular/router";
+import {CurrencyPipe} from "@angular/common";
 
 export type Transaction = {
   id: string;
@@ -41,6 +42,7 @@ const tablePropertiesFilter = ['date', 'broker', 'type', 'asset', 'quantity', 'p
     InputIcon,
     InputTextModule,
     RouterLink,
+    CurrencyPipe,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss'
@@ -71,9 +73,9 @@ export class TransactionsComponent implements OnInit {
         broker: 'Binance',
         type: 'BUY',
         asset: 'BTC',
-        quantity: '1',
-        price: '100.000,00',
-        priceUnit: '100.000,00',
+        quantity: '1.3872345',
+        price: '17840',
+        priceUnit: '12434',
         fee: '$19'
       },
       {
@@ -82,9 +84,9 @@ export class TransactionsComponent implements OnInit {
         broker: 'Binance',
         type: 'SELL',
         asset: 'BTC',
-        quantity: '1',
-        price: '100.000,00',
-        priceUnit: '100.000,00',
+        quantity: '0.641234',
+        price: '65123',
+        priceUnit: '87934',
         fee: '$19'
       },
       {
@@ -93,9 +95,9 @@ export class TransactionsComponent implements OnInit {
         broker: 'Ledger',
         type: 'BUY',
         asset: 'ETH',
-        quantity: '1',
-        price: '100.000,00',
-        priceUnit: '100.000,00',
+        quantity: '4.561243981274',
+        price: '3689.123',
+        priceUnit: '827.124',
         fee: '$19'
       }];
     this.loading = false;

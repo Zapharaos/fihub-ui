@@ -84,6 +84,7 @@
               <!-- Sub - Item -->
               <li *ngFor="let subItem of item.items">
                 <a [routerLink]="subItem.route" routerLinkActive="menu-active"
+                   [routerLinkActiveOptions]="{exact: subItem.routeActiveExact ?? false }"
                    class="flex flex-row justify-between items-center px-6 rounded-r-xl menu-hover">
 
                   <!-- Label -->

@@ -25,6 +25,21 @@ export class DashboardLayoutComponent {
         routeActiveExact: true
       },
       {
+        label: 'admin.title',
+        icon: 'pi-users',
+        items: [
+          {
+            label: 'admin.overview.title',
+            route: '/dashboard/admin/',
+            routeActiveExact: true
+          },
+          {
+            label: 'admin.brokers.title',
+            route: '/dashboard/admin/brokers',
+          }
+        ]
+      },
+      {
         label: 'brokers.title',
         route: '/dashboard/brokers',
         icon: 'pi-wallet',
