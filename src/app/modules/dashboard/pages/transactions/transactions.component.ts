@@ -26,8 +26,6 @@ export type Transaction = {
   fee: string;
 }
 
-const tablePropertiesFilter = ['date', 'broker', 'type', 'asset', 'quantity', 'price', 'fee']
-
 @Component({
   selector: 'app-transactions',
   standalone: true,
@@ -54,6 +52,8 @@ export class TransactionsComponent implements OnInit {
   // TODO : pagination?
   // TODO : stateful?
   // TODO : open => as dialog into edit/delete ? or new page to view details and then edit/delete?
+
+  protected readonly tablePropertiesFilter = ['date', 'broker', 'type', 'asset', 'quantity', 'price', 'fee']
 
   loading = false;
   transactions!: Transaction[];
@@ -118,6 +118,5 @@ export class TransactionsComponent implements OnInit {
     }
   }
 
-  protected readonly tablePropertiesFilter = tablePropertiesFilter;
   protected readonly applyFilterGlobal = applyFilterGlobal;
 }

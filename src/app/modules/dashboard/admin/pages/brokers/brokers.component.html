@@ -1,1 +1,169 @@
-<p>brokers works!</p>
+<app-dashboard-content-layout
+  title="admin.brokers.title"
+  subTitle="admin.brokers.sub-title"
+  [actionsTemplate]="actionsTemplate"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
+<ng-template #actionsTemplate>
+  <p-iconfield>
+    <p-inputicon styleClass="pi pi-search" />
+    <input pInputText type="text"
+           (input)="applyFilterGlobal($event, dt, 'contains')"
+           placeholder="{{'actions.search-placeholder' | translate}}"
+    />
+  </p-iconfield>
+  <p-button (click)="openCreateDialog()"
+            [disabled]="loading"
+            label="{{'brokers.add-button' | translate}}"
+            icon="pi pi-plus" />
+</ng-template>
+
+<ng-template #contentTemplate>
+  <p-table
+    #dt
+    dataKey="id"
+    [value]="brokers"
+    [globalFilterFields]="tablePropertiesFilter"
+    [loading]="loading"
+    [styleClass]="'p-datatable-lg'"
+    [rowHover]="true"
+    [sortMode]="'multiple'"
+    [multiSortMeta]="[{field: 'name', order: 1}]">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">{{ 'admin.brokers.table-column.name' | translate }} <p-sortIcon field="name" /></th>
+        <th>{{ 'admin.brokers.table-column.image' | translate }}</th>
+        <th pSortableColumn="status">{{ 'admin.brokers.table-column.disabled' | translate }} <p-sortIcon field="status" /></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-broker>
+      <tr>
+        <td>
+          {{broker.name}}
+        </td>
+        <td>
+          <img *ngIf="hasBrokerImage(broker.id!)"
+               [src]="getBrokerImage(broker.id)"
+               [alt]="broker.name"
+               class="rounded-full w-7 h-7"
+          />
+        </td>
+        <td>
+          <p-tag [value]="getStatusValue(broker.disabled)"
+                 [severity]="getStatusSeverity(broker.disabled)" />
+        </td>
+        <td>
+          <div class="flex items-center justify-center gap-2">
+            <p-button (click)="openUpdateDialog(broker)"
+                      icon="pi pi-pencil"
+                      severity="secondary"
+                      [rounded]="true"/>
+            <p-button (click)="onRowDelete($event, broker)"
+                      icon="pi pi-trash"
+                      severity="danger"
+                      [rounded]="true"
+                      [outlined]="true"/>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+
+<p-dialog [modal]="true"
+          [(visible)]="dialogVisible"
+          [draggable]="false"
+          [style]="{ width: '450px' }"
+          header="{{ 'admin.brokers.dialog.title' | translate }}">
+  <ng-template #content>
+
+    <form *ngIf="dialogMode !== DialogMode.IMAGE"
+          [formGroup]="formBroker"
+          (ngSubmit)="submitDialog()"
+          class="flex flex-col gap-10 my-4 w-full">
+
+      <!--  Form fields  -->
+      <div class="grid grid-cols-12 gap-x-4 gap-y-8">
+
+        <!-- Name -->
+        <div class="col-span-12 flex flex-col gap-2">
+          <label for="name" class="font-medium">{{'admin.brokers.dialog.name' | translate}}</label>
+          <input formControlName="name"
+                 [autofocus]="true"
+                 pInputText
+                 type="text"
+                 id="name"
+          />
+        </div>
+
+        <!-- Disabled -->
+        <div class="col-span-12 flex flex-col gap-2">
+          <div class="flex flex-row justify-between items-center">
+            <label class="font-medium">{{'admin.brokers.dialog.disabled' | translate}}</label>
+            <p-toggleswitch formControlName="disabled" class="flex flex-end"/>
+          </div>
+          <p class="text-light">Forbid users from interacting with the broker.</p>
+        </div>
+      </div>
+
+      <div *ngIf="dialogMode === DialogMode.UPDATE"
+           class="flex flex-col gap-2">
+        <label class="font-medium">{{'admin.brokers.dialog.image' | translate}}</label>
+        <div class="flex flex-row gap-4 items-center">
+          <img *ngIf="hasBrokerImage(broker.id!)"
+               [src]="getBrokerImage(broker.id!)"
+               [alt]="broker.name"
+               class="rounded-full w-10 h-10"
+          />
+          <p-fileupload
+            #fu
+            mode="basic"
+            chooseLabel="{{'actions.upload' | translate}}"
+            chooseIcon="pi pi-upload"
+            accept="image/*"
+            maxFileSize="1000000"
+            [auto]="true"
+            customUpload
+            (onUpload)="uploadBrokerImage($event)"
+            (uploadHandler)="uploadBrokerImage($event)"
+            [chooseButtonProps]="fileUploadPropsUpdate"
+          />
+        </div>
+      </div>
+    </form>
+
+    <!-- Image -->
+    <div *ngIf="dialogMode === DialogMode.IMAGE"
+         class="col-span-12 flex flex-col gap-8">
+      <label class="font-medium">{{'admin.brokers.dialog.image-create' | translate:{name: broker.name} }}</label>
+      <div class="flex flex-col gap-5 justify-evenly items-center">
+        <img *ngIf="hasBrokerImage(broker.id!)"
+             [src]="getBrokerImage(broker.id!)"
+             [alt]="broker.name"
+             class="rounded-full w-14 h-14"
+        />
+
+        <p-fileupload
+          #fu
+          mode="basic"
+          chooseLabel="{{'actions.upload' | translate}}"
+          chooseIcon="pi pi-upload"
+          accept="image/*"
+          maxFileSize="1000000"
+          [auto]="true"
+          customUpload
+          (onUpload)="uploadBrokerImage($event)"
+          (uploadHandler)="uploadBrokerImage($event)"
+          [chooseButtonProps]="fileUploadPropsCreate"
+        />
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #footer *ngIf="dialogMode !== DialogMode.IMAGE">
+    <p-button label="{{getDialogCloseLabel() | translate}}" icon="pi pi-times" severity="secondary" (click)="hideDialog()" />
+    <p-button label="{{getDialogSubmitLabel() | translate}}" icon="pi pi-check" [loading]="loading" (click)="submitDialog()" />
+  </ng-template>
+</p-dialog>

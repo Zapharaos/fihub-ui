@@ -3,7 +3,15 @@
     "title": "Fihub"
   },
   "actions": {
-    "search-placeholder": "Search..."
+    "search-placeholder": "Search...",
+    "back": "Back",
+    "cancel": "Cancel",
+    "close": "Close",
+    "create": "Create",
+    "save": "Save",
+    "submit": "Submit",
+    "update": "Update",
+    "upload": "Upload"
   },
   "confirmation": {
     "cancel": "Cancel",
@@ -21,6 +29,10 @@
     "400": {
       "summary": "Bad Request",
       "detail": "Your request is invalid. Please check your input and try again."
+    },
+    "404": {
+      "summary": "Not Found",
+      "detail": "Could not perform the action. The requested item could not be found."
     },
     "500": {
       "summary": "Server Error",
@@ -47,7 +59,28 @@
       }
     },
     "brokers": {
-      "title": "Brokers"
+      "title": "Brokers",
+      "sub-title": "View and manage the brokers that the users can select.",
+      "table-column": {
+        "name": "Name",
+        "image": "Image",
+        "disabled": "Status"
+      },
+      "disabled": {
+        "true": "ENABLED",
+        "false": "DISABLED"
+      },
+      "dialog": {
+        "title": "Broker details",
+        "name": "Name",
+        "disabled": "Disabled",
+        "image": "Image",
+        "image-create": "Broker {{name}} image."
+      },
+      "messages": {
+        "create-success": "Broker {{name}} has been created.",
+        "update-success": "Broker {{name}} has been updated."
+      }
     }
   },
   "auth": {

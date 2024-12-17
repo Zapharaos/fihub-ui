@@ -11,6 +11,7 @@
 
 export interface BrokersBroker { 
     id?: string;
+    image_id?: string;
     name?: string;
 }
 

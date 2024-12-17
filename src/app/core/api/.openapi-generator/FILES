@@ -3,7 +3,9 @@ README.md
 api.module.ts
 api/api.ts
 api/auth.service.ts
+api/brokerImages.service.ts
 api/brokers.service.ts
+api/transactions.service.ts
 api/userBroker.service.ts
 api/users.service.ts
 configuration.ts
@@ -12,9 +14,13 @@ git_push.sh
 index.ts
 model/authJwtToken.ts
 model/brokersBroker.ts
+model/brokersBrokerImage.ts
 model/brokersUserBrokerInput.ts
 model/models.ts
 model/renderErrorResponse.ts
+model/transactionsTransaction.ts
+model/transactionsTransactionInput.ts
+model/transactionsTransactionType.ts
 model/usersUser.ts
 model/usersUserInput.ts
 model/usersUserWithPassword.ts
