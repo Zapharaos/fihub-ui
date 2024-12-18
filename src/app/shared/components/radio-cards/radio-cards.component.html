@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <p-message *ngIf="ctrlHasErrorTouched(form, control)" severity="error" variant="simple" size="small">
+  <p-message *ngIf="formService.hasErrorTouched(control)" severity="error" variant="simple" size="small">
     {{controlError | translate}}
   </p-message>
 </div>

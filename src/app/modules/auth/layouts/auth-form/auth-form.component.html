@@ -2,7 +2,7 @@
 
   <img [src]="logoPath" alt="Fihub Logo"/>
 
-  <form [formGroup]="userForm" (ngSubmit)="onSubmitWrapper()" class="flex flex-col gap-12 rounded-md mt-8">
+  <form [formGroup]="formService.getForm()" (ngSubmit)="onSubmitWrapper()" class="flex flex-col gap-12 rounded-md mt-8">
 
     <!-- Form title -->
     <h2 class="font-bold text-2xl">
@@ -33,12 +33,11 @@
                  fluid
           />
         </p-iconfield>
-        <p-message *ngIf="ctrlHasSpecifiedErrorTouched(userForm, 'email', 'required') ||
-                          ctrlHasSpecifiedError(userForm, 'email', 'submit-required')"
+        <p-message *ngIf="formService.hasSpecifiedErrors('email', ['required'], ['submit-required'])"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.email' | translate}}
         </p-message>
-        <p-message *ngIf="ctrlHasSpecifiedError(userForm, 'email', 'submit-used')"
+        <p-message *ngIf="formService.hasSpecifiedError('email', 'submit-used')"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.email-used' | translate}}
         </p-message>
@@ -56,8 +55,7 @@
                       fluid
           />
         </p-iconfield>
-        <p-message *ngIf="ctrlHasSpecifiedErrorTouched(userForm, 'password', 'required') ||
-                          ctrlHasSpecifiedError(userForm, 'password', 'submit-required')"
+        <p-message *ngIf="formService.hasSpecifiedErrors('password', ['required'], ['submit-required'])"
                    severity="error" variant="simple" size="small">
           {{'error.required' | translate}}
         </p-message>
@@ -90,8 +88,7 @@
             </ng-template>
           </p-password>
         </p-iconfield>
-        <p-message *ngIf="ctrlHasSpecifiedErrorTouched(userForm, 'password-feedback', 'required') ||
-                          ctrlHasSpecifiedError(userForm, 'password-feedback', 'submit-required')"
+        <p-message *ngIf="formService.hasSpecifiedErrors( 'password-feedback', ['required'], ['submit-required'])"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.password-feedback' | translate}}
         </p-message>
@@ -109,9 +106,7 @@
                       fluid
           />
         </p-iconfield>
-        <p-message *ngIf="ctrlHasSpecifiedErrorTouched(userForm, 'confirmation', 'required') ||
-                          ctrlHasSpecifiedErrorTouched(userForm, 'confirmation', 'invalid') ||
-                          ctrlHasSpecifiedError(userForm, 'confirmation', 'submit-invalid')"
+        <p-message *ngIf="formService.hasSpecifiedErrors('confirmation', ['required', 'invalid'], ['submit-invalid'])"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.confirmation' | translate}}
         </p-message>
@@ -125,8 +120,7 @@
                       inputId="checkbox"/>
           <label for="checkbox">{{fieldConfig.checkboxLabel | translate}}</label>
         </div>
-        <p-message *ngIf="ctrlHasSpecifiedErrorTouched(userForm, 'checkbox', 'required') ||
-                          ctrlHasSpecifiedError(userForm, 'checkbox', 'submit-invalid')"
+        <p-message *ngIf="formService.hasSpecifiedErrors('checkbox', ['required'], ['submit-invalid'])"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.agreement' | translate}}
         </p-message>
@@ -135,7 +129,7 @@
 
     <!-- Actions -->
     <div class="flex flex-col gap-3">
-      <button [disabled]="isSubmitDisabled(userForm)"
+      <button [disabled]="formService.isSubmitDisabled()"
               [loading]="loading"
               label="{{ fieldConfig.submitLabel | translate }}"
               class="w-full"
