@@ -5,15 +5,13 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {ThemeService} from "@shared/services/theme.service";
 import {ConfirmDialog} from "primeng/confirmdialog";
 import {Button} from "primeng/button";
-import {InputText} from "primeng/inputtext";
 import {ReactiveFormsModule} from "@angular/forms";
-import {NgClass} from "@angular/common";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastModule, TranslateModule, ConfirmDialog, Button, InputText, ReactiveFormsModule, NgClass],
+  imports: [RouterOutlet, ToastModule, TranslateModule, ConfirmDialog, Button, ReactiveFormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

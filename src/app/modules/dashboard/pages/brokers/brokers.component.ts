@@ -16,7 +16,8 @@ import {
   DashboardContentLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {applyFilterGlobal, onRowEditCancel, onRowEditInit, onRowEditSave} from "@shared/utils/table";
-import {OverlayService} from "@shared/services/overlay.service";
+import {DialogService} from "@shared/services/dialog.service";
+import {ConfirmService} from "@shared/services/confirm.service";
 
 // TODO : temp fields
 export interface TableBroker extends BrokersBroker {
@@ -53,7 +54,7 @@ export class BrokersComponent implements OnInit {
   constructor(
     private translateService: TranslateService,
     private notificationService: NotificationService,
-    private overlayService: OverlayService,
+    private confirmService: ConfirmService,
     private userBrokerService: UserBrokerService,
   ) { }
 
@@ -105,7 +106,7 @@ export class BrokersComponent implements OnInit {
   }
 
   onRowDelete(event: Event, broker: TableBroker) {
-    this.overlayService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
+    this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
   }
 
   // Utils - Table
