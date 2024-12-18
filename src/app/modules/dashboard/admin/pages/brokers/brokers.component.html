@@ -13,7 +13,7 @@
            placeholder="{{'actions.search-placeholder' | translate}}"
     />
   </p-iconfield>
-  <p-button (click)="openCreateDialog()"
+  <p-button (click)="openDialog(DialogMode.CREATE)"
             [disabled]="loading"
             label="{{'brokers.add-button' | translate}}"
             icon="pi pi-plus" />
@@ -56,7 +56,7 @@
         </td>
         <td>
           <div class="flex items-center justify-center gap-2">
-            <p-button (click)="openUpdateDialog(broker)"
+            <p-button (click)="openDialog(DialogMode.UPDATE, broker)"
                       icon="pi pi-pencil"
                       severity="secondary"
                       [rounded]="true"/>
@@ -73,15 +73,15 @@
 </ng-template>
 
 <p-dialog [modal]="true"
-          [(visible)]="dialogVisible"
+          [(visible)]="dialogProps.dialogVisible"
           [draggable]="false"
           [style]="{ width: '450px' }"
           header="{{ 'admin.brokers.dialog.title' | translate }}">
   <ng-template #content>
 
-    <form *ngIf="dialogMode !== DialogMode.IMAGE"
+    <form *ngIf="!overlayService.isDialogModeImage(dialogProps)"
+          (ngSubmit)="overlayService.submitDialog(dialogProps)"
           [formGroup]="formBroker"
-          (ngSubmit)="submitDialog()"
           class="flex flex-col gap-10 my-4 w-full">
 
       <!--  Form fields  -->
@@ -108,7 +108,7 @@
         </div>
       </div>
 
-      <div *ngIf="dialogMode === DialogMode.UPDATE"
+      <div *ngIf="overlayService.isDialogModeUpdate(dialogProps)"
            class="flex flex-col gap-2">
         <label class="font-medium">{{'admin.brokers.dialog.image' | translate}}</label>
         <div class="flex flex-row gap-4 items-center">
@@ -135,16 +135,10 @@
     </form>
 
     <!-- Image -->
-    <div *ngIf="dialogMode === DialogMode.IMAGE"
+    <div *ngIf="overlayService.isDialogModeImage(dialogProps)"
          class="col-span-12 flex flex-col gap-8">
       <label class="font-medium">{{'admin.brokers.dialog.image-create' | translate:{name: broker.name} }}</label>
       <div class="flex flex-col gap-5 justify-evenly items-center">
-        <img *ngIf="hasBrokerImage(broker.id!)"
-             [src]="getBrokerImage(broker.id!)"
-             [alt]="broker.name"
-             class="rounded-full w-14 h-14"
-        />
-
         <p-fileupload
           #fu
           mode="basic"
@@ -162,8 +156,15 @@
     </div>
   </ng-template>
 
-  <ng-template #footer *ngIf="dialogMode !== DialogMode.IMAGE">
-    <p-button label="{{getDialogCloseLabel() | translate}}" icon="pi pi-times" severity="secondary" (click)="hideDialog()" />
-    <p-button label="{{getDialogSubmitLabel() | translate}}" icon="pi pi-check" [loading]="loading" (click)="submitDialog()" />
+  <ng-template #footer *ngIf="!overlayService.isDialogModeImage(dialogProps)">
+    <p-button (click)="closeDialog()"
+              [loading]="loading"
+              severity="secondary"
+              icon="pi pi-times"
+              label="{{overlayService.getDialogLabelClose(dialogProps) | translate}}"/>
+    <p-button (click)="overlayService.submitDialog(dialogProps)"
+              [loading]="loading"
+              icon="pi pi-check"
+              label="{{overlayService.getDialogLabelSubmit(dialogProps) | translate}}"/>
   </ng-template>
 </p-dialog>
