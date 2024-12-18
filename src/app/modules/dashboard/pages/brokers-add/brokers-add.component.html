@@ -1,5 +1,5 @@
 <ng-template #contentTemplate>
-  <form [formGroup]="formBroker" (ngSubmit)="addBroker()" class="flex flex-col gap-10 w-full">
+  <form [formGroup]="formService.getForm()" (ngSubmit)="addBroker()" class="flex flex-col gap-10 w-full">
 
     <!--  Form fields  -->
     <div class="grid grid-cols-12 gap-x-4 gap-y-8">
@@ -15,29 +15,28 @@
                   optionLabel="name"
                   placeholder="{{'brokers.add.label.broker' | translate}}"
                   id="broker"/>
-        <p-message *ngIf="ctrlHasSpecifiedErrorTouched(formBroker, 'broker', 'required') ||
-                          ctrlHasSpecifiedError(formBroker, 'broker', 'submit-required')"
+        <p-message *ngIf="formService.hasSpecifiedErrors('broker', ['required'], ['submit-required'])"
                    severity="error" variant="simple" size="small">
           {{'brokers.add.error.broker-required' | translate}}
         </p-message>
-        <p-message *ngIf="ctrlHasSpecifiedError(formBroker, 'broker', 'submit-used')"
+        <p-message *ngIf="formService.hasSpecifiedError('broker', 'submit-used')"
                    severity="error" variant="simple" size="small">
           {{'brokers.add.error.broker-used' | translate}}
         </p-message>
       </div>
 
       <!-- Configuration selection -->
-      <app-radio-cards *ngIf="isFieldValuable(formBroker, 'broker')"
+      <app-radio-cards *ngIf="formService.isFieldValuable('broker')"
                        [fieldLabel]="'brokers.add.label.type'"
                        [items]="configs"
-                       [form]="formBroker"
+                       [form]="formService.getForm()"
                        [control]="'config'"
                        [controlError]="'brokers.add.error.type'"
                        class="col-span-12"
       ></app-radio-cards>
 
       <!-- ConfigurationType - Synchronized -->
-      <div *ngIf="isFieldValueEqual(formBroker, 'config', configSynchronized)"
+      <div *ngIf="formService.isFieldValueEqual('config', configSynchronized)"
         class="col-span-12 grid grid-cols-1 lg:grid-cols-2 gap-4">
 
         <!-- API Key -->
@@ -49,7 +48,7 @@
                  type="text"
                  id="apiKey"
           />
-          <p-message *ngIf="ctrlHasErrorTouched(formBroker, 'apiKey')" severity="error" variant="simple" size="small">
+          <p-message *ngIf="formService.hasErrorTouched('apiKey')" severity="error" variant="simple" size="small">
             {{'error.required' | translate}}
           </p-message>
         </div>
@@ -63,7 +62,7 @@
                  type="text"
                  id="apiSecret"
           />
-          <p-message *ngIf="ctrlHasErrorTouched(formBroker, 'apiSecret')" severity="error" variant="simple" size="small">
+          <p-message *ngIf="formService.hasErrorTouched('apiSecret')" severity="error" variant="simple" size="small">
             {{'error.required' | translate}}
           </p-message>
         </div>
@@ -72,7 +71,7 @@
     </div>
 
     <!--  Submit  -->
-    <button [disabled]="isSubmitDisabled(formBroker)"
+    <button [disabled]="formService.isSubmitDisabled()"
             [loading]="loading"
             icon="pi pi-plus"
             label="{{'brokers.add.label.submit' | translate}}"

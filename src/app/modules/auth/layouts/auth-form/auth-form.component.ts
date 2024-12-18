@@ -6,12 +6,9 @@ import {PasswordModule} from "primeng/password";
 import { Message } from 'primeng/message';
 import {PrimeTemplate} from "primeng/api";
 import {
-  FormBuilder,
-  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators
 } from "@angular/forms";
 import {Ripple} from "primeng/ripple";
 import {RouterLink} from "@angular/router";
@@ -20,17 +17,11 @@ import {NgIf} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {MessagesModule} from 'primeng/messages';
-import {UsersUserInput, UsersUserWithPassword} from "@core/api";
+import {UsersUserInput} from "@core/api";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {passwordMatchValidator} from "@shared/validators/password-match";
-import {
-  ctrlHasErrorTouched,
-  ctrlHasSpecifiedError,
-  ctrlHasSpecifiedErrorTouched,
-  isFormInvalid,
-  isSubmitDisabled
-} from "@shared/utils/form";
+import {FormService} from "@shared/services/form.service";
 
 export type AuthFormFieldConfig = {
   hasEmail?: boolean;
@@ -77,13 +68,12 @@ export class AuthFormComponent implements OnInit {
 
   protected readonly logoPath = "assets/svg/logo-initial.svg";
   user: UsersUserInput = {};
-  userForm: FormGroup = this.fb.group({});
   loading = false;
   messageError: string = "";
 
   constructor(
-    private fb: FormBuilder,
     private translateService: TranslateService,
+    protected formService: FormService
   ) {  }
 
   ngOnInit() {
@@ -98,11 +88,11 @@ export class AuthFormComponent implements OnInit {
 
   onSubmitWrapper() {
     // Skip if form invalid
-    if (isFormInvalid(this.userForm)) {
+    if (this.formService.isInvalid()) {
       return
     }
     // Emit submit event back to parent
-    this.onSubmit.emit(this.userForm);
+    this.onSubmit.emit(this.formService.getForm());
   }
 
   setLoading(loading: boolean) {
@@ -126,33 +116,33 @@ export class AuthFormComponent implements OnInit {
         // Email - Default
         case 'email-required':
         case 'email-invalid':
-          this.userForm.get('email')?.setErrors({ 'submit-required': true });
+          this.formService.setFieldErrors('email', ['submit-required']);
           break;
 
         // Email - Used
         case 'email-used':
-          this.userForm.get('email')?.setErrors({ 'submit-used': true });
+          this.formService.setFieldErrors('email', ['submit-used']);
           break;
 
         // Password - Default
         case 'password-required':
         case 'password-invalid':
           if (this.fieldConfig.hasPassword) {
-            this.userForm.get('password')?.setErrors({ 'submit-required': true });
+            this.formService.setFieldErrors('password', ['submit-required']);
           } else if (this.fieldConfig.hasPasswordFeedback){
-            this.userForm.get('password-feedback')?.setErrors({ 'submit-required': true });
+            this.formService.setFieldErrors('password-feedback', ['submit-required']);
           }
           break;
 
         // Confirmation - Default
         case 'confirmation-required':
         case 'confirmation-invalid':
-          this.userForm.get('confirmation')?.setErrors({ 'submit-invalid': true });
+          this.formService.setFieldErrors('confirmation', ['submit-required']);
           break;
 
         // Checkbox - Default
         case 'checkbox-invalid':
-          this.userForm.get('checkbox')?.setErrors({ 'submit-invalid': true });
+          this.formService.setFieldErrors('checkbox', ['submit-invalid']);
           break;
 
         // Generic error
@@ -167,64 +157,34 @@ export class AuthFormComponent implements OnInit {
 
   initFormControls() {
     // Email
-    if (this.fieldConfig.hasEmail) {
-      this.userForm.addControl('email', new FormControl(this.user.email,
-        [
-          Validators.required,
-        ]
-      ));
-
-      // Checking email format
-      if (this.fieldConfig.hasEmailControl) {
-        this.userForm.get('email')?.addValidators(Validators.email);
-      }
+    if (this.fieldConfig.hasEmail && this.fieldConfig.hasEmailControl) {
+      // Checking email format for input
+      this.formService.addControlPostEmail('email', this.user.email);
+    } else if (this.fieldConfig.hasEmail) {
+      this.formService.addControlRequired('email', this.user.email);
     }
 
     // Password
     if (this.fieldConfig.hasPassword) {
-      this.userForm.addControl('password', new FormControl(this.user.password,
-        [
-          Validators.required
-        ]
-      ));
+      this.formService.addControlRequired('password', this.user.password);
     }
 
     // Password Feedback
     if (this.fieldConfig.hasPasswordFeedback) {
-      this.userForm.addControl('password-feedback', new FormControl(this.user.password,
-        [
-          Validators.minLength(8),
-          Validators.maxLength(64),
-          Validators.required,
-        ]
-      ));
+      this.formService.addControlPostPassword('password-feedback', this.user.password);
     }
 
     // Confirmation
     if (this.fieldConfig.hasConfirmation) {
-
-      this.userForm.addControl('confirmation', new FormControl(this.user.confirmation,
-        [
-          Validators.required,
-        ]
-      ));
+      this.formService.addControlRequired('confirmation', this.user.confirmation);
 
       // Validate that confirmation corresponds to the password
-      this.userForm.addValidators(passwordMatchValidator('password-feedback', 'confirmation'))
+      this.formService.addFormValidators(passwordMatchValidator('password-feedback', 'confirmation'))
     }
 
     // Checkbox
     if (this.fieldConfig.checkboxLabel) {
-      this.userForm.addControl('checkbox', new FormControl(this.user.checkbox,
-        [
-          Validators.requiredTrue,
-        ]
-      ));
+      this.formService.addControlCheckbox('checkbox', this.user.checkbox);
     }
   }
-
-  // Utils - Form
-  protected readonly ctrlHasSpecifiedError = ctrlHasSpecifiedError;
-  protected readonly isSubmitDisabled = isSubmitDisabled;
-  protected readonly ctrlHasSpecifiedErrorTouched = ctrlHasSpecifiedErrorTouched;
 }

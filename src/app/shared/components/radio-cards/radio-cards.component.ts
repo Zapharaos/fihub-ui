@@ -1,10 +1,10 @@
-import {Component, HostListener, Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {RadioButton} from "primeng/radiobutton";
 import {FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {ctrlHasErrorTouched} from "@shared/utils/form";
 import {Message} from "primeng/message";
+import {FormService} from "@shared/services/form.service";
 
 export type RadioCardItem = {
   key: string;
@@ -37,6 +37,10 @@ export class RadioCardsComponent {
   @Input() control!: string;
   @Input() controlError!: string;
 
+  constructor(
+    protected formService: FormService
+  ) { }
+
   activate(item: RadioCardItem) {
     this.form.get(this.control)?.setValue(item)
   }
@@ -44,6 +48,4 @@ export class RadioCardsComponent {
   isActive(item: RadioCardItem): boolean {
     return this.form.get(this.control)?.value.key === item.key;
   }
-
-  protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BrokersBroker, BrokersService, BrokersUserBrokerInput, UserBrokerService} from "@core/api";
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
@@ -13,17 +13,9 @@ import {
 import {InputText} from "primeng/inputtext";
 import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards/radio-cards.component";
 import {Ripple} from "primeng/ripple";
-import {
-  ctrlHasErrorTouched,
-  ctrlHasSpecifiedError,
-  ctrlHasSpecifiedErrorTouched,
-  isFieldValuable,
-  isFieldValueEqual,
-  isFormInvalid,
-  isSubmitDisabled
-} from "@shared/utils/form";
 import {Message} from "primeng/message";
 import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
+import {FormService} from "@shared/services/form.service";
 
 @Component({
   selector: 'app-brokers-add',
@@ -65,19 +57,16 @@ export class BrokersAddComponent implements OnInit {
 
   loading: boolean = true;
   brokers!: BrokersBroker[];
-  formBroker: FormGroup;
 
   constructor(
     private translateService: TranslateService,
     private notificationService: NotificationService,
     private brokersService: BrokersService,
     private userBrokerService: UserBrokerService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    protected formService: FormService
   ) {
-    this.formBroker = this.initForm()
-  }
 
-  initForm(): FormGroup {
     const form = this.fb.group({
       broker: ['', Validators.required],
       config: ['', Validators.required],
@@ -98,7 +87,7 @@ export class BrokersAddComponent implements OnInit {
       form.get('apiSecret')?.updateValueAndValidity();
     })
 
-    return form;
+    this.formService.init(form);
   }
 
   ngOnInit() {
@@ -118,14 +107,14 @@ export class BrokersAddComponent implements OnInit {
 
   addBroker() {
     // Skip if form invalid
-    if (isFormInvalid(this.formBroker)) {
+    if (this.formService.isInvalid()) {
       return;
     }
 
     // Prepare
     this.loading = true;
     const userBroker : BrokersUserBrokerInput = {
-      broker_id: this.formBroker.value.broker.id,
+      broker_id: this.formService.getFormValue().broker.id,
     }
 
     // Call API
@@ -135,7 +124,7 @@ export class BrokersAddComponent implements OnInit {
       next: (brokers: TableBroker[]) => {
         // Success
         this.notificationService.showToastSuccess('brokers.messages.add-success')
-        this.formBroker = this.initForm() // clear form
+        this.formService.clear();
         this.loadBrokers() // update data
       },
       error: (error: any) => {
@@ -154,22 +143,14 @@ export class BrokersAddComponent implements OnInit {
   handleErrors400(error: any) {
     switch (error.error.message) {
       case 'broker-required':
-        this.formBroker.get('broker')?.setErrors({ 'submit-required': true });
+        this.formService.setFieldErrors('broker', ['submit-required']);
         break;
       case 'broker-used':
-        this.formBroker.get('broker')?.setErrors({ 'submit-used': true });
+        this.formService.setFieldErrors('broker', ['submit-used']);
         break;
       default:
         this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
         break;
     }
   }
-
-  // Utils - Form
-  protected readonly ctrlHasErrorTouched = ctrlHasErrorTouched;
-  protected readonly isSubmitDisabled = isSubmitDisabled;
-  protected readonly isFieldValuable = isFieldValuable;
-  protected readonly isFieldValueEqual = isFieldValueEqual;
-  protected readonly ctrlHasSpecifiedError = ctrlHasSpecifiedError;
-  protected readonly ctrlHasSpecifiedErrorTouched = ctrlHasSpecifiedErrorTouched;
 }
