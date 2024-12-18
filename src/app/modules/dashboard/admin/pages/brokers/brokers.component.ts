@@ -17,11 +17,12 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {Tag} from "primeng/tag";
 import {FileUploadHandlerEvent, FileUploadModule} from "primeng/fileupload";
 import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
-import {DialogMode, DialogProps, OverlayService} from "@shared/services/overlay.service";
+import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {Dialog} from "primeng/dialog";
 import {NgIf} from "@angular/common";
 import {ToggleSwitch} from "primeng/toggleswitch";
 import {ButtonProps} from "primeng/button/button.interface";
+import {ConfirmService} from "@shared/services/confirm.service";
 
 @Component({
   selector: 'app-brokers',
@@ -60,12 +61,9 @@ export class BrokersComponent implements OnInit {
   private imageUrls: { [key: string]: string } = {};
 
   // Dialog
+  dialogVisible: boolean = false;
   broker!: BrokersBroker;
   formBroker: FormGroup;
-  dialogProps: DialogProps = {
-    dialogMode: DialogMode.HIDDEN,
-    dialogVisible: false,
-  }
 
   // File upload
   fileUploadPropsUpdate: ButtonProps = {
@@ -82,7 +80,8 @@ export class BrokersComponent implements OnInit {
   constructor(
     private translateService: TranslateService,
     private notificationService: NotificationService,
-    protected overlayService: OverlayService,
+    private confirmService: ConfirmService,
+    protected dialogService: DialogService,
     private brokersService: BrokersService,
     private brokerImagesService: BrokerImagesService,
     private fb: FormBuilder
@@ -92,8 +91,12 @@ export class BrokersComponent implements OnInit {
       disabled: ['', Validators.required],
     })
 
-    this.dialogProps.create = this.createBroker.bind(this);
-    this.dialogProps.update = this.updateBroker.bind(this);
+    this.dialogService.dialogVisibilityChange.subscribe((isVisible: boolean) => {
+      this.dialogVisible = isVisible;
+    });
+
+    this.dialogService.setDialogPropsCreate(this.createBroker.bind(this));
+    this.dialogService.setDialogPropsUpdate(this.updateBroker.bind(this));
   }
 
   ngOnInit() {
@@ -146,6 +149,8 @@ export class BrokersComponent implements OnInit {
     return this.imageUrls[brokerID];
   }
 
+  // Utils
+
   getStatusValue(disabled: boolean): string {
     return disabled ? this.translateService.instant('admin.brokers.disabled.true') : this.translateService.instant('admin.brokers.disabled.false');
   }
@@ -154,14 +159,16 @@ export class BrokersComponent implements OnInit {
     return disabled ? 'success' : 'danger';
   }
 
+  // Table
+
   onRowDelete(event: Event, broker: TableBroker) {
-    this.overlayService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
+    this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
   }
 
   // Dialog
 
   openDialog(dialogMode: DialogMode, broker?: BrokersBroker) {
-    this.overlayService.openDialog(this.dialogProps, dialogMode);
+    this.dialogService.openDialog(dialogMode);
 
     switch (dialogMode) {
       case DialogMode.CREATE:
@@ -178,7 +185,7 @@ export class BrokersComponent implements OnInit {
   closeDialog() {
     this.broker = {};
     this.formBroker.reset();
-    this.overlayService.closeDialog(this.dialogProps);
+    this.dialogService.closeDialog();
   }
 
   // Brokers
@@ -216,7 +223,7 @@ export class BrokersComponent implements OnInit {
       next: (broker: BrokersBroker) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.create-success', {name: broker.name});
-        this.overlayService.openDialog(this.dialogProps, DialogMode.IMAGE);
+        this.dialogService.openDialog(DialogMode.IMAGE);
         this.broker = broker;
       },
       error: (error: any) => {
@@ -243,7 +250,7 @@ export class BrokersComponent implements OnInit {
       next: (broker: BrokersBroker) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: broker.name});
-        this.overlayService.closeDialog(this.dialogProps);
+        this.dialogService.closeDialog();
       },
       error: (error: any) => {
         switch (error.status) {
@@ -278,8 +285,8 @@ export class BrokersComponent implements OnInit {
       next: (image: BrokersBrokerImage) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: this.getBrokerNameFromImage(image)})
-        if (this.overlayService.isDialogModeImage(this.dialogProps)) {
-          this.overlayService.closeDialog(this.dialogProps);
+        if (this.dialogService.isDialogModeImage()) {
+          this.dialogService.closeDialog();
         }
       },
       error: (error: any) => {
