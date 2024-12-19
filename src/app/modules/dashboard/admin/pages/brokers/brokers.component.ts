@@ -23,6 +23,8 @@ import {NgIf} from "@angular/common";
 import {ToggleSwitch} from "primeng/toggleswitch";
 import {ButtonProps} from "primeng/button/button.interface";
 import {ConfirmService} from "@shared/services/confirm.service";
+import {FormService} from "@shared/services/form.service";
+import {Message} from "primeng/message";
 
 @Component({
   selector: 'app-brokers',
@@ -42,14 +44,15 @@ import {ConfirmService} from "@shared/services/confirm.service";
     FileUploadModule,
     Dialog,
     NgIf,
-    ToggleSwitch
+    ToggleSwitch,
+    Message
   ],
   templateUrl: './brokers.component.html',
   styleUrl: './brokers.component.scss'
 })
 export class BrokersComponent implements OnInit {
 
-  // TODO : errors
+  // TODO : broker service or utils
 
   // Global
   loading: boolean = true;
@@ -63,7 +66,6 @@ export class BrokersComponent implements OnInit {
   // Dialog
   dialogVisible: boolean = false;
   broker!: BrokersBroker;
-  formBroker: FormGroup;
 
   // File upload
   fileUploadPropsUpdate: ButtonProps = {
@@ -81,15 +83,16 @@ export class BrokersComponent implements OnInit {
     private translateService: TranslateService,
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
-    protected dialogService: DialogService,
     private brokersService: BrokersService,
     private brokerImagesService: BrokerImagesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    protected dialogService: DialogService,
+    protected formService: FormService,
   ) {
-    this.formBroker = this.fb.group({
+    this.formService.init(this.fb.group({
       name: ['', Validators.required],
-      disabled: ['', Validators.required],
-    })
+      disabled: [false, Validators.required],
+    }))
 
     this.dialogService.dialogVisibilityChange.subscribe((isVisible: boolean) => {
       this.dialogVisible = isVisible;
@@ -173,18 +176,18 @@ export class BrokersComponent implements OnInit {
     switch (dialogMode) {
       case DialogMode.CREATE:
         this.broker = {};
-        this.formBroker.reset();
+        this.formService.clear()
         break;
       case DialogMode.UPDATE:
         this.broker = {...broker};
-        this.formBroker.patchValue(this.broker);
+        this.formService.patchValue(this.broker);
         break;
     }
   }
 
   closeDialog() {
     this.broker = {};
-    this.formBroker.reset();
+    this.formService.reset();
     this.dialogService.closeDialog();
   }
 
@@ -216,8 +219,11 @@ export class BrokersComponent implements OnInit {
   }
 
   createBroker() {
+    if (this.formService.isInvalid()) {
+      return;
+    }
     this.loading = true;
-    this.brokersService.createBroker(this.formBroker!.value).pipe(finalize(() => {
+    this.brokersService.createBroker(this.formService.getFormValue()).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (broker: BrokersBroker) => {
@@ -227,24 +233,17 @@ export class BrokersComponent implements OnInit {
         this.broker = broker;
       },
       error: (error: any) => {
-        switch (error.status) {
-          case 400:
-            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        this.handleBrokerErrors(error);
       }
     })
   }
 
   updateBroker() {
+    if (this.formService.isInvalid()) {
+      return;
+    }
     this.loading = true;
-    this.brokersService.updateBroker(this.broker.id!, this.formBroker!.value).pipe(finalize(() => {
+    this.brokersService.updateBroker(this.broker.id!, this.formService.getFormValue()).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (broker: BrokersBroker) => {
@@ -253,22 +252,42 @@ export class BrokersComponent implements OnInit {
         this.dialogService.closeDialog();
       },
       error: (error: any) => {
-        switch (error.status) {
-          case 400:
-            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        this.handleBrokerErrors(error);
       }
     })
   }
 
-  // Broker images
+  // Broker - Errors
+
+  handleBrokerErrors(error: any) {
+    switch (error.status) {
+      case 400:
+        this.handleBrokerErrors400(error);
+        break;
+      case 404:
+        this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
+        break;
+      default:
+        this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+        break;
+    }
+  }
+
+  handleBrokerErrors400(error: any) {
+    switch (error.error.message) {
+      case 'name-required':
+        this.formService.setFieldErrors('name', ['submit-required']);
+        break;
+      case 'name-used':
+        this.formService.setFieldErrors('name', ['submit-used']);
+        break;
+      default:
+        this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
+        break;
+    }
+  }
+
+  // Broker Images
 
   uploadBrokerImage(event: FileUploadHandlerEvent) {
     if (!this.broker.image_id) {

@@ -5,8 +5,8 @@ import {FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Vali
   providedIn: 'root',
 })
 export class FormService {
-  form: FormGroup = this.fb.group({});
-  copy: FormGroup | undefined;
+  private form: FormGroup = this.fb.group({});
+  private copy: FormGroup | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +29,6 @@ export class FormService {
     return this.form;
   }
 
-
   getFormValue() {
     return this.form.value;
   }
@@ -48,6 +47,10 @@ export class FormService {
 
   isFieldValueEqual(fieldName: string, valueToCompare: any) {
     return this.form.get(fieldName)?.value === valueToCompare;
+  }
+
+  patchValue(value: any) {
+    this.form.patchValue(value);
   }
 
   hasErrorTouched(fieldName: string): boolean {
@@ -133,7 +136,6 @@ export class FormService {
         [error]: true
       }
     })
-    console.log(validationErrors);
     this.form.get(fieldName)?.setErrors(validationErrors, opts);
   }
 }
