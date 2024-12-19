@@ -10,6 +10,7 @@
 
 
 export interface BrokersBroker { 
+    disabled?: boolean;
     id?: string;
     image_id?: string;
     name?: string;

@@ -17,9 +17,9 @@ export class BrokerDataService {
     private userBrokerService: UserBrokerService
   ) {}
 
-  getBrokersWithImages(): Observable<BrokerWithImage[]> {
+  getBrokersWithImages(enabledOnly?: boolean): Observable<BrokerWithImage[]> {
     // Fetch brokers from the service
-    return this.brokersService.getBrokers().pipe(
+    return this.brokersService.getBrokers(enabledOnly ? 'true' : undefined).pipe(
       switchMap((brokers: BrokersBroker[]) => {
         // For each broker, fetch the corresponding image
         const brokerImageRequests = brokers.map(broker => {
