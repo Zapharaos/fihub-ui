@@ -41,7 +41,7 @@ export class DialogService {
   }
 
   setDialogPropsUpdate(update: () => void) {
-    this.dialogProps.update = close;
+    this.dialogProps.update = update;
   }
 
   isDialogModeCreate(): boolean {

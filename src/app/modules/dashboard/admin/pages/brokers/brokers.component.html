@@ -81,7 +81,7 @@
 
     <form *ngIf="!dialogService.isDialogModeImage()"
           (ngSubmit)="dialogService.submitDialog()"
-          [formGroup]="formBroker"
+          [formGroup]="formService.getForm()"
           class="flex flex-col gap-8 my-4 w-full">
 
       <!--  Form fields  -->
@@ -96,6 +96,14 @@
                  type="text"
                  id="name"
           />
+          <p-message *ngIf="formService.hasSpecifiedErrors('name', ['required'], ['submit-required'])"
+                     severity="error" variant="simple" size="small">
+            {{'admin.brokers.error.name-required' | translate}}
+          </p-message>
+          <p-message *ngIf="formService.hasSpecifiedError('name', 'submit-used')"
+                     severity="error" variant="simple" size="small">
+            {{'admin.brokers.error.name-used' | translate}}
+          </p-message>
         </div>
 
         <!-- Disabled -->
@@ -166,6 +174,7 @@
               icon="pi pi-times"
               label="{{dialogService.getDialogLabelClose() | translate}}"/>
     <p-button (click)="dialogService.submitDialog()"
+              [disabled]="formService.isSubmitDisabled()"
               [loading]="loading"
               icon="pi pi-check"
               label="{{dialogService.getDialogLabelSubmit() | translate}}"/>

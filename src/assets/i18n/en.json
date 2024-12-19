@@ -79,6 +79,10 @@
           "description": "Upload a new image representing the broker."
         }
       },
+      "error": {
+        "name-required": "Please provide a name.",
+        "name-used": "Broker name is already used."
+      },
       "messages": {
         "create-success": "Broker {{name}} has been created.",
         "update-success": "Broker {{name}} has been updated."
