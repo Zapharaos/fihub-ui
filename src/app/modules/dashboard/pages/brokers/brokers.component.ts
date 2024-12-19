@@ -50,6 +50,7 @@ export class BrokersComponent implements OnInit {
   loading: boolean = true;
   userBrokers!: UserBrokerWithImage[];
   clonedUserBrokers: { [s: string]: BrokersUserBroker } = {};
+  protected readonly tablePropertiesFilter = ['broker.name']
   @ViewChild('dt') dt: Table | undefined;
 
   constructor(
