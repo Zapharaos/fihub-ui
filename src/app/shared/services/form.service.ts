@@ -14,7 +14,7 @@ export class FormService {
 
   init(form: FormGroup) {
     this.form = form;
-    this.copy = form;
+    this.copy = this.fb.group(this.form.value);
   }
 
   clear() {
