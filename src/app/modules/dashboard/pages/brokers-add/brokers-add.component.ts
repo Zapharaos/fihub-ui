@@ -97,7 +97,7 @@ export class BrokersAddComponent implements OnInit {
 
   loadBrokers() {
     this.loading = true;
-    this.brokerDataService.getBrokersWithImages().pipe(finalize(() => {
+    this.brokerDataService.getBrokersWithImages(true).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (brokers: BrokersBroker[]) => {

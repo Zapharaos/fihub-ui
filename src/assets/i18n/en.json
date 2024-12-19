@@ -67,8 +67,8 @@
         "disabled": "Status"
       },
       "disabled": {
-        "true": "ENABLED",
-        "false": "DISABLED"
+        "true": "DISABLED",
+        "false": "ENABLED"
       },
       "dialog": {
         "title": "Broker details",
