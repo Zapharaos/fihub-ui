@@ -44,8 +44,8 @@
           {{broker.name}}
         </td>
         <td>
-          <img *ngIf="hasBrokerImage(broker.id!)"
-               [src]="getBrokerImage(broker.id)"
+          <img *ngIf="broker.imageUrl"
+               [src]="broker.imageUrl"
                [alt]="broker.name"
                class="rounded-full w-7 h-7"
           />
@@ -120,8 +120,8 @@
            class="flex flex-col gap-2">
         <label class="font-medium">{{'admin.brokers.dialog.image.label' | translate}}</label>
         <div class="flex flex-row gap-4 items-center">
-          <img *ngIf="hasBrokerImage(broker.id!)"
-               [src]="getBrokerImage(broker.id!)"
+          <img *ngIf="broker.imageUrl"
+               [src]="broker.imageUrl"
                [alt]="broker.name"
                class="rounded-full w-10 h-10"
           />

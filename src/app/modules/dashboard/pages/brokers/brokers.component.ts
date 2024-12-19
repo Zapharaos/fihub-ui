@@ -9,7 +9,7 @@ import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ConfirmationService} from "primeng/api";
 import {finalize} from "rxjs";
-import {UserBrokerService, BrokersBroker} from "@core/api";
+import {UserBrokerService, BrokersBroker, BrokersUserBroker} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {RouterLink} from "@angular/router";
 import {
@@ -18,9 +18,10 @@ import {
 import {applyFilterGlobal, onRowEditCancel, onRowEditInit, onRowEditSave} from "@shared/utils/table";
 import {DialogService} from "@shared/services/dialog.service";
 import {ConfirmService} from "@shared/services/confirm.service";
+import {BrokerDataService, UserBrokerWithImage} from "@core/services/broker-data.service";
 
 // TODO : temp fields
-export interface TableBroker extends BrokersBroker {
+export interface TableBroker extends BrokersUserBroker {
   apiKey?: string;
   apiSecret?: string;
 }
@@ -47,8 +48,8 @@ export interface TableBroker extends BrokersBroker {
 export class BrokersComponent implements OnInit {
 
   loading: boolean = true;
-  brokers!: TableBroker[];
-  clonedBrokers: { [s: string]: TableBroker } = {};
+  userBrokers!: UserBrokerWithImage[];
+  clonedUserBrokers: { [s: string]: BrokersUserBroker } = {};
   @ViewChild('dt') dt: Table | undefined;
 
   constructor(
@@ -56,19 +57,22 @@ export class BrokersComponent implements OnInit {
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
     private userBrokerService: UserBrokerService,
+    private brokerDataService: BrokerDataService,
   ) { }
 
-    ngOnInit() {
-      this.loadBrokers()
-    }
+  ngOnInit() {
+    this.loadBrokers()
+  }
+
+  // Brokers
 
   loadBrokers() {
     this.loading = true;
-    this.userBrokerService.getUserBrokers().pipe(finalize(() => {
+    this.brokerDataService.getUsersBrokersWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (brokers: TableBroker[]) => {
-        this.brokers = brokers;
+      next: (brokers: UserBrokerWithImage[]) => {
+        this.userBrokers = brokers;
       },
       error: () => {
         this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
@@ -76,14 +80,14 @@ export class BrokersComponent implements OnInit {
     })
   }
 
-  deleteBroker(broker: TableBroker) {
-    /*this.loading = true;
-    this.userBrokerService.deleteUserBroker(broker.id ?? '').pipe(finalize(() => {
+  deleteBroker(broker: BrokersUserBroker) {
+    this.loading = true;
+    this.userBrokerService.deleteUserBroker(broker.broker?.id!).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (brokers: TableBroker[]) => {
-        this.brokers = brokers
-        this.notificationService.showToastSuccess('brokers.messages.delete-success', {name: broker.name})
+      next: () => {
+        this.loadBrokers()
+        this.notificationService.showToastSuccess('brokers.messages.delete-success', {name: broker.broker?.name})
       },
       error: (error: any) => {
         switch (error.status) {
@@ -94,18 +98,20 @@ export class BrokersComponent implements OnInit {
             this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
             break;
         }
-      },
-    })*/
+      }
+    })
   }
 
-  onWrapperRowEditSave(broker: TableBroker) {
+  // Table
+
+  onWrapperRowEditSave(broker: BrokersUserBroker) {
     // TODO : PUT
-    this.notificationService.showToastSuccess('brokers.messages.edit-success', {name: broker.name})
+    this.notificationService.showToastSuccess('brokers.messages.edit-success', {name: broker.broker?.name})
 
-    onRowEditSave(this.clonedBrokers, broker)
+    onRowEditSave(this.clonedUserBrokers, broker)
   }
 
-  onRowDelete(event: Event, broker: TableBroker) {
+  onRowDelete(event: Event, broker: BrokersUserBroker) {
     this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
   }
 

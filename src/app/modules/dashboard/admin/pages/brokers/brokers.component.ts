@@ -13,10 +13,9 @@ import {NotificationService} from "@shared/services/notification.service";
 import {PrimeTemplate} from "primeng/api";
 import {BrokerImagesService, BrokersBroker, BrokersBrokerImage, BrokersService} from "@core/api";
 import {finalize} from "rxjs";
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Tag} from "primeng/tag";
 import {FileUploadHandlerEvent, FileUploadModule} from "primeng/fileupload";
-import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
 import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {Dialog} from "primeng/dialog";
 import {NgIf} from "@angular/common";
@@ -25,6 +24,7 @@ import {ButtonProps} from "primeng/button/button.interface";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {FormService} from "@shared/services/form.service";
 import {Message} from "primeng/message";
+import {BrokerDataService, BrokerWithImage} from "@core/services/broker-data.service";
 
 @Component({
   selector: 'app-brokers',
@@ -52,20 +52,17 @@ import {Message} from "primeng/message";
 })
 export class BrokersComponent implements OnInit {
 
-  // TODO : broker service or utils
-
   // Global
   loading: boolean = true;
 
   // Table
-  brokers!: BrokersBroker[];
+  brokers!: BrokerWithImage[];
   @ViewChild('dt') dt: Table | undefined;
   protected readonly tablePropertiesFilter = ['name', 'disabled']
-  private imageUrls: { [key: string]: string } = {};
 
   // Dialog
   dialogVisible: boolean = false;
-  broker!: BrokersBroker;
+  broker!: BrokerWithImage;
 
   // File upload
   fileUploadPropsUpdate: ButtonProps = {
@@ -85,6 +82,7 @@ export class BrokersComponent implements OnInit {
     private confirmService: ConfirmService,
     private brokersService: BrokersService,
     private brokerImagesService: BrokerImagesService,
+    private brokerDataService: BrokerDataService,
     private fb: FormBuilder,
     protected dialogService: DialogService,
     protected formService: FormService,
@@ -110,46 +108,16 @@ export class BrokersComponent implements OnInit {
 
   loadBrokers() {
     this.loading = true;
-    this.brokersService.getBrokers().pipe(finalize(() => {
+    this.brokerDataService.getBrokersWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (brokers: BrokersBroker[]) => {
         this.brokers = brokers;
-
-        // Retrieve the brokers images
-        this.brokers.forEach(broker => {
-          this.loadBrokerImage(broker.id, broker.image_id);
-        })
       },
       error: (error: any) => {
         this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
       }
     })
-  }
-
-  loadBrokerImage(brokerID: any, imageID: any) {
-    if (!brokerID || !imageID) {
-      return;
-    }
-    this.brokerImagesService.getBrokerImage(brokerID, imageID).subscribe({
-      next: (image: any) => {
-        this.imageUrls[brokerID] = URL.createObjectURL(image);
-      }
-    })
-  }
-
-  // Utils
-
-  getBrokerNameFromImage(image: BrokersBrokerImage): string {
-    return this.brokers.find(b => b.image_id === image.id)?.name!;
-  }
-
-  hasBrokerImage(brokerID: string): boolean {
-    return !!this.imageUrls[brokerID];
-  }
-
-  getBrokerImage(brokerID: string): string {
-    return this.imageUrls[brokerID];
   }
 
   // Utils
@@ -164,7 +132,7 @@ export class BrokersComponent implements OnInit {
 
   // Table
 
-  onRowDelete(event: Event, broker: TableBroker) {
+  onRowDelete(event: Event, broker:  BrokersBroker) {
     this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
   }
 
@@ -303,7 +271,7 @@ export class BrokersComponent implements OnInit {
     })).subscribe({
       next: (image: BrokersBrokerImage) => {
         this.loadBrokers();
-        this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: this.getBrokerNameFromImage(image)})
+        this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: this.broker.name})
         if (this.dialogService.isDialogModeImage()) {
           this.dialogService.closeDialog();
         }
@@ -312,9 +280,6 @@ export class BrokersComponent implements OnInit {
         switch (error.status) {
           case 400:
             this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
             break;
           default:
             this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
@@ -330,7 +295,9 @@ export class BrokersComponent implements OnInit {
     })).subscribe({
       next: (image: BrokersBrokerImage) => {
         this.loadBrokers();
-        this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: this.getBrokerNameFromImage(image)})
+        this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: this.broker.name})
+        // update image
+        this.broker.imageUrl = URL.createObjectURL(event.files[0]);
       },
       error: (error: any) => {
         switch (error.status) {

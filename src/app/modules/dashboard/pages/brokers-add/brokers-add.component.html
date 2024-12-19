@@ -14,7 +14,31 @@
                   filterBy="name"
                   optionLabel="name"
                   placeholder="{{'brokers.add.label.broker' | translate}}"
-                  id="broker"/>
+                  id="broker">
+          <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2" *ngIf="selectedOption">
+              <img *ngIf="selectedOption.imageUrl"
+                   [src]="selectedOption.imageUrl"
+                   [alt]="selectedOption.name"
+                   class="rounded-full w-7 h-7"
+              />
+              <div>{{ selectedOption.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-broker #item>
+            <div class="flex items-center gap-2">
+              <img *ngIf="broker.imageUrl"
+                   [src]="broker.imageUrl"
+                   [alt]="broker.name"
+                   class="rounded-full w-7 h-7"
+              />
+              <div>{{ broker.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template #dropdownicon>
+            <i class="pi pi-chevron-down"></i>
+          </ng-template>
+        </p-select>
         <p-message *ngIf="formService.hasSpecifiedErrors('broker', ['required'], ['submit-required'])"
                    severity="error" variant="simple" size="small">
           {{'brokers.add.error.broker-required' | translate}}

@@ -16,6 +16,7 @@ import {Ripple} from "primeng/ripple";
 import {Message} from "primeng/message";
 import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
 import {FormService} from "@shared/services/form.service";
+import {BrokerDataService, BrokerWithImage} from "@core/services/broker-data.service";
 
 @Component({
   selector: 'app-brokers-add',
@@ -56,15 +57,15 @@ export class BrokersAddComponent implements OnInit {
   ];
 
   loading: boolean = true;
-  brokers!: BrokersBroker[];
+  brokers!: BrokerWithImage[];
 
   constructor(
     private translateService: TranslateService,
     private notificationService: NotificationService,
-    private brokersService: BrokersService,
     private userBrokerService: UserBrokerService,
     private fb: FormBuilder,
-    protected formService: FormService
+    protected formService: FormService,
+    private brokerDataService: BrokerDataService,
   ) {
 
     const form = this.fb.group({
@@ -96,11 +97,14 @@ export class BrokersAddComponent implements OnInit {
 
   loadBrokers() {
     this.loading = true;
-    this.brokersService.getBrokers().pipe(finalize(() => {
+    this.brokerDataService.getBrokersWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: brokers => {
-        this.brokers = brokers
+      next: (brokers: BrokersBroker[]) => {
+        this.brokers = brokers;
+      },
+      error: (error: any) => {
+        this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
       }
     })
   }
