@@ -28,13 +28,12 @@
     [loading]="loading"
     [styleClass]="'p-datatable-lg'"
     [rowHover]="true"
-    [sortMode]="'multiple'"
-    [multiSortMeta]="[{field: 'name', order: 1}]">
+    sortField="name" [sortOrder]="1">
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="name">{{ 'admin.brokers.table-column.name' | translate }} <p-sortIcon field="name" /></th>
+        <th>{{ 'admin.brokers.table-column.name' | translate }}</th>
         <th>{{ 'admin.brokers.table-column.image' | translate }}</th>
-        <th pSortableColumn="status">{{ 'admin.brokers.table-column.disabled' | translate }} <p-sortIcon field="status" /></th>
+        <th>{{ 'admin.brokers.table-column.disabled' | translate }}</th>
         <th></th>
       </tr>
     </ng-template>

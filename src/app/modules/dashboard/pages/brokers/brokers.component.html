@@ -25,10 +25,11 @@
     dataKey="id"
     editMode="row"
     [value]="userBrokers"
-    [globalFilterFields]="['name']"
+    [globalFilterFields]="tablePropertiesFilter"
     [loading]="loading"
     [styleClass]="'p-datatable-lg'"
-    [rowHover]="true">
+    [rowHover]="true"
+    sortField="broker.name" [sortOrder]="1">
     <ng-template pTemplate="header">
       <tr>
         <th>{{ 'brokers.table-column.name' | translate }}</th>

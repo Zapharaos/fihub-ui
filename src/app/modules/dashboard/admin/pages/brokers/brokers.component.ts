@@ -113,7 +113,6 @@ export class BrokersComponent implements OnInit {
     })).subscribe({
       next: (brokers: BrokersBroker[]) => {
         this.brokers = brokers;
-        console.log(brokers)
       },
       error: (error: any) => {
         this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
