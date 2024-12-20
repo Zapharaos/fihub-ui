@@ -14,7 +14,7 @@ import {InputText} from "primeng/inputtext";
 import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards/radio-cards.component";
 import {Ripple} from "primeng/ripple";
 import {Message} from "primeng/message";
-import {TableBroker} from "@modules/dashboard/pages/brokers/brokers.component";
+import {TableBroker} from "@modules/dashboard/brokers/pages/list/list.component";
 import {FormService} from "@shared/services/form.service";
 import {BrokerDataService, BrokerWithImage} from "@core/services/broker-data.service";
 
@@ -34,10 +34,10 @@ import {BrokerDataService, BrokerWithImage} from "@core/services/broker-data.ser
     Ripple,
     Message
   ],
-  templateUrl: './brokers-add.component.html',
-  styleUrl: './brokers-add.component.scss'
+  templateUrl: './add.component.html',
+  styleUrl: './add.component.scss'
 })
-export class BrokersAddComponent implements OnInit {
+export class AddComponent implements OnInit {
 
   private readonly configManual: RadioCardItem = {
     key: 'M',

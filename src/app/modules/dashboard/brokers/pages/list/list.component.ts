@@ -7,16 +7,14 @@ import {InputIcon} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
 import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ConfirmationService} from "primeng/api";
 import {finalize} from "rxjs";
-import {UserBrokerService, BrokersBroker, BrokersUserBroker} from "@core/api";
+import {UserBrokerService, BrokersUserBroker} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {RouterLink} from "@angular/router";
 import {
   DashboardContentLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {applyFilterGlobal, onRowEditCancel, onRowEditInit, onRowEditSave} from "@shared/utils/table";
-import {DialogService} from "@shared/services/dialog.service";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {BrokerDataService, UserBrokerWithImage} from "@core/services/broker-data.service";
 
@@ -27,7 +25,7 @@ export interface TableBroker extends BrokersUserBroker {
 }
 
 @Component({
-  selector: 'app-brokers',
+  selector: 'app-brokers-list',
   standalone: true,
   imports: [
     TranslatePipe,
@@ -42,10 +40,10 @@ export interface TableBroker extends BrokersUserBroker {
     RouterLink,
     DashboardContentLayoutComponent,
   ],
-  templateUrl: './brokers.component.html',
-  styleUrl: './brokers.component.scss'
+  templateUrl: './list.component.html',
+  styleUrl: './list.component.scss'
 })
-export class BrokersComponent implements OnInit {
+export class ListComponent implements OnInit {
 
   loading: boolean = true;
   userBrokers!: UserBrokerWithImage[];
