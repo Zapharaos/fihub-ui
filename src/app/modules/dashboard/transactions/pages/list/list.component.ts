@@ -13,18 +13,9 @@ import {applyFilterGlobal} from "@shared/utils/table";
 import {InputTextModule} from "primeng/inputtext";
 import {RouterLink} from "@angular/router";
 import {CurrencyPipe} from "@angular/common";
-
-export type Transaction = {
-  id: string;
-  date: string;
-  broker: string;
-  type: string;
-  asset: string;
-  quantity: string;
-  price: string;
-  priceUnit: string;
-  fee: string;
-}
+import {TransactionsService, TransactionsTransaction} from "@core/api";
+import {finalize} from "rxjs";
+import {NotificationService} from "@shared/services/notification.service";
 
 @Component({
   selector: 'app-transactions-list',
@@ -49,58 +40,44 @@ export class ListComponent implements OnInit {
 
   // TODO : export?
   // TODO : filter?
-  // TODO : pagination?
   // TODO : stateful?
+
+  // TODO : pagination?
   // TODO : open => as dialog into edit/delete ? or new page to view details and then edit/delete?
 
   protected readonly tablePropertiesFilter = ['date', 'broker', 'type', 'asset', 'quantity', 'price', 'fee']
 
   loading = false;
-  transactions!: Transaction[];
+  transactions!: TransactionsTransaction[];
   @ViewChild('dt') dt: Table | undefined;
+
+  constructor(
+    private notificationService: NotificationService,
+    private transactionService: TransactionsService
+  ) { }
 
   ngOnInit(): void {
     this.loadTransactions()
   }
 
+  // Transactions
+
   loadTransactions() {
     this.loading = true;
-    // TODO : call API
-    this.transactions = [
-      {
-        id: '0',
-        date: 'now',
-        broker: 'Binance',
-        type: 'BUY',
-        asset: 'BTC',
-        quantity: '1.3872345',
-        price: '17840',
-        priceUnit: '12434',
-        fee: '$19'
+    this.transactionService.getTransactions().pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe({
+      next: (transactions: TransactionsTransaction[]) => {
+        this.transactions = transactions;
       },
-      {
-        id: '1',
-        date: 'yesterday',
-        broker: 'Binance',
-        type: 'SELL',
-        asset: 'BTC',
-        quantity: '0.641234',
-        price: '65123',
-        priceUnit: '87934',
-        fee: '$19'
-      },
-      {
-        id: '2',
-        date: 'bla',
-        broker: 'Ledger',
-        type: 'BUY',
-        asset: 'ETH',
-        quantity: '4.561243981274',
-        price: '3689.123',
-        priceUnit: '827.124',
-        fee: '$19'
-      }];
-    this.loading = false;
+      error: (error: any) => {
+        switch (error.status) {
+          default:
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+            break;
+        }
+      }
+    });
   }
 
   // Utils
@@ -118,7 +95,7 @@ export class ListComponent implements OnInit {
 
   // Table
 
-  onRowOpen(transaction: Transaction) {
+  onRowOpen(transaction: TransactionsTransaction) {
     // TODO
   }
 

@@ -185,3 +185,36 @@ p-sorticon {
   color: var(--text-secondary-color);
 }
 
+// Forms
+
+/* Mobile */
+@media (max-width: 480px) {
+  .dashboard-form {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
+/* Tablet (Small) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .dashboard-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+/* Tablet (Large) and Desktop (Small) */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .dashboard-form {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+/* Desktop (Large) */
+@media (min-width: 1281px) {
+  .dashboard-form {
+    max-width: 900px;
+  }
+}
+

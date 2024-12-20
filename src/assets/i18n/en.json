@@ -23,7 +23,9 @@
   },
   "error": {
     "default": "An error has occurred.",
-    "required": "This field is required."
+    "required": "This field is required.",
+    "number-positive": "Number must be at least 0.",
+    "number-positive-strict": "Number must be superior to 0."
   },
   "http": {
     "400": {
@@ -204,7 +206,28 @@
     "add": {
       "back": "Transactions",
       "title": "Add a transaction",
-      "sub-title": "Manually add a new transaction with all the data you have."
+      "sub-title": "Manually add a new transaction with all the data you have.",
+      "label": {
+        "date": "Date",
+        "transaction-type": "Select a transaction type",
+        "asset": "Asset",
+        "quantity": "Quantity",
+        "price": "Price",
+        "fee": "Fee",
+        "broker": "Select a broker",
+        "submit": "Add transaction"
+      },
+      "error": {
+        "broker-required": "Please select a broker.",
+        "broker-invalid": "Broker is invalid.",
+        "type-required": "Please select a transaction type.",
+        "type-invalid": "Transaction type is invalid."
+      }
+    },
+    "messages": {
+      "add-success": "Transaction has been added.",
+      "edit-success": "Transaction has been saved.",
+      "delete-success": "Transaction has been removed."
     }
   }
 }
