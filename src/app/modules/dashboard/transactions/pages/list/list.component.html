@@ -48,14 +48,14 @@
       <tr>
         <td>{{ transaction.date }}</td>
         <td>
-          <p-tag [value]="transaction.type"
-            [severity]="getTypeSeverity(transaction.type)" />
+          <p-tag [value]="transaction.transaction_type"
+            [severity]="getTypeSeverity(transaction.transaction_type)" />
         </td>
         <td>{{ transaction.asset }}</td>
         <td>{{ transaction.price | currency: 'USD' }}</td>
         <td>{{ transaction.quantity }}</td>
-        <td>{{ transaction.priceUnit | currency: 'USD' }}</td>
-        <td>{{ transaction.broker }}</td>
+        <td>{{ transaction.price_unit | currency: 'USD' }}</td>
+        <td>{{ transaction.broker.name }}</td>
         <td>{{ transaction.fee }}</td>
         <td>
           <p-button (click)="onRowOpen(transaction)"
