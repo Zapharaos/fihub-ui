@@ -27,7 +27,7 @@ export type Transaction = {
 }
 
 @Component({
-  selector: 'app-transactions',
+  selector: 'app-transactions-list',
   standalone: true,
   imports: [
     DashboardContentLayoutComponent,
@@ -42,10 +42,10 @@ export type Transaction = {
     RouterLink,
     CurrencyPipe,
   ],
-  templateUrl: './transactions.component.html',
-  styleUrl: './transactions.component.scss'
+  templateUrl: './list.component.html',
+  styleUrl: './list.component.scss'
 })
-export class TransactionsComponent implements OnInit {
+export class ListComponent implements OnInit {
 
   // TODO : export?
   // TODO : filter?
@@ -103,9 +103,7 @@ export class TransactionsComponent implements OnInit {
     this.loading = false;
   }
 
-  onRowOpen(transaction: Transaction) {
-    // TODO
-  }
+  // Utils
 
   getTypeSeverity(status: string) {
     switch (status) {
@@ -116,6 +114,12 @@ export class TransactionsComponent implements OnInit {
       default:
         return undefined;
     }
+  }
+
+  // Table
+
+  onRowOpen(transaction: Transaction) {
+    // TODO
   }
 
   protected readonly applyFilterGlobal = applyFilterGlobal;

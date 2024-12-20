@@ -27,7 +27,7 @@ import {Message} from "primeng/message";
 import {BrokerDataService, BrokerWithImage} from "@core/services/broker-data.service";
 
 @Component({
-  selector: 'app-brokers',
+  selector: 'app-admin-brokers',
   standalone: true,
   imports: [
     DashboardContentLayoutComponent,

@@ -9,9 +9,9 @@ import {
   imports: [
     DashboardContentLayoutComponent
   ],
-  templateUrl: './transactions-add.component.html',
-  styleUrl: './transactions-add.component.scss'
+  templateUrl: './add.component.html',
+  styleUrl: './add.component.scss'
 })
-export class TransactionsAddComponent {
+export class AddComponent {
 
 }
