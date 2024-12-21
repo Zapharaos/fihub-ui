@@ -115,7 +115,17 @@ export class BrokersComponent implements OnInit {
         this.brokers = brokers;
       },
       error: (error: any) => {
-        this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+        switch (error.status) {
+          case 400:
+            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
+            break;
+          case 404:
+            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
+            break;
+          default:
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+            break;
+        }
       }
     })
   }
