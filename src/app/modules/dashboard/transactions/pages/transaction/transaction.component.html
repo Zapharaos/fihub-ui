@@ -3,11 +3,59 @@
   subTitle="transactions.transaction.sub-title"
   backRoute="/dashboard/transactions"
   backTitle="transactions.transaction.back"
+  [actionsTemplate]="actionsTemplate"
   [contentTemplate]="contentTemplate"
 ></app-dashboard-content-layout>
 
-<ng-template #contentTemplate>
+<ng-template #actionsTemplate>
   <p-button (click)="routeToUpdate()"
             [disabled]="!transaction"
-            label="Update"/>
+            label="{{'actions.update' | translate}}"
+            icon="pi pi-pencil"/>
+  <p-button (click)="deleteTransaction($event)"
+            [disabled]="!transaction"
+            severity="danger"
+            label="{{'actions.delete' | translate}}"
+            icon="pi pi-trash"/>
+</ng-template>
+
+<ng-template #contentTemplate>
+    <p-tabs value="0">
+    <p-tablist>
+      <p-tab value="0">
+        <i class="pi pi-info-circle"></i>
+        <span>{{'transactions.transaction.overview.title' | translate}}</span>
+      </p-tab>
+      <p-tab value="1" disabled>
+        <i class="pi pi-chart-bar"></i>
+        <span>{{'transactions.transaction.analytics.title' | translate}}</span>
+      </p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <div class="flex flex-row gap-10 my-5">
+          <div class="flex flex-col gap-5 text-light">
+            <p>{{'transactions.transaction.overview.broker' | translate}}</p>
+            <p>{{'transactions.transaction.overview.date' | translate}}</p>
+            <p>{{'transactions.transaction.overview.type' | translate}}</p>
+            <p>{{'transactions.transaction.overview.asset' | translate}}</p>
+            <p>{{'transactions.transaction.overview.quantity' | translate}}</p>
+            <p>{{'transactions.transaction.overview.price' | translate}}</p>
+            <p>{{'transactions.transaction.overview.priceUnit' | translate}}</p>
+            <p>{{'transactions.transaction.overview.fee' | translate}}</p>
+          </div>
+          <div class="flex flex-col gap-5 font-medium">
+            <p>{{transaction?.broker?.name}}</p>
+            <p>{{transaction?.date}}</p>
+            <p>{{transaction?.transaction_type}}</p>
+            <p>{{transaction?.asset}}</p>
+            <p>{{transaction?.quantity}}</p>
+            <p>{{transaction?.price | currency}}</p>
+            <p>{{transaction?.price_unit | currency}}</p>
+            <p>{{transaction?.fee | currency}}</p>
+          </div>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 </ng-template>
