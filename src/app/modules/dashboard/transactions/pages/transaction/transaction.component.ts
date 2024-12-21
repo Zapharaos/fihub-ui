@@ -8,6 +8,7 @@ import {finalize} from "rxjs";
 import {Button} from "primeng/button";
 import {NgIf} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
+import {NotificationService} from "@shared/services/notification.service";
 
 @Component({
   selector: 'app-transaction',
@@ -29,7 +30,8 @@ export class TransactionComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private transactionsService: TransactionsService
+    private transactionsService: TransactionsService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +43,19 @@ export class TransactionComponent implements OnInit {
       next: (transaction: TransactionsTransaction) => {
         this.transaction = transaction;
       },
-      error: () => {
+      error: (error) => {
+        // TODO : route back previous page
+        switch (error.status) {
+          case 401:
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
+          case 404:
+            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
+            break;
+          default:
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+            break;
+        }
       }
     });
   }

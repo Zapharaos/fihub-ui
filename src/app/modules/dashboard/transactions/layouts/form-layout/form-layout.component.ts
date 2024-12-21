@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   TransactionsService,
   TransactionsTransaction,
@@ -102,8 +102,15 @@ export class FormLayoutComponent implements OnInit {
           this.getTransaction();
         }
       },
-      error: () => {
-        this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+      error: (error: any) => {
+        switch (error.status) {
+          case 401:
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
+          default:
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+            break;
+        }
       }
     })
   }
@@ -126,8 +133,6 @@ export class FormLayoutComponent implements OnInit {
       quantity: this.formService.getFormValue().quantity,
       transaction_type: this.formService.getFormValue().transaction_type.value,
     }
-
-    console.log(transaction)
 
     // Call API
     if(!this.transaction) {
@@ -152,6 +157,8 @@ export class FormLayoutComponent implements OnInit {
         // Find the broker inside the brokers array
         const broker = this.brokers.find(broker => broker.id === transaction.broker?.id);
 
+        // TODO : Handle Date field
+
         // Update the form values according to the transaction data
         this.formService.patchValue({
           date: transaction.date,
@@ -164,9 +171,14 @@ export class FormLayoutComponent implements OnInit {
         });
       },
       error: (error) => {
+        // TODO : route back previous page
         switch (error.status) {
+          case 401:
+            // TODO : handle 401
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
           case 404:
-            this.notificationService.showToastError('transactions.messages.not-found', {id: this.transaction?.id})
+            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
             break;
           default:
             this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
@@ -189,6 +201,10 @@ export class FormLayoutComponent implements OnInit {
           case 400:
             this.handleErrors400(error)
             break;
+          case 401:
+            // TODO : handle 401
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
           default:
             this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
             break;
@@ -202,14 +218,19 @@ export class FormLayoutComponent implements OnInit {
     this.transactionsService.updateTransaction(this.transaction?.id!, transaction).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (transaction: TransactionsTransaction) => {
-        console.log(transaction)
+      next: () => {
         this.notificationService.showToastSuccess('transactions.messages.update-success');
       },
       error: (error) => {
         switch (error.status) {
           case 400:
             this.handleErrors400(error)
+            break;
+          case 401:
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
+          case 404:
+            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
             break;
           default:
             this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')

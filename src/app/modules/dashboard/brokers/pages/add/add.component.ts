@@ -136,6 +136,9 @@ export class AddComponent implements OnInit {
           case 400:
             this.handleErrors400(error)
             break;
+          case 401:
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
           default:
             this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
             break;

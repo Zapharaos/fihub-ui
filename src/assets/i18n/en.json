@@ -32,6 +32,10 @@
       "summary": "Bad Request",
       "detail": "Your request is invalid. Please check your input and try again."
     },
+    "401": {
+      "summary": "Unauthorized",
+      "detail": "You are not authorized to perform this action. Please log in and try again."
+    },
     "404": {
       "summary": "Not Found",
       "detail": "Could not perform the action. The requested item could not be found."

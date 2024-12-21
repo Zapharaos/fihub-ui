@@ -73,8 +73,15 @@ export class ListComponent implements OnInit {
       next: (brokers: UserBrokerWithImage[]) => {
         this.userBrokers = brokers;
       },
-      error: () => {
-        this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+      error: (error: any) => {
+        switch (error.status) {
+          case 401:
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
+          default:
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+            break;
+        }
       }
     })
   }
@@ -92,6 +99,9 @@ export class ListComponent implements OnInit {
         switch (error.status) {
           case 400:
             this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
+            break;
+          case 401:
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
             break;
           default:
             this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
