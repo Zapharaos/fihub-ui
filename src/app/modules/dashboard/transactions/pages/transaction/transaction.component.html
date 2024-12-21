@@ -7,5 +7,7 @@
 ></app-dashboard-content-layout>
 
 <ng-template #contentTemplate>
-  <p-button [disabled]="!transaction?.id" [routerLink]="['/dashboard/transactions', transaction?.id, 'update']" label="Update"/>
+  <p-button (click)="routeToUpdate()"
+            [disabled]="!transaction"
+            label="Update"/>
 </ng-template>

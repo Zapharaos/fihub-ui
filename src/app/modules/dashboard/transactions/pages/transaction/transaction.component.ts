@@ -2,13 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {
   DashboardContentLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionsService, TransactionsTransaction} from "@core/api";
-import {finalize} from "rxjs";
 import {Button} from "primeng/button";
-import {NgIf} from "@angular/common";
-import {TranslatePipe} from "@ngx-translate/core";
 import {NotificationService} from "@shared/services/notification.service";
+import {TransactionStore} from "@shared/stores/transaction.service";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-transaction',
@@ -16,9 +15,6 @@ import {NotificationService} from "@shared/services/notification.service";
   imports: [
     DashboardContentLayoutComponent,
     Button,
-    NgIf,
-    TranslatePipe,
-    RouterLink
   ],
   templateUrl: './transaction.component.html',
   styleUrl: './transaction.component.scss'
@@ -30,21 +26,40 @@ export class TransactionComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private transactionsService: TransactionsService,
+    private transactionStore: TransactionStore,
     private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
 
+    // Retrieve transaction
+    this.transaction = this.transactionStore.transaction;
+
+    // Handle if transaction is undefined
+    if (!this.transaction) {
+      this.getTransaction();
+    }
+  }
+
+  routeToUpdate() {
+    this.transactionStore.transaction = this.transaction;
+    this.router.navigate(['/dashboard/transactions', this.transaction?.id, 'update']);
+  }
+
+  // Transaction
+
+  getTransaction() {
     this.loading = true;
-    this.transactionsService.getTransaction(this.route.snapshot.paramMap.get('id')!).pipe(finalize(() => {
+    this.transactionsService.getTransaction(this.route.snapshot.paramMap.get('id') ?? '').pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (transaction: TransactionsTransaction) => {
         this.transaction = transaction;
       },
       error: (error) => {
-        // TODO : route back previous page
+        this.router.navigate(['dashboard/transactions']);
         switch (error.status) {
           case 401:
             this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
@@ -57,6 +72,6 @@ export class TransactionComponent implements OnInit {
             break;
         }
       }
-    });
+    })
   }
 }

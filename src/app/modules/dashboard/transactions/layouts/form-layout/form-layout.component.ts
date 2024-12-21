@@ -19,7 +19,8 @@ import {DatePicker} from "primeng/datepicker";
 import {InputNumber} from "primeng/inputnumber";
 import {ButtonDirective} from "primeng/button";
 import {InputText} from "primeng/inputtext";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {TransactionStore} from "@shared/stores/transaction.service";
 
 @Component({
   selector: 'app-transactions-form-layout',
@@ -43,6 +44,7 @@ export class FormLayoutComponent implements OnInit {
   protected readonly transactionTypes = Object.values(TransactionsTransactionType)
     .map(type => ({ label: type, value: type }));
 
+  isCreateForm: boolean = true;
   loading: boolean = true;
   brokers!: BrokerWithImage[];
   transaction: TransactionsTransaction | undefined;
@@ -50,26 +52,25 @@ export class FormLayoutComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private notificationService: NotificationService,
     private fb: FormBuilder,
     protected formService: FormService,
     protected brokerDataService: BrokerDataService,
     private transactionsService: TransactionsService,
+    private transactionStore: TransactionStore,
   ) {
 
     // Retrieve transaction ID
     const transactionID = this.route.snapshot.paramMap.get('id') ?? undefined;
+    this.isCreateForm = transactionID === undefined;
 
-    // If ID is not null, it's an update form
-    if (transactionID) {
-      this.submitLabel = 'transactions.form.label.submit-update';
-      this.transaction = {
-        id: transactionID,
-      }
-    }
-    // If ID is null, it's a create form
-    else {
+    // Set form submit label
+    if (this.isCreateForm) {
       this.submitLabel = 'transactions.form.label.submit-add';
+    }
+    else {
+      this.submitLabel = 'transactions.form.label.submit-update';
     }
 
     // Init form
@@ -98,11 +99,13 @@ export class FormLayoutComponent implements OnInit {
       next: (brokers: UserBrokerWithImage[]) => {
         this.brokers = brokers.map(broker => broker.broker);
 
-        if (this.transaction) {
-          this.getTransaction();
+        // Load transaction data if it's an update form
+        if (!this.isCreateForm) {
+          this.loadTransaction();
         }
       },
       error: (error: any) => {
+        this.router.navigate(['dashboard/transactions']);
         switch (error.status) {
           case 401:
             this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
@@ -116,6 +119,27 @@ export class FormLayoutComponent implements OnInit {
   }
 
   // Form
+
+  patchForm() {
+    // Find the transaction type inside the transactionTypes array
+    const transactionType = this.transactionTypes.find(type => type.value === this.transaction?.transaction_type);
+
+    // Find the broker inside the brokers array
+    const broker = this.brokers.find(broker => broker.id === this.transaction?.broker?.id);
+
+    // TODO : Handle Date field
+
+    // Update the form values according to the transaction data
+    this.formService.patchValue({
+      date: this.transaction?.date,
+      transaction_type: transactionType,
+      asset: this.transaction?.asset,
+      price: this.transaction?.price,
+      quantity: this.transaction?.quantity,
+      fee: this.transaction?.fee,
+      broker: broker,
+    });
+  }
 
   submit() {
     // Skip if form invalid
@@ -144,37 +168,32 @@ export class FormLayoutComponent implements OnInit {
 
   // Transaction
 
+  loadTransaction() {
+
+    // Retrieve transaction from API if not in store
+    if (!this.transaction) {
+      this.getTransaction();
+      return
+    }
+
+    // Retrieve transaction from store
+    this.transaction = this.transactionStore.transaction;
+    this.patchForm();
+  }
+
   getTransaction() {
     this.loading = true;
-    this.transactionsService.getTransaction(this.transaction?.id!).pipe(finalize(() => {
+    this.transactionsService.getTransaction(this.route.snapshot.paramMap.get('id') ?? '').pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (transaction: TransactionsTransaction) => {
-
-        // Find the transaction type inside the transactionTypes array
-        const transactionType = this.transactionTypes.find(type => type.value === transaction.transaction_type);
-
-        // Find the broker inside the brokers array
-        const broker = this.brokers.find(broker => broker.id === transaction.broker?.id);
-
-        // TODO : Handle Date field
-
-        // Update the form values according to the transaction data
-        this.formService.patchValue({
-          date: transaction.date,
-          transaction_type: transactionType,
-          asset: transaction.asset,
-          price: transaction.price,
-          quantity: transaction.quantity,
-          fee: transaction.fee,
-          broker: broker,
-        });
+        this.transaction = transaction;
+        this.patchForm();
       },
       error: (error) => {
-        // TODO : route back previous page
+        this.router.navigate(['dashboard/transactions']);
         switch (error.status) {
           case 401:
-            // TODO : handle 401
             this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
             break;
           case 404:
@@ -202,7 +221,6 @@ export class FormLayoutComponent implements OnInit {
             this.handleErrors400(error)
             break;
           case 401:
-            // TODO : handle 401
             this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
             break;
           default:
