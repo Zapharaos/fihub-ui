@@ -30,7 +30,10 @@
     [styleClass]="'p-datatable-lg'"
     [rowHover]="true"
     [sortMode]="'multiple'"
-    [multiSortMeta]="[{field: 'date', order: -1}]">
+    [multiSortMeta]="[{field: 'date', order: -1}]"
+    selectionMode="single"
+    [(selection)]="selectedTransaction"
+    (onRowSelect)="onRowSelect($event)">
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="date">{{ 'transactions.table-column.date' | translate }} <p-sortIcon field="date" /></th>
@@ -41,11 +44,10 @@
         <th pSortableColumn="priceUnit">{{ 'transactions.table-column.priceUnit' | translate }} <p-sortIcon field="priceUnit" /></th>
         <th pSortableColumn="broker">{{ 'transactions.table-column.broker' | translate }} <p-sortIcon field="broker" /></th>
         <th pSortableColumn="fee">{{ 'transactions.table-column.fee' | translate }} <p-sortIcon field="fee" /></th>
-        <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-transaction>
-      <tr>
+      <tr [pSelectableRow]="transaction">
         <td>{{ transaction.date }}</td>
         <td>
           <p-tag [value]="transaction.transaction_type"
@@ -57,12 +59,6 @@
         <td>{{ transaction.price_unit | currency: 'USD' }}</td>
         <td>{{ transaction.broker.name }}</td>
         <td>{{ transaction.fee }}</td>
-        <td>
-          <p-button (click)="onRowOpen(transaction)"
-                    icon="pi pi-cog"
-                    severity="secondary"
-                    [rounded]="true" />
-        </td>
       </tr>
     </ng-template>
   </p-table>

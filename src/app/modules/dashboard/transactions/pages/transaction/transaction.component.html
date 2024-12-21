@@ -1,0 +1,11 @@
+<app-dashboard-content-layout
+  title="transactions.transaction.title"
+  subTitle="transactions.transaction.sub-title"
+  backRoute="/dashboard/transactions"
+  backTitle="transactions.transaction.back"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
+<ng-template #contentTemplate>
+  <p-button [routerLink]="['/dashboard/transactions', transaction?.id, 'update']" label="Update"/>
+</ng-template>

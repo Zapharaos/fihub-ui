@@ -203,10 +203,7 @@
       "priceUnit": "Price/unit",
       "fee": "Fee"
     },
-    "add": {
-      "back": "Transactions",
-      "title": "Add a transaction",
-      "sub-title": "Manually add a new transaction with all the data you have.",
+    "form": {
       "label": {
         "date": "Date",
         "transaction-type": "Select a transaction type",
@@ -215,7 +212,8 @@
         "price": "Price",
         "fee": "Fee",
         "broker": "Select a broker",
-        "submit": "Add transaction"
+        "submit-add": "Add transaction",
+        "submit-update": "Edit the transaction"
       },
       "error": {
         "broker-required": "Please select a broker.",
@@ -226,8 +224,23 @@
     },
     "messages": {
       "add-success": "Transaction has been added.",
-      "edit-success": "Transaction has been saved.",
+      "update-success": "Transaction has been saved.",
       "delete-success": "Transaction has been removed."
+    },
+    "add": {
+      "back": "Transactions",
+      "title": "Add a transaction",
+      "sub-title": "Manually add a new transaction with all the data you have."
+    },
+    "update": {
+      "back": "Transaction",
+      "title": "Update the transaction",
+      "sub-title": "Made a mistake? Edit the transaction with the correct data!"
+    },
+    "transaction": {
+      "back": "Transactions",
+      "title": "Transaction details",
+      "sub-title": "Everything there is to see about this transaction."
     }
   }
 }
