@@ -8,6 +8,7 @@
     "cancel": "Cancel",
     "close": "Close",
     "create": "Create",
+    "delete": "Delete",
     "save": "Save",
     "submit": "Submit",
     "update": "Update",
@@ -200,7 +201,6 @@
       "date": "Date",
       "broker": "Broker",
       "type": "Type",
-      "assets-type": "Assets type",
       "asset": "Asset",
       "quantity": "Quantity",
       "price": "Price",
@@ -244,7 +244,21 @@
     "transaction": {
       "back": "Transactions",
       "title": "Transaction details",
-      "sub-title": "Everything there is to see about this transaction."
+      "sub-title": "Everything there is to see about this transaction.",
+      "overview": {
+        "title": "Overview",
+        "date": "Date of purchase",
+        "broker": "Broker",
+        "type": "Transaction type",
+        "asset": "Asset traded",
+        "quantity": "Quantity purchased",
+        "price": "Total spent",
+        "priceUnit": "Price per unit",
+        "fee": "Fee"
+      },
+      "analytics": {
+        "title": "Analytics"
+      }
     }
   }
 }

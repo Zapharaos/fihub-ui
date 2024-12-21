@@ -42,6 +42,10 @@ body {
   --p-datatable-row-background: transparent;
   --p-datatable-row-color: var(--p-text-muted-color);
   --p-datatable-column-title-font-weight: 700;
+
+  // Tabs
+  --p-tabs-tablist-background: transparent;
+  --p-tabs-tabpanel-background: transparent;
 }
 
 @media screen and (min-width: 768px) {
