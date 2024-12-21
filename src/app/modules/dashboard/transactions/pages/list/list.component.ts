@@ -16,6 +16,7 @@ import {CurrencyPipe} from "@angular/common";
 import {TransactionsService, TransactionsTransaction} from "@core/api";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
+import {TransactionStore} from "@shared/stores/transaction.service";
 
 @Component({
   selector: 'app-transactions-list',
@@ -52,7 +53,8 @@ export class ListComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private transactionService: TransactionsService,
+    private transactionsService: TransactionsService,
+    private transactionStore: TransactionStore,
     private router: Router
   ) { }
 
@@ -64,7 +66,7 @@ export class ListComponent implements OnInit {
 
   loadTransactions() {
     this.loading = true;
-    this.transactionService.getTransactions().pipe(finalize(() => {
+    this.transactionsService.getTransactions().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (transactions: TransactionsTransaction[]) => {
@@ -99,6 +101,11 @@ export class ListComponent implements OnInit {
   // Table
 
   onRowSelect(event: any) {
+
+    // Store transaction
+    this.transactionStore.transaction = this.selectedTransaction;
+
+    // Move to transaction page
     this.router.navigate(['/dashboard/transactions', this.selectedTransaction?.id]);
   }
 
