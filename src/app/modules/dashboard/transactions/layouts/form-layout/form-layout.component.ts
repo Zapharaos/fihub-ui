@@ -101,7 +101,7 @@ export class FormLayoutComponent implements OnInit {
 
         // Load transaction data if it's an update form
         if (!this.isCreateForm) {
-          this.patchForm();
+          this.loadForm();
         }
       },
       error: (error: any) => {
@@ -119,6 +119,39 @@ export class FormLayoutComponent implements OnInit {
   }
 
   // Form
+
+  loadForm() {
+
+    // Retrieve transaction data
+    this.transaction = this.transactionStore.transaction;
+
+    // If the transaction is not loaded, then retrieve it
+    if (!this.transaction) {
+      const transactionID = this.route.snapshot.paramMap.get('id');
+      this.transactionsService.getTransaction(transactionID!).subscribe({
+        next: (transaction: TransactionsTransaction) => {
+          this.transactionStore.transaction = transaction;
+          this.transaction = transaction;
+          this.patchForm();
+        },
+        error: (error) => {
+          switch (error.status) {
+            case 401:
+              this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+              break;
+            case 404:
+              this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
+              break;
+            default:
+              this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+              break;
+          }
+          this.router.navigate(['/dashboard/transactions']);
+          return false;
+        }
+      })
+    }
+  }
 
   patchForm() {
     // Find the transaction type inside the transactionTypes array

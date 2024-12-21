@@ -2,15 +2,12 @@ import {CanActivateChildFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
 import {NotificationService} from "@shared/services/notification.service";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
-import {TransactionsService, TransactionsTransaction} from "@core/api";
-import {finalize} from "rxjs";
 
 export const transactionGuard: CanActivateChildFn = (childRoute, state) => {
 
   const router = inject(Router);
   const notificationService = inject(NotificationService);
   const transactionStore = inject(TransactionStore);
-  const transactionsService = inject(TransactionsService);
 
   // Get the transaction ID from the route
   const transactionID = childRoute.paramMap.get('id');
@@ -22,33 +19,9 @@ export const transactionGuard: CanActivateChildFn = (childRoute, state) => {
     return false;
   }
 
-  // If the transaction is already loaded, then pass
+  // Retrieve the transaction from the store
   const transaction = transactionStore.transaction;
-  if (transaction && transaction.id === transactionID) {
-    return true;
-  }
 
-  // If the transaction is not loaded, then retrieve it
-  transactionsService.getTransaction(transactionID).subscribe({
-    next: (transaction: TransactionsTransaction) => {
-      transactionStore.transaction = transaction;
-    },
-    error: (error) => {
-      switch (error.status) {
-        case 401:
-          notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-          break;
-        case 404:
-          notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-          break;
-        default:
-          notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-          break;
-      }
-      router.navigate(['/dashboard/transactions']);
-      return false;
-    }
-  })
-
-  return true;
+  // IF the transaction is loaded and the ID matches, then pass
+  return !(transaction && transaction.id !== transactionID);
 };
