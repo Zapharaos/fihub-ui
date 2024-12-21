@@ -16,7 +16,7 @@ import {CurrencyPipe} from "@angular/common";
 import {TransactionsService, TransactionsTransaction} from "@core/api";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
-import {TransactionStore} from "@shared/stores/transaction.service";
+import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 
 @Component({
   selector: 'app-transactions-list',

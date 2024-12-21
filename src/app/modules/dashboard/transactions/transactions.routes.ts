@@ -5,6 +5,7 @@ import {
 } from "@modules/dashboard/transactions/pages/add/add.component";
 import {TransactionComponent} from "@modules/dashboard/transactions/pages/transaction/transaction.component";
 import {UpdateComponent} from "@modules/dashboard/transactions/pages/update/update.component";
+import {transactionGuard} from "@modules/dashboard/transactions/guards/transaction.guard";
 
 export const routes: Routes = [
   {
@@ -17,6 +18,7 @@ export const routes: Routes = [
   },
   {
     path: ':id',
+    canActivateChild: [transactionGuard],
     children: [
       {
         path: '',

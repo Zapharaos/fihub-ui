@@ -20,7 +20,7 @@ import {InputNumber} from "primeng/inputnumber";
 import {ButtonDirective} from "primeng/button";
 import {InputText} from "primeng/inputtext";
 import {ActivatedRoute, Router} from "@angular/router";
-import {TransactionStore} from "@shared/stores/transaction.service";
+import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 
 @Component({
   selector: 'app-transactions-form-layout',
@@ -101,7 +101,7 @@ export class FormLayoutComponent implements OnInit {
 
         // Load transaction data if it's an update form
         if (!this.isCreateForm) {
-          this.loadTransaction();
+          this.patchForm();
         }
       },
       error: (error: any) => {
@@ -167,45 +167,6 @@ export class FormLayoutComponent implements OnInit {
   }
 
   // Transaction
-
-  loadTransaction() {
-
-    // Retrieve transaction from API if not in store
-    if (!this.transaction) {
-      this.getTransaction();
-      return
-    }
-
-    // Retrieve transaction from store
-    this.transaction = this.transactionStore.transaction;
-    this.patchForm();
-  }
-
-  getTransaction() {
-    this.loading = true;
-    this.transactionsService.getTransaction(this.route.snapshot.paramMap.get('id') ?? '').pipe(finalize(() => {
-      this.loading = false;
-    })).subscribe({
-      next: (transaction: TransactionsTransaction) => {
-        this.transaction = transaction;
-        this.patchForm();
-      },
-      error: (error) => {
-        this.router.navigate(['dashboard/transactions']);
-        switch (error.status) {
-          case 401:
-            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
-      }
-    })
-  }
 
   createTransaction(transaction: TransactionsTransactionInput) {
     this.loading = true;
