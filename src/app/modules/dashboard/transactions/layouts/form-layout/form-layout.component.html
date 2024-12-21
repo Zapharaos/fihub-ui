@@ -1,0 +1,146 @@
+<form [formGroup]="formService.getForm()" (ngSubmit)="submit()" class="flex flex-col gap-10 w-full dashboard-form">
+
+  <!--  Form fields  -->
+  <div class="grid grid-cols-12 gap-x-4 gap-y-8">
+
+    <!-- Select broker -->
+    <div class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="broker" class="font-medium">{{'transactions.form.label.broker' | translate}}</label>
+        <p-select formControlName="broker"
+                  [options]="brokers"
+                  [loading]="loading"
+                  [filter]="true"
+                  filterBy="name"
+                  optionLabel="name"
+                  placeholder="{{'transactions.form.label.broker' | translate}}"
+                  id="broker">
+          <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2" *ngIf="selectedOption">
+              <img *ngIf="selectedOption.imageUrl"
+                   [src]="selectedOption.imageUrl"
+                   [alt]="selectedOption.name"
+                   class="rounded-full w-7 h-7"
+              />
+              <div>{{ selectedOption.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-broker #item>
+            <div class="flex items-center gap-2">
+              <img *ngIf="broker.imageUrl"
+                   [src]="broker.imageUrl"
+                   [alt]="broker.name"
+                   class="rounded-full w-7 h-7"
+              />
+              <div>{{ broker.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template #dropdownicon>
+            <i class="pi pi-chevron-down"></i>
+          </ng-template>
+        </p-select>
+        <p-message *ngIf="formService.hasSpecifiedErrors('broker', ['required'], ['submit-required'])"
+                   severity="error" variant="simple" size="small">
+          {{'transactions.form.error.broker-required' | translate}}
+        </p-message>
+        <p-message *ngIf="formService.hasSpecifiedError('broker', 'submit-invalid')"
+                   severity="error" variant="simple" size="small">
+          {{'transactions.form.error.broker-invalid' | translate}}
+        </p-message>
+      </div>
+    </div>
+
+    <!-- Date -->
+    <div class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="date" class="font-medium">{{'transactions.form.label.date' | translate}}</label>
+        <p-datePicker formControlName="date" fluid />
+        <p-message *ngIf="formService.hasErrorTouched('date')" severity="error" variant="simple" size="small">
+          {{'error.required' | translate}}
+        </p-message>
+      </div>
+    </div>
+
+    <div class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <!-- Transaction Type -->
+      <div class="flex flex-col gap-2">
+        <label for="transaction_type" class="font-medium">{{'transactions.form.label.transaction-type' | translate}}</label>
+        <p-select formControlName="transaction_type"
+                  [options]="transactionTypes"
+                  optionLabel="label"
+                  placeholder="{{'transactions.form.label.transaction-type' | translate}}"
+                  id="transaction_type"
+        />
+        <p-message *ngIf="formService.hasSpecifiedErrors('transaction_type', ['required'], ['submit-required'])"
+                   severity="error" variant="simple" size="small">
+          {{'transactions.form.error.type-required' | translate}}
+        </p-message>
+        <p-message *ngIf="formService.hasSpecifiedError('transaction_type', 'submit-invalid')"
+                   severity="error" variant="simple" size="small">
+          {{'transactions.form.error.type-invalid' | translate}}
+        </p-message>
+      </div>
+
+      <!-- Asset -->
+      <div class="flex flex-col gap-2">
+        <label for="price" class="font-medium">{{'transactions.form.label.asset' | translate}}</label>
+        <input formControlName="asset"
+               pInputText
+               type="text"
+               id="asset"
+        />
+        <p-message *ngIf="formService.hasErrorTouched('asset')" severity="error" variant="simple" size="small">
+          {{'error.required' | translate}}
+        </p-message>
+      </div>
+    </div>
+
+    <div class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Quantity -->
+      <div class="flex flex-col gap-2">
+        <label for="quantity" class="font-medium">{{'transactions.form.label.quantity' | translate}}</label>
+        <p-inputNumber formControlName="quantity" inputId="quantity" locale="en-US" [min]="0" [minFractionDigits]="0" [maxFractionDigits]="20"/>
+        <p-message *ngIf="formService.hasSpecifiedErrors('quantity', ['invalid'], ['submit-invalid'])"
+                   severity="error" variant="simple" size="small">
+          {{'error.number-positive-strict' | translate}}
+        </p-message>
+      </div>
+
+      <!-- Price -->
+      <div class="flex flex-col gap-2">
+        <label for="price" class="font-medium">{{'transactions.form.label.price' | translate}}</label>
+        <p-inputNumber formControlName="price" inputId="price" mode="currency" currency="USD" locale="en-US" [min]="0"/>
+        <p-message *ngIf="formService.hasSpecifiedErrors('price', ['invalid'], ['submit-invalid'])"
+                   severity="error" variant="simple" size="small">
+          {{'error.number-positive-strict' | translate}}
+        </p-message>
+      </div>
+    </div>
+
+    <!-- Fee -->
+    <div class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="fee" class="font-medium">{{'transactions.form.label.fee' | translate}}</label>
+
+        <p-inputNumber formControlName="fee" inputId="fee" mode="currency" currency="USD" locale="en-US" [min]="0"/>
+        <p-message *ngIf="formService.hasSpecifiedErrors('fee', ['min'], ['submit-invalid'])"
+                   severity="error" variant="simple" size="small">
+          {{'error.number-positive' | translate}}
+        </p-message>
+      </div>
+    </div>
+
+  </div>
+
+  <!--  Submit  -->
+  <button [disabled]="formService.isSubmitDisabled()"
+          [loading]="loading"
+          icon="pi pi-plus"
+          label="{{submitLabel | translate}}"
+          pButton pRipple
+          type="submit"
+          class="w-fit"
+  ></button>
+
+</form>

@@ -11,7 +11,7 @@ import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {applyFilterGlobal} from "@shared/utils/table";
 import {InputTextModule} from "primeng/inputtext";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {CurrencyPipe} from "@angular/common";
 import {TransactionsService, TransactionsTransaction} from "@core/api";
 import {finalize} from "rxjs";
@@ -41,19 +41,19 @@ export class ListComponent implements OnInit {
   // TODO : export?
   // TODO : filter?
   // TODO : stateful?
-
   // TODO : pagination?
-  // TODO : open => as dialog into edit/delete ? or new page to view details and then edit/delete?
 
   protected readonly tablePropertiesFilter = ['date', 'broker', 'type', 'asset', 'quantity', 'price', 'fee']
 
   loading = false;
   transactions!: TransactionsTransaction[];
+  selectedTransaction: TransactionsTransaction | undefined;
   @ViewChild('dt') dt: Table | undefined;
 
   constructor(
     private notificationService: NotificationService,
-    private transactionService: TransactionsService
+    private transactionService: TransactionsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -95,8 +95,8 @@ export class ListComponent implements OnInit {
 
   // Table
 
-  onRowOpen(transaction: TransactionsTransaction) {
-    // TODO
+  onRowSelect(event: any) {
+    this.router.navigate(['/dashboard/transactions', this.selectedTransaction?.id]);
   }
 
   protected readonly applyFilterGlobal = applyFilterGlobal;
