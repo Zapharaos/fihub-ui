@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {BrokersBroker, BrokersService, BrokersUserBrokerInput, UserBrokerService} from "@core/api";
+import {BrokersBroker, BrokersUserBrokerInput, UserBrokerService} from "@core/api";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
-import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {TranslatePipe} from "@ngx-translate/core";
 import {CommonModule} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {Select} from "primeng/select";
@@ -16,7 +16,7 @@ import {Ripple} from "primeng/ripple";
 import {Message} from "primeng/message";
 import {TableBroker} from "@modules/dashboard/brokers/pages/list/list.component";
 import {FormService} from "@shared/services/form.service";
-import {BrokerDataService, BrokerWithImage} from "@core/services/broker-data.service";
+import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
 
 @Component({
   selector: 'app-brokers-add',
@@ -60,12 +60,11 @@ export class AddComponent implements OnInit {
   brokers!: BrokerWithImage[];
 
   constructor(
-    private translateService: TranslateService,
     private notificationService: NotificationService,
     private userBrokerService: UserBrokerService,
     private fb: FormBuilder,
     protected formService: FormService,
-    private brokerDataService: BrokerDataService,
+    private brokerImageService: BrokerImageService,
   ) {
 
     const form = this.fb.group({
@@ -97,7 +96,7 @@ export class AddComponent implements OnInit {
 
   loadBrokers() {
     this.loading = true;
-    this.brokerDataService.getBrokersWithImages(true).pipe(finalize(() => {
+    this.brokerImageService.getBrokersWithImages(true).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (brokers: BrokersBroker[]) => {

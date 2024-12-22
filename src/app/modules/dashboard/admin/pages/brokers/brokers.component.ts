@@ -24,7 +24,7 @@ import {ButtonProps} from "primeng/button/button.interface";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {FormService} from "@shared/services/form.service";
 import {Message} from "primeng/message";
-import {BrokerDataService, BrokerWithImage} from "@core/services/broker-data.service";
+import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
 
 @Component({
   selector: 'app-admin-brokers',
@@ -82,7 +82,7 @@ export class BrokersComponent implements OnInit {
     private confirmService: ConfirmService,
     private brokersService: BrokersService,
     private brokerImagesService: BrokerImagesService,
-    private brokerDataService: BrokerDataService,
+    private brokerImageService: BrokerImageService,
     private fb: FormBuilder,
     protected dialogService: DialogService,
     protected formService: FormService,
@@ -108,7 +108,7 @@ export class BrokersComponent implements OnInit {
 
   loadBrokers() {
     this.loading = true;
-    this.brokerDataService.getBrokersWithImages().pipe(finalize(() => {
+    this.brokerImageService.getBrokersWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (brokers: BrokersBroker[]) => {

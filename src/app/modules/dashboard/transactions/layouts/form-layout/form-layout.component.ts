@@ -5,11 +5,11 @@ import {
   TransactionsTransactionType
 } from "@core/api";
 import {
-  BrokerDataService,
+  BrokerImageService,
   BrokerWithImage,
   TransactionWithImage,
   UserBrokerWithImage
-} from "@core/services/broker-data.service";
+} from "@shared/services/broker-image.service";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {FormService} from "@shared/services/form.service";
@@ -62,7 +62,7 @@ export class FormLayoutComponent implements OnInit {
     protected formService: FormService,
     private transactionsService: TransactionsService,
     private transactionStore: TransactionStore,
-    private brokerDataService: BrokerDataService,
+    private brokerImageService: BrokerImageService,
   ) {
 
     // Retrieve transaction ID
@@ -97,7 +97,7 @@ export class FormLayoutComponent implements OnInit {
 
   loadBrokers() {
     this.loading = true;
-    this.brokerDataService.getUsersBrokersWithImages().pipe(finalize(() => {
+    this.brokerImageService.getUsersBrokersWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (brokers: UserBrokerWithImage[]) => {
@@ -137,7 +137,7 @@ export class FormLayoutComponent implements OnInit {
 
     // If the transaction is not loaded, then retrieve it from the API
     const transactionID = this.route.snapshot.paramMap.get('id');
-    this.brokerDataService.getTransactionWithImage(transactionID!).subscribe({
+    this.brokerImageService.getTransactionWithImage(transactionID!).subscribe({
       next: (transaction: TransactionWithImage) => {
         this.transactionStore.transaction = transaction;
         this.transaction = transaction;

@@ -8,7 +8,7 @@ import {
   UserBrokerService
 } from "@core/api";
 import {forkJoin, map, Observable, of, switchMap, tap} from "rxjs";
-import {ImageStore} from "@shared/stores/image.service";
+import {BrokerImageStore} from "@shared/stores/broker-image.service";
 
 // Export a type that extends BrokersBroker and adds an imageUrl property
 export type BrokerWithImage = BrokersBroker & { imageUrl?: string };
@@ -18,10 +18,10 @@ export type TransactionWithImage = Omit<TransactionsTransaction, 'broker'> & { b
 @Injectable({
   providedIn: 'root'
 })
-export class BrokerDataService {
+export class BrokerImageService {
 
   constructor(
-    private imageStore: ImageStore,
+    private brokerImageStore: BrokerImageStore,
     private brokersService: BrokersService,
     private brokerImagesService: BrokerImagesService,
     private userBrokerService: UserBrokerService,
@@ -40,7 +40,7 @@ export class BrokerDataService {
           }
 
           // Check if the broker image is already cached
-          const cachedImage = this.imageStore.brokerImages.get(broker.image_id);
+          const cachedImage = this.brokerImageStore.brokerImages.get(broker.image_id);
           if (cachedImage) {
             return of({
               ...broker,
@@ -53,7 +53,7 @@ export class BrokerDataService {
             map(image => {
               const imageUrl = URL.createObjectURL(image);
               // Cache the image for future use
-              this.imageStore.brokerImages?.set(broker.image_id!, imageUrl);
+              this.brokerImageStore.brokerImages?.set(broker.image_id!, imageUrl);
               return {
                 ...broker,
                 imageUrl
@@ -92,7 +92,7 @@ export class BrokerDataService {
           }
 
           // Check if the broker image is already cached
-          const cachedImage = this.imageStore.brokerImages.get(userBroker.broker.image_id);
+          const cachedImage = this.brokerImageStore.brokerImages.get(userBroker.broker.image_id);
           if (cachedImage) {
             return of({
               ...userBroker,
@@ -108,7 +108,7 @@ export class BrokerDataService {
             map(image => {
               const imageUrl = URL.createObjectURL(image);
               // Cache the image for future use
-              this.imageStore.brokerImages?.set(userBroker.broker?.image_id!, imageUrl);
+              this.brokerImageStore.brokerImages?.set(userBroker.broker?.image_id!, imageUrl);
               return {
                 ...userBroker,
                 broker: {
@@ -137,7 +137,7 @@ export class BrokerDataService {
     // Please cache the user brokers images before calling this function since it will be faster.
     // It might have 10K+ transactions with the same broker image === 10K+ requests to the same image.
 
-    return this.imageStore.brokerImages.size === 0
+    return this.brokerImageStore.brokerImages.size === 0
       ? this.getUsersBrokersWithImages().pipe(switchMap(() => this.getTransactionsWithImages()))
       : this.getTransactionsWithImages();
   }
@@ -183,7 +183,7 @@ export class BrokerDataService {
     }
 
     // Check if the broker image is already cached
-    const cachedImage = this.imageStore.brokerImages.get(transaction.broker!.image_id!);
+    const cachedImage = this.brokerImageStore.brokerImages.get(transaction.broker!.image_id!);
     if (cachedImage) {
       return of({
         ...transaction,
@@ -199,7 +199,7 @@ export class BrokerDataService {
       map(image => {
         const imageUrl = URL.createObjectURL(image);
         // Cache the image for future use
-        this.imageStore.brokerImages?.set(transaction.broker?.image_id!, imageUrl);
+        this.brokerImageStore.brokerImages?.set(transaction.broker?.image_id!, imageUrl);
         return {
           ...transaction,
           broker: {
