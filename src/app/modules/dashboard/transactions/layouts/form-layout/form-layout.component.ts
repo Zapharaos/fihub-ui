@@ -1,11 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {
   TransactionsService,
-  TransactionsTransaction,
   TransactionsTransactionInput,
   TransactionsTransactionType
 } from "@core/api";
-import {BrokerDataService, BrokerWithImage, UserBrokerWithImage} from "@core/services/broker-data.service";
+import {
+  BrokerDataService,
+  BrokerWithImage,
+  TransactionWithImage,
+  UserBrokerWithImage
+} from "@core/services/broker-data.service";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {FormService} from "@shared/services/form.service";
@@ -47,7 +51,7 @@ export class FormLayoutComponent implements OnInit {
   isCreateForm: boolean = true;
   loading: boolean = true;
   brokers!: BrokerWithImage[];
-  transaction: TransactionsTransaction | undefined;
+  transaction: TransactionWithImage | undefined;
   submitLabel: string = '';
 
   constructor(
@@ -56,9 +60,9 @@ export class FormLayoutComponent implements OnInit {
     private notificationService: NotificationService,
     private fb: FormBuilder,
     protected formService: FormService,
-    protected brokerDataService: BrokerDataService,
     private transactionsService: TransactionsService,
     private transactionStore: TransactionStore,
+    private brokerDataService: BrokerDataService,
   ) {
 
     // Retrieve transaction ID
@@ -125,32 +129,35 @@ export class FormLayoutComponent implements OnInit {
     // Retrieve transaction data
     this.transaction = this.transactionStore.transaction;
 
-    // If the transaction is not loaded, then retrieve it
-    if (!this.transaction) {
-      const transactionID = this.route.snapshot.paramMap.get('id');
-      this.transactionsService.getTransaction(transactionID!).subscribe({
-        next: (transaction: TransactionsTransaction) => {
-          this.transactionStore.transaction = transaction;
-          this.transaction = transaction;
-          this.patchForm();
-        },
-        error: (error) => {
-          switch (error.status) {
-            case 401:
-              this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-              break;
-            case 404:
-              this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-              break;
-            default:
-              this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-              break;
-          }
-          this.router.navigate(['/dashboard/transactions']);
-          return false;
-        }
-      })
+    // If the transaction is already loaded
+    if (this.transaction) {
+      this.patchForm();
+      return;
     }
+
+    // If the transaction is not loaded, then retrieve it from the API
+    const transactionID = this.route.snapshot.paramMap.get('id');
+    this.brokerDataService.getTransactionWithImage(transactionID!).subscribe({
+      next: (transaction: TransactionWithImage) => {
+        this.transactionStore.transaction = transaction;
+        this.transaction = transaction;
+        this.patchForm();
+      },
+      error: (error) => {
+        switch (error.status) {
+          case 401:
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
+          case 404:
+            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
+            break;
+          default:
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+            break;
+        }
+        this.router.navigate(['/dashboard/transactions']);
+      }
+    })
   }
 
   patchForm() {

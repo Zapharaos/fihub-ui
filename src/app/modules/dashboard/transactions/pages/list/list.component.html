@@ -37,12 +37,12 @@
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="date">{{ 'transactions.table-column.date' | translate }} <p-sortIcon field="date" /></th>
-        <th pSortableColumn="type">{{ 'transactions.table-column.type' | translate }} <p-sortIcon field="type" /></th>
+        <th pSortableColumn="transaction_type">{{ 'transactions.table-column.type' | translate }} <p-sortIcon field="transaction_type" /></th>
         <th pSortableColumn="asset">{{ 'transactions.table-column.asset' | translate }} <p-sortIcon field="asset" /></th>
         <th pSortableColumn="price">{{ 'transactions.table-column.price' | translate }} <p-sortIcon field="price" /></th>
         <th pSortableColumn="quantity">{{ 'transactions.table-column.quantity' | translate }} <p-sortIcon field="quantity" /></th>
-        <th pSortableColumn="priceUnit">{{ 'transactions.table-column.priceUnit' | translate }} <p-sortIcon field="priceUnit" /></th>
-        <th pSortableColumn="broker">{{ 'transactions.table-column.broker' | translate }} <p-sortIcon field="broker" /></th>
+        <th pSortableColumn="price_unit">{{ 'transactions.table-column.priceUnit' | translate }} <p-sortIcon field="price_unit" /></th>
+        <th pSortableColumn="broker.name">{{ 'transactions.table-column.broker' | translate }} <p-sortIcon field="broker.name" /></th>
         <th pSortableColumn="fee">{{ 'transactions.table-column.fee' | translate }} <p-sortIcon field="fee" /></th>
       </tr>
     </ng-template>
@@ -57,7 +57,16 @@
         <td>{{ transaction.price | currency: 'USD' }}</td>
         <td>{{ transaction.quantity }}</td>
         <td>{{ transaction.price_unit | currency: 'USD' }}</td>
-        <td>{{ transaction.broker.name }}</td>
+        <td>
+          <div class="flex flex-row gap-3">
+            <img *ngIf="transaction.broker.imageUrl"
+                 [src]="transaction.broker.imageUrl"
+                 [alt]="transaction.broker.name"
+                 class="rounded-full w-7 h-7"
+            />
+            <div>{{ transaction.broker.name }}</div>
+          </div>
+        </td>
         <td>{{ transaction.fee }}</td>
       </tr>
     </ng-template>

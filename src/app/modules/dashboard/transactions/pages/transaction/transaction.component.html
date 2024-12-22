@@ -45,7 +45,14 @@
             <p>{{'transactions.transaction.overview.fee' | translate}}</p>
           </div>
           <div class="flex flex-col gap-5 font-medium">
-            <p>{{transaction?.broker?.name}}</p>
+            <div class="flex flex-row gap-3">
+              <img *ngIf="transaction?.broker?.imageUrl"
+                   [src]="transaction?.broker?.imageUrl"
+                   [alt]="transaction?.broker?.name"
+                   class="rounded-full w-7 h-7"
+              />
+              <div>{{ transaction?.broker?.name }}</div>
+            </div>
             <p>{{transaction?.date}}</p>
             <p>{{transaction?.transaction_type}}</p>
             <p>{{transaction?.asset}}</p>
