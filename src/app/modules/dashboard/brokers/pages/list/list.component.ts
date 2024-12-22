@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {TranslatePipe} from "@ngx-translate/core";
 import {ButtonModule} from "primeng/button";
 import {Table, TableModule} from "primeng/table";
 import {IconField} from "primeng/iconfield";
@@ -16,7 +16,7 @@ import {
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {applyFilterGlobal, onRowEditCancel, onRowEditInit, onRowEditSave} from "@shared/utils/table";
 import {ConfirmService} from "@shared/services/confirm.service";
-import {BrokerDataService, UserBrokerWithImage} from "@core/services/broker-data.service";
+import {BrokerImageService, UserBrokerWithImage} from "@shared/services/broker-image.service";
 
 // TODO : temp fields
 export interface TableBroker extends BrokersUserBroker {
@@ -52,11 +52,10 @@ export class ListComponent implements OnInit {
   @ViewChild('dt') dt: Table | undefined;
 
   constructor(
-    private translateService: TranslateService,
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
     private userBrokerService: UserBrokerService,
-    private brokerDataService: BrokerDataService,
+    private brokerImageService: BrokerImageService,
   ) { }
 
   ngOnInit() {
@@ -67,7 +66,7 @@ export class ListComponent implements OnInit {
 
   loadBrokers() {
     this.loading = true;
-    this.brokerDataService.getUsersBrokersWithImages().pipe(finalize(() => {
+    this.brokerImageService.getUsersBrokersWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (brokers: UserBrokerWithImage[]) => {

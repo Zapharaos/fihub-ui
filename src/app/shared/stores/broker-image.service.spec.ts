@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BrokerDataService } from '@core/services/broker-data.service';
+import { ImageService } from './broker-image.service';
 
-describe('BrokerDataService', () => {
-  let service: BrokerDataService;
+describe('ImageService', () => {
+  let service: ImageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BrokerDataService);
+    service = TestBed.inject(ImageService);
   });
 
   it('should be created', () => {

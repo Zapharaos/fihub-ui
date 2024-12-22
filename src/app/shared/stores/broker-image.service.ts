@@ -4,7 +4,7 @@ import {BehaviorSubject} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class ImageStore {
+export class BrokerImageStore {
 
   private readonly _brokerImages = new BehaviorSubject<Map<string, string>>(new Map());
   readonly brokerImages$ = this._brokerImages.asObservable();

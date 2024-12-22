@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {TransactionWithImage} from "@core/services/broker-data.service";
+import {TransactionWithImage} from "@shared/services/broker-image.service";
 
 @Injectable({
   providedIn: 'root'

@@ -13,12 +13,10 @@ import {applyFilterGlobal} from "@shared/utils/table";
 import {InputTextModule} from "primeng/inputtext";
 import {Router, RouterLink} from "@angular/router";
 import {CurrencyPipe, NgIf} from "@angular/common";
-import {TransactionsService, TransactionsTransaction} from "@core/api";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
-import {BrokerDataService, TransactionWithImage} from "@core/services/broker-data.service";
-import {ImageStore} from "@shared/stores/image.service";
+import {BrokerImageService, TransactionWithImage} from "@shared/services/broker-image.service";
 
 @Component({
   selector: 'app-transactions-list',
@@ -56,7 +54,7 @@ export class ListComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private brokerDataService: BrokerDataService,
+    private brokerImageService: BrokerImageService,
     private transactionStore: TransactionStore,
     private router: Router,
   ) { }
@@ -69,7 +67,7 @@ export class ListComponent implements OnInit {
 
   loadTransactions() {
     this.loading = true;
-    this.brokerDataService.cacheImagesAndGetTransactionsWithImages().pipe(finalize(() => {
+    this.brokerImageService.cacheImagesAndGetTransactionsWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (transactions: TransactionWithImage[]) => {

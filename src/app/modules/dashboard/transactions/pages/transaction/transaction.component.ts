@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { TabsModule } from 'primeng/tabs';
 import {TranslatePipe} from "@ngx-translate/core";
 import {ConfirmService} from "@shared/services/confirm.service";
-import {BrokerDataService, TransactionWithImage} from "@core/services/broker-data.service";
+import {BrokerImageService, TransactionWithImage} from "@shared/services/broker-image.service";
 
 @Component({
   selector: 'app-transaction',
@@ -35,7 +35,7 @@ export class TransactionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private brokerDataService: BrokerDataService,
+    private brokerImageService: BrokerImageService,
     private transactionsService: TransactionsService,
     private transactionStore: TransactionStore,
     private notificationService: NotificationService,
@@ -54,7 +54,7 @@ export class TransactionComponent implements OnInit {
     // If the transaction is not loaded, then retrieve it from the API
     this.loading = true;
     const transactionID = this.route.snapshot.paramMap.get('id');
-    this.brokerDataService.getTransactionWithImage(transactionID!).pipe(finalize(() => {
+    this.brokerImageService.getTransactionWithImage(transactionID!).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (transaction: TransactionWithImage) => {
