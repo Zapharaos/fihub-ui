@@ -12,11 +12,13 @@ import {InputIcon} from "primeng/inputicon";
 import {applyFilterGlobal} from "@shared/utils/table";
 import {InputTextModule} from "primeng/inputtext";
 import {Router, RouterLink} from "@angular/router";
-import {CurrencyPipe} from "@angular/common";
+import {CurrencyPipe, NgIf} from "@angular/common";
 import {TransactionsService, TransactionsTransaction} from "@core/api";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
+import {BrokerDataService, TransactionWithImage} from "@core/services/broker-data.service";
+import {ImageStore} from "@shared/stores/image.service";
 
 @Component({
   selector: 'app-transactions-list',
@@ -33,6 +35,7 @@ import {TransactionStore} from "@modules/dashboard/transactions/stores/transacti
     InputTextModule,
     RouterLink,
     CurrencyPipe,
+    NgIf,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
@@ -44,18 +47,18 @@ export class ListComponent implements OnInit {
   // TODO : stateful?
   // TODO : pagination?
 
-  protected readonly tablePropertiesFilter = ['date', 'broker', 'type', 'asset', 'quantity', 'price', 'fee']
+  protected readonly tablePropertiesFilter = ['date', 'broker.name', 'transaction_type', 'asset', 'quantity', 'price', 'priceUnit', 'fee']
 
   loading = false;
-  transactions!: TransactionsTransaction[];
-  selectedTransaction: TransactionsTransaction | undefined;
+  transactions!: TransactionWithImage[];
+  selectedTransaction: TransactionWithImage | undefined;
   @ViewChild('dt') dt: Table | undefined;
 
   constructor(
     private notificationService: NotificationService,
-    private transactionsService: TransactionsService,
+    private brokerDataService: BrokerDataService,
     private transactionStore: TransactionStore,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -66,10 +69,10 @@ export class ListComponent implements OnInit {
 
   loadTransactions() {
     this.loading = true;
-    this.transactionsService.getTransactions().pipe(finalize(() => {
+    this.brokerDataService.cacheImagesAndGetTransactionsWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (transactions: TransactionsTransaction[]) => {
+      next: (transactions: TransactionWithImage[]) => {
         this.transactions = transactions;
       },
       error: (error: any) => {

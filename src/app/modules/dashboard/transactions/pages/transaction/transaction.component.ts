@@ -3,16 +3,16 @@ import {
   DashboardContentLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {ActivatedRoute, Router} from "@angular/router";
-import {BrokersBroker, TransactionsService, TransactionsTransaction} from "@core/api";
+import {TransactionsService} from "@core/api";
 import {Button} from "primeng/button";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
 import { CommonModule } from '@angular/common';
 import { TabsModule } from 'primeng/tabs';
-import {DialogMode} from "@shared/services/dialog.service";
 import {TranslatePipe} from "@ngx-translate/core";
 import {ConfirmService} from "@shared/services/confirm.service";
+import {BrokerDataService, TransactionWithImage} from "@core/services/broker-data.service";
 
 @Component({
   selector: 'app-transaction',
@@ -30,11 +30,12 @@ import {ConfirmService} from "@shared/services/confirm.service";
 export class TransactionComponent implements OnInit {
 
   loading = false;
-  transaction: TransactionsTransaction | undefined;
+  transaction: TransactionWithImage | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private brokerDataService: BrokerDataService,
     private transactionsService: TransactionsService,
     private transactionStore: TransactionStore,
     private notificationService: NotificationService,
@@ -42,37 +43,40 @@ export class TransactionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Retrieve transaction
+    // Retrieve transaction data
     this.transaction = this.transactionStore.transaction;
 
-    // If the transaction is not loaded, then retrieve it
-    if (!this.transaction) {
-      this.loading = true;
-      const transactionID = this.route.snapshot.paramMap.get('id');
-      this.transactionsService.getTransaction(transactionID!).pipe(finalize(() => {
-        this.loading = false;
-      })).subscribe({
-        next: (transaction: TransactionsTransaction) => {
-          this.transactionStore.transaction = transaction;
-          this.transaction = transaction;
-        },
-        error: (error) => {
-          switch (error.status) {
-            case 401:
-              this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-              break;
-            case 404:
-              this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-              break;
-            default:
-              this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-              break;
-          }
-          this.router.navigate(['/dashboard/transactions']);
-          return false;
-        }
-      })
+    // If the transaction is already loaded
+    if (this.transaction) {
+      return;
     }
+
+    // If the transaction is not loaded, then retrieve it from the API
+    this.loading = true;
+    const transactionID = this.route.snapshot.paramMap.get('id');
+    this.brokerDataService.getTransactionWithImage(transactionID!).pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe({
+      next: (transaction: TransactionWithImage) => {
+        this.transactionStore.transaction = transaction;
+        this.transaction = transaction;
+      },
+      error: (error) => {
+        switch (error.status) {
+          case 401:
+            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
+            break;
+          case 404:
+            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
+            break;
+          default:
+            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+            break;
+        }
+        this.router.navigate(['/dashboard/transactions']);
+        return false;
+      }
+    })
   }
 
   routeToUpdate() {
@@ -108,6 +112,4 @@ export class TransactionComponent implements OnInit {
       })
     })
   }
-
-  protected readonly DialogMode = DialogMode;
 }

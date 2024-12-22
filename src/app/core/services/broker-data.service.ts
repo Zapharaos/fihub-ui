@@ -1,10 +1,19 @@
 import { Injectable } from '@angular/core';
-import {BrokerImagesService, BrokersBroker, BrokersService, BrokersUserBroker, UserBrokerService} from "@core/api";
+import {
+  BrokerImagesService,
+  BrokersBroker,
+  BrokersService,
+  BrokersUserBroker, TransactionsService,
+  TransactionsTransaction,
+  UserBrokerService
+} from "@core/api";
 import {forkJoin, map, Observable, of, switchMap, tap} from "rxjs";
+import {ImageStore} from "@shared/stores/image.service";
 
 // Export a type that extends BrokersBroker and adds an imageUrl property
 export type BrokerWithImage = BrokersBroker & { imageUrl?: string };
 export type UserBrokerWithImage = Omit<BrokersUserBroker, 'broker'> & { broker: BrokerWithImage };
+export type TransactionWithImage = Omit<TransactionsTransaction, 'broker'> & { broker: BrokerWithImage };
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +21,11 @@ export type UserBrokerWithImage = Omit<BrokersUserBroker, 'broker'> & { broker: 
 export class BrokerDataService {
 
   constructor(
+    private imageStore: ImageStore,
     private brokersService: BrokersService,
     private brokerImagesService: BrokerImagesService,
-    private userBrokerService: UserBrokerService
+    private userBrokerService: UserBrokerService,
+    private transactionService: TransactionsService
   ) {}
 
   getBrokersWithImages(enabledOnly?: boolean): Observable<BrokerWithImage[]> {
@@ -27,12 +38,27 @@ export class BrokerDataService {
           if (!broker.image_id) {
             return of(broker);
           }
+
+          // Check if the broker image is already cached
+          const cachedImage = this.imageStore.brokerImages.get(broker.image_id);
+          if (cachedImage) {
+            return of({
+              ...broker,
+              imageUrl: cachedImage
+            });
+          }
+
           // Fetch the broker image and map it to the broker
           return this.brokerImagesService.getBrokerImage(broker.id!, broker.image_id).pipe(
-            map(image => ({
-              ...broker,
-              imageUrl: URL.createObjectURL(image)
-            }))
+            map(image => {
+              const imageUrl = URL.createObjectURL(image);
+              // Cache the image for future use
+              this.imageStore.brokerImages?.set(broker.image_id!, imageUrl);
+              return {
+                ...broker,
+                imageUrl
+              };
+            })
           )
         });
 
@@ -50,6 +76,7 @@ export class BrokerDataService {
   getUsersBrokersWithImages(): Observable<UserBrokerWithImage[]> {
     // Fetch brokers from the service
     return this.userBrokerService.getUserBrokers().pipe(
+
       switchMap((userBrokers: BrokersUserBroker[]) => {
         // For each userBroker, fetch the corresponding image
         const userBrokerImageRequests = userBrokers.map(userBroker => {
@@ -63,15 +90,33 @@ export class BrokerDataService {
               }
             } as UserBrokerWithImage);
           }
-          // Fetch the broker image and map it to the broker
-          return this.brokerImagesService.getBrokerImage(userBroker.broker.id!, userBroker.broker.image_id).pipe(
-            map(image => ({
+
+          // Check if the broker image is already cached
+          const cachedImage = this.imageStore.brokerImages.get(userBroker.broker.image_id);
+          if (cachedImage) {
+            return of({
               ...userBroker,
               broker: {
                 ...userBroker.broker,
-                imageUrl: URL.createObjectURL(image)
+                imageUrl: cachedImage
               }
-            } as UserBrokerWithImage))
+            } as UserBrokerWithImage);
+          }
+
+          // Fetch the broker image and map it to the broker
+          return this.brokerImagesService.getBrokerImage(userBroker.broker.id!, userBroker.broker.image_id).pipe(
+            map(image => {
+              const imageUrl = URL.createObjectURL(image);
+              // Cache the image for future use
+              this.imageStore.brokerImages?.set(userBroker.broker?.image_id!, imageUrl);
+              return {
+                ...userBroker,
+                broker: {
+                  ...userBroker.broker,
+                  imageUrl
+                }
+              } as UserBrokerWithImage;
+            })
           );
         });
 
@@ -82,6 +127,86 @@ export class BrokerDataService {
             next: brokersWithImages => brokersWithImages
           })
         );
+      })
+    );
+  }
+
+  cacheImagesAndGetTransactionsWithImages(): Observable<TransactionWithImage[]> {
+
+    // Note : Didn't find a way to run all observables in parallel to check for cached images and update the cache.
+    // Please cache the user brokers images before calling this function since it will be faster.
+    // It might have 10K+ transactions with the same broker image === 10K+ requests to the same image.
+
+    return this.imageStore.brokerImages.size === 0
+      ? this.getUsersBrokersWithImages().pipe(switchMap(() => this.getTransactionsWithImages()))
+      : this.getTransactionsWithImages();
+  }
+
+  private getTransactionsWithImages(): Observable<TransactionWithImage[]> {
+
+    // Fetch transactions from the service
+    return this.transactionService.getTransactions().pipe(
+      switchMap((transactions: TransactionsTransaction[]) => {
+
+        // For each transaction, fetch the corresponding image
+        const transactionImageRequests = transactions.map(transaction =>
+          this.mapTransactionWithImage(transaction)
+        );
+
+        // Combine all image requests into a single observable
+        return forkJoin(transactionImageRequests).pipe(
+          // Cache the transactions with images and return them
+          tap({
+            next: transactionsWithImages => transactionsWithImages
+          })
+        );
+      })
+    );
+  }
+
+  getTransactionWithImage(transactionId: string): Observable<TransactionWithImage> {
+    return this.transactionService.getTransaction(transactionId).pipe(
+      switchMap(transaction => this.mapTransactionWithImage(transaction))
+    );
+  }
+
+  private mapTransactionWithImage(transaction: TransactionsTransaction): Observable<TransactionWithImage> {
+    // If the broker does not have an image, return the broker as is
+    if (!transaction.broker?.image_id) {
+      return of({
+        ...transaction,
+        broker: {
+          ...transaction.broker,
+          imageUrl: undefined
+        }
+      } as TransactionWithImage);
+    }
+
+    // Check if the broker image is already cached
+    const cachedImage = this.imageStore.brokerImages.get(transaction.broker!.image_id!);
+    if (cachedImage) {
+      return of({
+        ...transaction,
+        broker: {
+          ...transaction.broker,
+          imageUrl: cachedImage
+        }
+      } as TransactionWithImage);
+    }
+
+    // Fetch the broker image and map it to the broker
+    return this.brokerImagesService.getBrokerImage(transaction.broker.id!, transaction.broker.image_id).pipe(
+      map(image => {
+        const imageUrl = URL.createObjectURL(image);
+        // Cache the image for future use
+        this.imageStore.brokerImages?.set(transaction.broker?.image_id!, imageUrl);
+        return {
+          ...transaction,
+          broker: {
+            ...transaction.broker,
+            imageUrl
+          }
+        } as TransactionWithImage;
       })
     );
   }
