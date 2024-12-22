@@ -136,7 +136,7 @@
   <!--  Submit  -->
   <button [disabled]="formService.isSubmitDisabled()"
           [loading]="loading"
-          icon="pi pi-plus"
+          icon="pi {{submitIcon}}"
           label="{{submitLabel | translate}}"
           pButton pRipple
           type="submit"

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {
-  TransactionsService,
+  TransactionsService, TransactionsTransaction,
   TransactionsTransactionInput,
   TransactionsTransactionType
 } from "@core/api";
@@ -53,6 +53,7 @@ export class FormLayoutComponent implements OnInit {
   brokers!: BrokerWithImage[];
   transaction: TransactionWithImage | undefined;
   submitLabel: string = '';
+  submitIcon: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -72,9 +73,11 @@ export class FormLayoutComponent implements OnInit {
     // Set form submit label
     if (this.isCreateForm) {
       this.submitLabel = 'transactions.form.label.submit-add';
+      this.submitIcon = 'pi-plus';
     }
     else {
       this.submitLabel = 'transactions.form.label.submit-update';
+      this.submitIcon = 'pi-check';
     }
 
     // Init form
@@ -238,7 +241,9 @@ export class FormLayoutComponent implements OnInit {
       this.loading = false;
     })).subscribe({
       next: () => {
+        this.transactionStore.clearTransaction();
         this.notificationService.showToastSuccess('transactions.messages.update-success');
+        this.router.navigate(['/dashboard/transactions', this.transaction?.id]);
       },
       error: (error) => {
         switch (error.status) {

@@ -28,7 +28,10 @@
     [loading]="loading"
     [styleClass]="'p-datatable-lg'"
     [rowHover]="true"
-    sortField="name" [sortOrder]="1">
+    sortField="name" [sortOrder]="1"
+    selectionMode="single"
+    [(selection)]="broker"
+    (onRowSelect)="onRowSelect($event)">
     <ng-template pTemplate="header">
       <tr>
         <th>{{ 'admin.brokers.table-column.name' | translate }}</th>
@@ -38,7 +41,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-broker>
-      <tr>
+      <tr [pSelectableRow]="broker">
         <td>
           {{broker.name}}
         </td>

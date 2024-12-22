@@ -142,6 +142,10 @@ export class BrokersComponent implements OnInit {
 
   // Table
 
+  onRowSelect(event: any) {
+    this.openDialog(DialogMode.UPDATE, this.broker);
+  }
+
   onRowDelete(event: Event, broker:  BrokersBroker) {
     this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
   }
