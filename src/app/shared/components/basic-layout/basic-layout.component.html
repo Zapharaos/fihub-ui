@@ -28,7 +28,7 @@
   </header>
 
   <!-- Sidebar and Content Container -->
-  <div class="flex flex-row pt-12">
+  <div class="flex flex-row flex-grow pt-12 overflow-y-hidden">
 
     <!-- Sidebar -->
     <!-- Always visible. Hidden only when chosen until before MEDIUM size -->
@@ -102,10 +102,11 @@
     </div>
 
     <!-- Main Content -->
-    <div [ngClass]="{'max-md:ml-0': !sidebarVisible}" class="ml-64 flex-grow">
+    <div [ngClass]="{'max-md:ml-0': !sidebarVisible}" class="ml-64 flex flex-col flex-grow">
       <div class="content-wrapper">
         <router-outlet></router-outlet>
       </div>
+      <app-footer class="mt-auto"></app-footer>
     </div>
   </div>
 </div>

@@ -6,6 +6,7 @@ import {Ripple} from "primeng/ripple";
 import {TranslateModule} from "@ngx-translate/core";
 import {LayoutItem} from "@shared/models/layout-item";
 import {ThemeService} from "@shared/services/theme.service";
+import {FooterComponent} from "@shared/components/footer/footer.component";
 
 @Component({
   selector: 'app-basic-layout',
@@ -20,6 +21,7 @@ import {ThemeService} from "@shared/services/theme.service";
     TranslateModule,
     NgClass,
     NgForOf,
+    FooterComponent,
   ],
   templateUrl: './basic-layout.component.html',
   styleUrl: './basic-layout.component.scss'
