@@ -5,13 +5,12 @@ import {AuthService} from "@core/services/auth.service";
 import {NotificationService} from "@shared/services/notification.service";
 
 @Component({
-  selector: 'app-account',
-  standalone: true,
-  imports: [
-    Button
-  ],
-  templateUrl: './account.component.html',
-  styleUrl: './account.component.scss'
+    selector: 'app-account',
+    imports: [
+        Button
+    ],
+    templateUrl: './account.component.html',
+    styleUrl: './account.component.scss'
 })
 export class AccountComponent {
   

@@ -7,16 +7,15 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-overview',
-  standalone: true,
-  imports: [
-    DashboardContentLayoutComponent,
-    Button,
-    TranslatePipe,
-    RouterLink
-  ],
-  templateUrl: './overview.component.html',
-  styleUrl: './overview.component.scss'
+    selector: 'app-overview',
+    imports: [
+        DashboardContentLayoutComponent,
+        Button,
+        TranslatePipe,
+        RouterLink
+    ],
+    templateUrl: './overview.component.html',
+    styleUrl: './overview.component.scss'
 })
 export class OverviewComponent {
 

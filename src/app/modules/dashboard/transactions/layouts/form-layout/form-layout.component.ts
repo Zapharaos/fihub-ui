@@ -27,21 +27,20 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 
 @Component({
-  selector: 'app-transactions-form-layout',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    TranslatePipe,
-    Select,
-    NgIf,
-    Message,
-    DatePicker,
-    InputNumber,
-    ButtonDirective,
-    InputText
-  ],
-  templateUrl: './form-layout.component.html',
-  styleUrl: './form-layout.component.scss'
+    selector: 'app-transactions-form-layout',
+    imports: [
+        ReactiveFormsModule,
+        TranslatePipe,
+        Select,
+        NgIf,
+        Message,
+        DatePicker,
+        InputNumber,
+        ButtonDirective,
+        InputText
+    ],
+    templateUrl: './form-layout.component.html',
+    styleUrl: './form-layout.component.scss'
 })
 export class FormLayoutComponent implements OnInit {
 
