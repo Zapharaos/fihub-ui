@@ -15,17 +15,16 @@ import {ConfirmService} from "@shared/services/confirm.service";
 import {BrokerImageService, TransactionWithImage} from "@shared/services/broker-image.service";
 
 @Component({
-  selector: 'app-transaction',
-  standalone: true,
-  imports: [
-    DashboardContentLayoutComponent,
-    Button,
-    CommonModule,
-    TabsModule,
-    TranslatePipe,
-  ],
-  templateUrl: './transaction.component.html',
-  styleUrl: './transaction.component.scss'
+    selector: 'app-transaction',
+    imports: [
+        DashboardContentLayoutComponent,
+        Button,
+        CommonModule,
+        TabsModule,
+        TranslatePipe,
+    ],
+    templateUrl: './transaction.component.html',
+    styleUrl: './transaction.component.scss'
 })
 export class TransactionComponent implements OnInit {
 

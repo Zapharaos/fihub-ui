@@ -19,23 +19,22 @@ import {FormService} from "@shared/services/form.service";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
 
 @Component({
-  selector: 'app-brokers-add',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    CommonModule,
-    ButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    Select,
-    DashboardContentLayoutComponent,
-    InputText,
-    RadioCardsComponent,
-    Ripple,
-    Message
-  ],
-  templateUrl: './add.component.html',
-  styleUrl: './add.component.scss'
+    selector: 'app-brokers-add',
+    imports: [
+        TranslatePipe,
+        CommonModule,
+        ButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        Select,
+        DashboardContentLayoutComponent,
+        InputText,
+        RadioCardsComponent,
+        Ripple,
+        Message
+    ],
+    templateUrl: './add.component.html',
+    styleUrl: './add.component.scss'
 })
 export class AddComponent implements OnInit {
 

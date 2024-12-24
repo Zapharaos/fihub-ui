@@ -27,28 +27,27 @@ import {Message} from "primeng/message";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
 
 @Component({
-  selector: 'app-admin-brokers',
-  standalone: true,
-  imports: [
-    DashboardContentLayoutComponent,
-    Button,
-    IconField,
-    InputIcon,
-    InputText,
-    TranslatePipe,
-    PrimeTemplate,
-    ReactiveFormsModule,
-    TableModule,
-    FormsModule,
-    Tag,
-    FileUploadModule,
-    Dialog,
-    NgIf,
-    ToggleSwitch,
-    Message
-  ],
-  templateUrl: './brokers.component.html',
-  styleUrl: './brokers.component.scss'
+    selector: 'app-admin-brokers',
+    imports: [
+        DashboardContentLayoutComponent,
+        Button,
+        IconField,
+        InputIcon,
+        InputText,
+        TranslatePipe,
+        PrimeTemplate,
+        ReactiveFormsModule,
+        TableModule,
+        FormsModule,
+        Tag,
+        FileUploadModule,
+        Dialog,
+        NgIf,
+        ToggleSwitch,
+        Message
+    ],
+    templateUrl: './brokers.component.html',
+    styleUrl: './brokers.component.scss'
 })
 export class BrokersComponent implements OnInit {
 

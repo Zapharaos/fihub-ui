@@ -6,14 +6,13 @@ import {FormLayoutComponent} from "@modules/dashboard/transactions/layouts/form-
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-update',
-  standalone: true,
-  imports: [
-    DashboardContentLayoutComponent,
-    FormLayoutComponent
-  ],
-  templateUrl: './update.component.html',
-  styleUrl: './update.component.scss'
+    selector: 'app-update',
+    imports: [
+        DashboardContentLayoutComponent,
+        FormLayoutComponent
+    ],
+    templateUrl: './update.component.html',
+    styleUrl: './update.component.scss'
 })
 export class UpdateComponent {
 

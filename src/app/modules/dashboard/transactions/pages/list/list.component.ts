@@ -19,24 +19,23 @@ import {TransactionStore} from "@modules/dashboard/transactions/stores/transacti
 import {BrokerImageService, TransactionWithImage} from "@shared/services/broker-image.service";
 
 @Component({
-  selector: 'app-transactions-list',
-  standalone: true,
-  imports: [
-    DashboardContentLayoutComponent,
-    TranslatePipe,
-    PrimeTemplate,
-    TableModule,
-    Button,
-    Tag,
-    IconField,
-    InputIcon,
-    InputTextModule,
-    RouterLink,
-    CurrencyPipe,
-    NgIf,
-  ],
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.scss'
+    selector: 'app-transactions-list',
+    imports: [
+        DashboardContentLayoutComponent,
+        TranslatePipe,
+        PrimeTemplate,
+        TableModule,
+        Button,
+        Tag,
+        IconField,
+        InputIcon,
+        InputTextModule,
+        RouterLink,
+        CurrencyPipe,
+        NgIf,
+    ],
+    templateUrl: './list.component.html',
+    styleUrl: './list.component.scss'
 })
 export class ListComponent implements OnInit {
 
