@@ -7,7 +7,10 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require('tailwindcss-primeui')
+    require('tailwindcss-primeui'),
+    require('tailwind-scrollbar')({
+      nocompatible: true
+    }),
   ]
 }
 
