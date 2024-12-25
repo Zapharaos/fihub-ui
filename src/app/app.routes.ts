@@ -1,18 +1,23 @@
 import { Routes } from '@angular/router';
 import {authGuard, noAuthGuard} from "@shared/guards/auth.guard";
 import {DashboardLayoutComponent} from "@modules/dashboard/layouts/dashboard-layout/dashboard-layout.component";
-import {TermsComponent} from "@core/pages/terms/terms.component";
-import {PrivacyComponent} from "@core/pages/privacy/privacy.component";
+import {CommonLayoutComponent} from "@modules/common/layouts/common-layout/common-layout.component";
 
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'home',
+    component: CommonLayoutComponent,
+    loadChildren: () => import('./modules/common/common.routes').then(m => m.routes),
+  },
+  {
+    path: '',
+    component: CommonLayoutComponent,
+    loadChildren: () => import('./modules/docs/docs.routes').then(m => m.routes),
   },
   {
     path: 'auth',
     canActivate: [noAuthGuard],
+    component: CommonLayoutComponent,
     loadChildren: () => import('./modules/auth/auth.routes').then(m => m.routes),
   },
   {
@@ -25,13 +30,5 @@ export const routes: Routes = [
     canActivate: [authGuard],
     component: DashboardLayoutComponent,
     loadChildren: () => import('./modules/dashboard/dashboard.routes').then(m => m.routes),
-  },
-  {
-    path: 'terms',
-    component: TermsComponent,
-  },
-  {
-    path: 'privacy',
-    component: PrivacyComponent,
   },
 ];
