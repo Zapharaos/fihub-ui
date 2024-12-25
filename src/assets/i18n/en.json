@@ -57,6 +57,10 @@
   "router": {
     "back": "Back"
   },
+  "footer": {
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
 
   "admin": {
     "title": "Admin",

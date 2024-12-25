@@ -20,8 +20,20 @@
           ></i>
         </button>
 
-        <!-- Actions -->
-        <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+        <!-- Actions - Authenticated -->
+        <div *ngIf="authService.isAuthenticated()" class="flex gap-5 justify-between items-center">
+          <!-- Account -->
+          <p-button [routerLink]="'/settings'" icon="pi pi-user" [rounded]="true" severity="primary"/>
+        </div>
+
+        <!-- Actions - NonAuthenticated -->
+        <div *ngIf="!authService.isAuthenticated()" class="flex gap-5 justify-between items-center">
+          <!-- Sign-up -->
+          <p-button [routerLink]="'/auth/register'" [outlined]="true" label="{{ 'actions.sign-up' | translate }}" />
+
+          <!-- Sign-in -->
+          <p-button [routerLink]="'/auth'" label="{{ 'actions.sign-in' | translate }}" />
+        </div>
 
         <!-- Toggle Sidebar -->
         <!-- Hidden starting from MEDIUM size -->

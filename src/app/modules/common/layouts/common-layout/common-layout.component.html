@@ -1,9 +1,0 @@
-<app-basic-layout [actionsTemplate]="actionsTemplate"></app-basic-layout>
-
-<ng-template #actionsTemplate>
-  <!-- Sign-up -->
-  <p-button [routerLink]="'/auth/register'" [outlined]="true" label="{{ 'actions.sign-up' | translate }}" />
-
-  <!-- Sign-in -->
-  <p-button [routerLink]="'/auth'" label="{{ 'actions.sign-in' | translate }}" />
-</ng-template>
