@@ -18,11 +18,16 @@ export class FormService {
   }
 
   clear() {
-    this.form = this.copy!;
+    this.form = this.fb.group({});
+    this.copy = undefined;
   }
 
   reset() {
     this.form.reset();
+  }
+
+  rollbackToDefault() {
+    this.form = this.copy!;
   }
 
   getForm() {
