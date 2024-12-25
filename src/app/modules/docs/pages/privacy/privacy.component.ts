@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {TableModule} from "primeng/table";
-import {TranslatePipe} from "@ngx-translate/core";
 
 type PersonalInfoUSA = {
   category: string;

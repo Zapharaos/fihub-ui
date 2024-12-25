@@ -29,16 +29,23 @@ export class BasicLayoutComponent {
   protected readonly logoPath = "assets/svg/logo-initial.svg";
   sidebarVisible: boolean = true;
   @Input() items: LayoutItem[] = [];
+  @Input() sidebar: boolean = true;
 
   constructor(
     protected themeService: ThemeService,
   ) { }
 
   toggleSidebar() {
+    if (!this.sidebar) {
+      return;
+    }
     this.sidebarVisible = !this.sidebarVisible;
   }
 
   toggleSubItems(item: LayoutItem) {
+    if (!this.sidebar) {
+      return;
+    }
     item.subItemsInvisible = !item.subItemsInvisible;
   }
 }
