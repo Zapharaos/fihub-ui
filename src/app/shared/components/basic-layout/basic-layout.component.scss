@@ -4,7 +4,7 @@ header div:first-of-type {
 }
 header img {
   fill: var(--primary-color);
-  height: var(--header-height);
+  height: calc(var(--header-height) * 3/4);
   max-width: 100%;
 }
 

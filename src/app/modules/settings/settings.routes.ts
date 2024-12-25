@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {AccountComponent} from "@modules/dashboard/settings/pages/account/account.component";
+import {AccountComponent} from "@modules/settings/pages/account/account.component";
 
 export const routes: Routes = [
   {

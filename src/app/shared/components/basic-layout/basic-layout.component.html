@@ -103,8 +103,9 @@
     </div>
 
     <!-- Main Content -->
-    <div [ngClass]="{'max-md:ml-0': !sidebarVisible && sidebar, 'ml-0': !sidebar}" class="ml-64 flex flex-col flex-grow">
-      <div class="content-wrapper">
+    <div [ngClass]="{'max-md:ml-0': !sidebarVisible && sidebar, 'ml-0': !sidebar, 'ml-64': sidebar}"
+         class="flex flex-col flex-grow">
+      <div class="content-wrapper flex-grow">
         <router-outlet></router-outlet>
       </div>
       <app-footer class="mt-auto"></app-footer>
