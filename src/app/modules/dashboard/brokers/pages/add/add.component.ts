@@ -126,7 +126,7 @@ export class AddComponent implements OnInit {
       next: (brokers: TableBroker[]) => {
         // Success
         this.notificationService.showToastSuccess('brokers.messages.add-success')
-        this.formService.clear();
+        this.formService.rollbackToDefault();
         this.loadBrokers() // update data
       },
       error: (error: any) => {

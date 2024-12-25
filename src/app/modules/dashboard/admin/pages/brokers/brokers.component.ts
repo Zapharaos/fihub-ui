@@ -157,7 +157,7 @@ export class BrokersComponent implements OnInit {
     switch (dialogMode) {
       case DialogMode.CREATE:
         this.broker = {};
-        this.formService.clear()
+        this.formService.rollbackToDefault()
         break;
       case DialogMode.UPDATE:
         this.broker = {...broker};

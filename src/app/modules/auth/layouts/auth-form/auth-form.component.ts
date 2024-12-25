@@ -155,6 +155,9 @@ export class AuthFormComponent implements OnInit {
   }
 
   initFormControls() {
+    // Clear form service from any previous use
+    this.formService.clear();
+
     // Email
     if (this.fieldConfig.hasEmail && this.fieldConfig.hasEmailControl) {
       // Checking email format for input
