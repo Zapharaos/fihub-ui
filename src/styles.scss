@@ -112,14 +112,19 @@ body {
   --p-datatable-header-cell-selected-background: var(--p-primary-100);
   --p-datatable-header-cell-hover-background: var(--p-surface-100);
   --p-datatable-row-hover-background: var(--p-surface-100);
+
+  // Docs
+  --docs-color: var(--p-surface-700);
 }
 
-:root[class=p-dark] {
+
+:root.p-dark {
   --primary-text-color: var(--p-primary-400);
   --primary-color: var(--p-primary-color);
   --primary-contrast-color: var(--p-primary-contrast-color);
   --primary-hover-color: var(--p-primary-hover-color);
   --text-color: var(--p-surface-0);
+  --test: var(--p-surface-100);
   --text-secondary-color: var(--p-surface-400);
   --glow-image: url(https://www.primefaces.org/cdn/primevue/images/layout/pattern.png), radial-gradient(50% 50% at center -25px, var(--p-primary-color) 0%, #000000 100%);
   --glow-blend: hard-light, color-dodge;
@@ -146,6 +151,9 @@ body {
   --p-datatable-header-cell-selected-background: var(--p-primary-900);
   --p-datatable-header-cell-hover-background: var(--p-surface-900);
   --p-datatable-row-hover-background: var(--p-surface-900);
+
+  // Docs
+  --docs-color: var(--p-surface-300);
 }
 
 // Utils
@@ -252,8 +260,13 @@ p-sorticon {
   line-height: 1.75rem; /* text-lg ; 28px */
 }
 
-.docs div {
+.docs h1, h2, h3 {
+  color: var(--text-color);
+}
+
+.docs div, .docs li {
   text-align: justify;
+  color: var(--docs-color);
 }
 
 .docs section .links {
