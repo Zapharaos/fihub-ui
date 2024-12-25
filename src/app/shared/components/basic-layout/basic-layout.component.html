@@ -33,7 +33,7 @@
     <!-- Sidebar -->
     <!-- Always visible. Hidden only when chosen until before MEDIUM size -->
     <div [ngClass]="{'max-md:hidden': !sidebarVisible}"
-         class="bg z-10 fixed h-full touch-pan-x touch-pan-y w-64 max-md:w-full" pRipple>
+         class="bg z-10 fixed h-full touch-pan-x touch-pan-y w-64 max-md:w-full">
       <div class="overflow-y-auto overflow-x-hidden flex-grow">
 
         <!-- Menu -->
@@ -47,7 +47,7 @@
                [routerLink]="item.route"
                routerLinkActive="menu-active"
                [routerLinkActiveOptions]="{exact: item.routeActiveExact ?? false }"
-               class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover">
+               class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover" pRipple>
 
               <!-- Icon + Label -->
               <div class="flex py-3">
@@ -61,7 +61,7 @@
             </a>
 
             <!-- Item : with sub-items -->
-            <div *ngIf="item.items" (click)="toggleSubItems(item)"
+            <div *ngIf="item.items" (click)="toggleSubItems(item)" pRipple
                class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover select-none hover:cursor-pointer">
 
               <!-- Icon + Label -->
@@ -85,7 +85,7 @@
               <li *ngFor="let subItem of item.items">
                 <a [routerLink]="subItem.route" routerLinkActive="menu-active"
                    [routerLinkActiveOptions]="{exact: subItem.routeActiveExact ?? false }"
-                   class="flex flex-row justify-between items-center px-6 rounded-r-xl menu-hover">
+                   class="flex flex-row justify-between items-center px-6 rounded-r-xl menu-hover" pRipple>
 
                   <!-- Label -->
                   <div class="flex py-3 ml-5">
