@@ -1,1 +1,6 @@
-<app-basic-layout [items]="items"></app-basic-layout>
+<app-basic-layout [items]="items" [actionsTemplate]="actionsTemplate" homePath="/dashboard"></app-basic-layout>
+
+<ng-template #actionsTemplate>
+  <!-- Account -->
+  <p-button [routerLink]="'/settings'" icon="pi pi-user" [rounded]="true" severity="primary"/>
+</ng-template>

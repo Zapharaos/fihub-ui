@@ -6,20 +6,26 @@
       <!-- Left side -->
       <div>
         <!-- Title -->
-        <img [src]="logoPath" alt="Fihub Logo"/>
+        <img [src]="logoPath" alt="Fihub Logo" (click)="home()" class="hover:cursor-pointer"/>
       </div>
 
       <!-- Right side -->
       <div class="flex gap-5">
 
-        <p-button label="Toggle theme" (onClick)="themeService.toggleTheme()" [outlined]="true"/>
+        <!-- Theme -->
+        <button (click)="themeService.toggleTheme()" class="flex items-center justify-center">
+          <i class="text-2xl pi"
+             style="color: var(--primary-color)"
+             [ngClass]="{'pi-sun': !themeService.isLight(), 'pi-moon': themeService.isLight()}"
+          ></i>
+        </button>
 
-        <!-- Account -->
-        <p-button [routerLink]="'/settings'" icon="pi pi-user" [rounded]="true" severity="primary"/>
+        <!-- Actions -->
+        <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
 
         <!-- Toggle Sidebar -->
         <!-- Hidden starting from MEDIUM size -->
-        <button *ngIf="sidebar" (click)="toggleSidebar()"
+        <button *ngIf="items" (click)="toggleSidebar()"
                 class="md:hidden flex items-center justify-center">
           <i *ngIf="!sidebarVisible" class="pi pi-bars text-2xl"></i>
           <i *ngIf="sidebarVisible" class="pi pi-times text-2xl"></i>
@@ -33,7 +39,7 @@
 
     <!-- Sidebar -->
     <!-- Always visible. Hidden only when chosen until before MEDIUM size -->
-    <div *ngIf="sidebar" [ngClass]="{'max-md:hidden': !sidebarVisible}"
+    <div *ngIf="items" [ngClass]="{'max-md:hidden': !sidebarVisible}"
          class="bg z-10 fixed h-full touch-pan-x touch-pan-y w-64 max-md:w-full">
       <div class="overflow-y-auto overflow-x-hidden flex-grow">
 
@@ -103,7 +109,7 @@
     </div>
 
     <!-- Main Content -->
-    <div [ngClass]="{'max-md:ml-0': !sidebarVisible && sidebar, 'ml-0': !sidebar, 'ml-64': sidebar}"
+    <div [ngClass]="{'max-md:ml-0': !sidebarVisible && items, 'ml-0': !items, 'ml-64': items}"
          class="flex flex-col flex-grow">
       <div class="content-wrapper flex-grow">
         <router-outlet></router-outlet>

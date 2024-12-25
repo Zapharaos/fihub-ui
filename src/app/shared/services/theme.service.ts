@@ -26,6 +26,10 @@ export class ThemeService {
     this.saveTheme();
   }
 
+  isLight(): boolean {
+    return !this.isDarkTheme;
+  }
+
   private getTheme(): string | undefined {
     return localStorage.getItem('theme') || undefined;
   }

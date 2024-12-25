@@ -2,13 +2,17 @@ import {Component} from '@angular/core';
 import {TranslateModule} from "@ngx-translate/core";
 import {BasicLayoutComponent} from "@shared/components/basic-layout/basic-layout.component";
 import {LayoutItem} from "@shared/models/layout-item";
+import {Button} from "primeng/button";
+import {RouterLink} from "@angular/router";
 
 @Component({
     selector: 'app-overview-layout',
-    imports: [
-        TranslateModule,
-        BasicLayoutComponent,
-    ],
+  imports: [
+    TranslateModule,
+    BasicLayoutComponent,
+    Button,
+    RouterLink,
+  ],
     templateUrl: './dashboard-layout.component.html',
     styleUrl: './dashboard-layout.component.scss'
 })
