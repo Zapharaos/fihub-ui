@@ -12,7 +12,9 @@
     "save": "Save",
     "submit": "Submit",
     "update": "Update",
-    "upload": "Upload"
+    "upload": "Upload",
+    "sign-in": "Sign in",
+    "sign-up": "Sign up"
   },
   "confirmation": {
     "cancel": "Cancel",

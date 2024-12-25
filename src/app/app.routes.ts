@@ -6,6 +6,7 @@ import {CommonLayoutComponent} from "@modules/common/layouts/common-layout/commo
 export const routes: Routes = [
   {
     path: '',
+    canActivate: [noAuthGuard],
     component: CommonLayoutComponent,
     loadChildren: () => import('./modules/common/common.routes').then(m => m.routes),
   },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   {
     path: 'settings',
     canActivate: [authGuard],
+    component: DashboardLayoutComponent,
     loadChildren: () => import('./modules/settings/settings.routes').then(m => m.routes),
   },
   {
@@ -30,5 +32,9 @@ export const routes: Routes = [
     canActivate: [authGuard],
     component: DashboardLayoutComponent,
     loadChildren: () => import('./modules/dashboard/dashboard.routes').then(m => m.routes),
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];
