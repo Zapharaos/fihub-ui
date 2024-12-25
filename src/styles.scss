@@ -184,12 +184,14 @@ p-sorticon {
   color: var(--text-secondary-color);
 }
 
-// Context Wrapper - Card
-.content-wrapper .p-card {
-  background: transparent;
-  // border: solid 1px var(--border-color);
-  box-shadow: none;
-  padding: 16px;
+// Auth form - Centered
+.content-wrapper app-login,
+.content-wrapper app-register,
+.content-wrapper app-auth-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 // Text
