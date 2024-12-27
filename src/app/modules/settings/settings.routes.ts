@@ -3,7 +3,7 @@ import {AccountComponent} from "@modules/settings/pages/account/account.componen
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'account',
     component: AccountComponent,
   },
 ];

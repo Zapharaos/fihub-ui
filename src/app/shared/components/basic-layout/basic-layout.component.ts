@@ -56,4 +56,15 @@ export class BasicLayoutComponent {
     }
     item.subItemsInvisible = !item.subItemsInvisible;
   }
+
+  isSubItemActive(item: any): boolean {
+    if (!item.items) {
+      return false;
+    }
+    return item.items.some((subItem: any) => this.router.isActive(subItem.route, { paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' }));
+  }
+
+  isItemOpen(item: LayoutItem): boolean {
+    return this.isSubItemActive(item) || !item.subItemsInvisible;
+  }
 }
