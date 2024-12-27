@@ -25,6 +25,7 @@ import {ButtonDirective} from "primeng/button";
 import {InputText} from "primeng/inputtext";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
+import {handleErrors} from "@shared/utils/errors";
 
 @Component({
     selector: 'app-transactions-form-layout',
@@ -111,15 +112,8 @@ export class FormLayoutComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        handleErrors(error, this.notificationService);
         this.router.navigate(['dashboard/transactions']);
-        switch (error.status) {
-          case 401:
-            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
       }
     })
   }
@@ -146,17 +140,7 @@ export class FormLayoutComponent implements OnInit {
         this.patchForm();
       },
       error: (error) => {
-        switch (error.status) {
-          case 401:
-            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService);
         this.router.navigate(['/dashboard/transactions']);
       }
     })
@@ -219,17 +203,7 @@ export class FormLayoutComponent implements OnInit {
         this.notificationService.showToastSuccess('transactions.messages.add-success');
       },
       error: (error) => {
-        switch (error.status) {
-          case 400:
-            this.handleErrors400(error)
-            break;
-          case 401:
-            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
       }
     })
   }
@@ -245,20 +219,7 @@ export class FormLayoutComponent implements OnInit {
         this.router.navigate(['/dashboard/transactions', this.transaction?.id]);
       },
       error: (error) => {
-        switch (error.status) {
-          case 400:
-            this.handleErrors400(error)
-            break;
-          case 401:
-            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
       }
     })
   }

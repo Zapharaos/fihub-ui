@@ -13,6 +13,7 @@ import { TabsModule } from 'primeng/tabs';
 import {TranslatePipe} from "@ngx-translate/core";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {BrokerImageService, TransactionWithImage} from "@shared/services/broker-image.service";
+import {handleErrors} from "@shared/utils/errors";
 
 @Component({
     selector: 'app-transaction',
@@ -61,17 +62,7 @@ export class TransactionComponent implements OnInit {
         this.transaction = transaction;
       },
       error: (error) => {
-        switch (error.status) {
-          case 401:
-            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService);
         this.router.navigate(['/dashboard/transactions']);
         return false;
       }
@@ -93,20 +84,7 @@ export class TransactionComponent implements OnInit {
           this.router.navigate(['/dashboard/transactions']);
         },
         error: (error) => {
-          switch (error.status) {
-            case 400:
-              this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-              break;
-            case 401:
-              this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-              break;
-            case 404:
-              this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-              break;
-            default:
-              this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-              break;
-          }
+          handleErrors(error, this.notificationService);
         }
       })
     })
