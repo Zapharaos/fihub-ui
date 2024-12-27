@@ -51,8 +51,15 @@ export class DashboardLayoutComponent {
       },
       {
         label: 'settings.title',
-        route: '/settings',
         icon: 'pi-cog',
+        subItemsInvisible: true,
+        items: [
+          {
+            label: 'settings.account.title',
+            route: '/settings',
+            routeActiveExact: true
+          },
+        ]
       },
     ];
   }

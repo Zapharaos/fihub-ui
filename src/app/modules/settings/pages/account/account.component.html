@@ -1,5 +1,37 @@
-<p>account works!</p>
+<app-dashboard-content-layout
+  title="settings.account.title"
+  subTitle="settings.account.sub-title"
+  [actionsTemplate]="actionsTemplate"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
 
-<p-button
-  label="Logout"
-  (onClick)="logout()" />
+<ng-template #actionsTemplate>
+  <p-button (onClick)="logout()"
+            label="{{'actions.logout' | translate}}"
+            icon="pi pi-sign-out"
+            severity="danger"
+     />
+</ng-template>
+
+<ng-template #contentTemplate>
+  <div class="flex flex-col gap-5">
+    <h2 class="text-2xl font-medium">
+      {{ 'actions.actions' | translate }}
+    </h2>
+    <div class="flex flex-col gap-3">
+      <p-button [routerLink]="'/dashboard/admin/brokers'"
+                [outlined]="true"
+                [raised]="true"
+                size="large"
+                label="{{ 'settings.account.actions.change-password' | translate }}"
+                icon="pi pi-pencil" />
+      <p-button [routerLink]="'/dashboard/admin/brokers'"
+                [outlined]="true"
+                [raised]="true"
+                severity="danger"
+                size="large"
+                label="{{ 'settings.account.actions.delete-account' | translate }}"
+                icon="pi pi-trash" />
+    </div>
+  </div>
+</ng-template>

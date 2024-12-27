@@ -3,16 +3,18 @@
     "title": "Fihub"
   },
   "actions": {
-    "search-placeholder": "Search...",
+    "actions": "Actions",
     "back": "Back",
     "cancel": "Cancel",
     "close": "Close",
     "create": "Create",
     "delete": "Delete",
+    "logout": "Log out",
     "save": "Save",
     "submit": "Submit",
     "update": "Update",
     "upload": "Upload",
+    "search-placeholder": "Search...",
     "sign-in": "Sign in",
     "sign-up": "Sign up"
   },
@@ -67,7 +69,6 @@
     "overview": {
       "title": "Overview",
       "actions": {
-        "title": "Actions",
         "brokers": "Manage the brokers"
       }
     },
@@ -197,7 +198,15 @@
     "submit": "Register"
   },
   "settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "account": {
+      "title": "My account",
+      "sub-title": "Manage your account settings.",
+      "actions": {
+        "change-password": "Change password",
+        "delete-account": "Delete account"
+      }
+    }
   },
   "transactions": {
     "title": "Transactions",
