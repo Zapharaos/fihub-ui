@@ -17,6 +17,7 @@ import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 import {BrokerImageService, TransactionWithImage} from "@shared/services/broker-image.service";
+import {handleErrors} from "@shared/utils/errors";
 
 @Component({
     selector: 'app-transactions-list',
@@ -73,14 +74,7 @@ export class ListComponent implements OnInit {
         this.transactions = transactions;
       },
       error: (error: any) => {
-        switch (error.status) {
-          case 401:
-            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService);
       }
     });
   }

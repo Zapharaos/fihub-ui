@@ -17,6 +17,7 @@ import {Message} from "primeng/message";
 import {TableBroker} from "@modules/dashboard/brokers/pages/list/list.component";
 import {FormService} from "@shared/services/form.service";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
+import {handleErrors} from "@shared/utils/errors";
 
 @Component({
     selector: 'app-brokers-add',
@@ -102,7 +103,7 @@ export class AddComponent implements OnInit {
         this.brokers = brokers;
       },
       error: (error: any) => {
-        this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
+        handleErrors(error, this.notificationService);
       }
     })
   }
@@ -130,17 +131,7 @@ export class AddComponent implements OnInit {
         this.loadBrokers() // update data
       },
       error: (error: any) => {
-        switch (error.status) {
-          case 400:
-            this.handleErrors400(error)
-            break;
-          case 401:
-            this.notificationService.showToastError('http.401.detail', undefined, 'http.401.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
       },
     })
   }

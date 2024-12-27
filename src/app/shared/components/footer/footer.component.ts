@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {Button} from "primeng/button";
-import {NgIf} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
 
@@ -8,7 +7,6 @@ import {RouterLink} from "@angular/router";
     selector: 'app-footer',
   imports: [
     Button,
-    NgIf,
     TranslatePipe,
     RouterLink
   ],

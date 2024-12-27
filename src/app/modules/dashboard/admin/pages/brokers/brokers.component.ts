@@ -25,6 +25,7 @@ import {ConfirmService} from "@shared/services/confirm.service";
 import {FormService} from "@shared/services/form.service";
 import {Message} from "primeng/message";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
+import {handleErrors} from "@shared/utils/errors";
 
 @Component({
     selector: 'app-admin-brokers',
@@ -114,17 +115,7 @@ export class BrokersComponent implements OnInit {
         this.brokers = brokers;
       },
       error: (error: any) => {
-        switch (error.status) {
-          case 400:
-            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService);
       }
     })
   }
@@ -184,17 +175,7 @@ export class BrokersComponent implements OnInit {
         this.notificationService.showToastSuccess('brokers.messages.delete-success', {name: broker.name})
       },
       error: (error: any) => {
-        switch (error.status) {
-          case 400:
-            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService);
       },
     })
   }
@@ -214,7 +195,7 @@ export class BrokersComponent implements OnInit {
         this.broker = broker;
       },
       error: (error: any) => {
-        this.handleBrokerErrors(error);
+        handleErrors(error, this.notificationService, this.handleBrokerErrors400.bind(this));
       }
     })
   }
@@ -233,26 +214,12 @@ export class BrokersComponent implements OnInit {
         this.dialogService.closeDialog();
       },
       error: (error: any) => {
-        this.handleBrokerErrors(error);
+        handleErrors(error, this.notificationService, this.handleBrokerErrors400.bind(this));
       }
     })
   }
 
   // Broker - Errors
-
-  handleBrokerErrors(error: any) {
-    switch (error.status) {
-      case 400:
-        this.handleBrokerErrors400(error);
-        break;
-      case 404:
-        this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-        break;
-      default:
-        this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-        break;
-    }
-  }
 
   handleBrokerErrors400(error: any) {
     switch (error.error.message) {
@@ -290,14 +257,7 @@ export class BrokersComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        switch (error.status) {
-          case 400:
-            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService);
       }
     })
   }
@@ -313,17 +273,7 @@ export class BrokersComponent implements OnInit {
         this.broker.imageUrl = URL.createObjectURL(event.files[0]);
       },
       error: (error: any) => {
-        switch (error.status) {
-          case 400:
-            this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
-            break;
-          case 404:
-            this.notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
-            break;
-          default:
-            this.notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
-            break;
-        }
+        handleErrors(error, this.notificationService);
       }
     })
   }
