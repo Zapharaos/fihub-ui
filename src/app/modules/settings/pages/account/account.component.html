@@ -16,6 +16,20 @@
 <ng-template #contentTemplate>
   <div class="flex flex-col gap-5">
     <h2 class="text-2xl font-medium">
+      {{ 'settings.account.details' | translate }}
+    </h2>
+    <div class="flex flex-row gap-10 my-5">
+      <div class="flex flex-col gap-5 text-light">
+        <p>{{'auth.form.email' | translate}}</p>
+      </div>
+      <div class="flex flex-col gap-5 font-medium">
+        <p>{{user?.email}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-5">
+    <h2 class="text-2xl font-medium">
       {{ 'actions.actions' | translate }}
     </h2>
     <div class="flex flex-col gap-3">

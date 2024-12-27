@@ -202,6 +202,7 @@
     "account": {
       "title": "My account",
       "sub-title": "Manage your account settings.",
+      "details": "Account details",
       "actions": {
         "change-password": "Change password",
         "delete-account": "Delete account"

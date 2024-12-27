@@ -7,6 +7,7 @@ import {
     DashboardContentLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {TranslatePipe} from "@ngx-translate/core";
+import {CurrencyPipe, NgIf} from "@angular/common";
 
 @Component({
     selector: 'app-account',
@@ -14,12 +15,16 @@ import {TranslatePipe} from "@ngx-translate/core";
     Button,
     DashboardContentLayoutComponent,
     TranslatePipe,
-    RouterLink
+    RouterLink,
+    CurrencyPipe,
+    NgIf
   ],
     templateUrl: './account.component.html',
     styleUrl: './account.component.scss'
 })
 export class AccountComponent {
+
+  user = this.authService.currentUser;
 
   constructor(
     private router: Router,
