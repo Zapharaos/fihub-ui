@@ -79,6 +79,7 @@
               </div>
             </a>
 
+
             <!-- Item : with sub-items -->
             <div *ngIf="item.items" (click)="toggleSubItems(item)" pRipple
                class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover select-none hover:cursor-pointer">
@@ -94,11 +95,11 @@
               </div>
 
               <!-- Toggle Icon -->
-              <i class="pi" [ngClass]="{'pi-angle-down': !item.subItemsInvisible, 'pi-angle-right': item.subItemsInvisible}"></i>
+              <i class="pi" [ngClass]="{'pi-angle-down': isItemOpen(item), 'pi-angle-right': !isItemOpen(item)}"></i>
             </div>
 
             <!-- Menu : Sub items -->
-            <ul *ngIf="item.items && !item.subItemsInvisible" class="flex flex-col space-y-2">
+            <ul *ngIf="isItemOpen(item)" class="flex flex-col space-y-2">
 
               <!-- Sub - Item -->
               <li *ngFor="let subItem of item.items">

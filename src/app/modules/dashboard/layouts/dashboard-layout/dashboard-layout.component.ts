@@ -30,7 +30,7 @@ export class DashboardLayoutComponent {
         items: [
           {
             label: 'admin.overview.title',
-            route: '/dashboard/admin/',
+            route: '/dashboard/admin',
             routeActiveExact: true
           },
           {
@@ -56,8 +56,7 @@ export class DashboardLayoutComponent {
         items: [
           {
             label: 'settings.account.title',
-            route: '/settings',
-            routeActiveExact: true
+            route: '/settings/account',
           },
         ]
       },
