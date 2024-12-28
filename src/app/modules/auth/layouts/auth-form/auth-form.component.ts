@@ -37,6 +37,7 @@ export type AuthFormFieldConfig = {
   cssFormRaw?: boolean,
   hideImage?: boolean;
   hideActions?: boolean;
+  hidePwdSuggestions?: boolean;
 };
 
 @Component({

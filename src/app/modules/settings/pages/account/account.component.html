@@ -10,7 +10,7 @@
             label="{{'actions.logout' | translate}}"
             icon="pi pi-sign-out"
             severity="danger"
-     />
+  />
 </ng-template>
 
 <ng-template #contentTemplate>
@@ -20,40 +20,41 @@
       <h2 class="text-2xl font-medium">
         {{ 'settings.account.details' | translate }}
       </h2>
-      <p-button (click)="onUserDetailsEdit()"
+      <p-button (click)="onEditUserDetails()"
                 [outlined]="true"
                 [rounded]="true"
                 link
                 size="small"
                 label="{{ 'actions.edit' | translate }}"
-                icon="pi pi-pencil" />
+                icon="pi pi-pencil"/>
     </div>
     <div class="flex flex-row gap-10 my-5">
       <div class="flex flex-col gap-5 text-light">
-        <p>{{'auth.form.email' | translate}}</p>
+        <p>{{ 'auth.form.email' | translate }}</p>
       </div>
       <div class="flex flex-col gap-5 font-medium">
-        <p>{{user?.email}}</p>
+        <p>{{ user?.email }}</p>
       </div>
     </div>
   </div>
 
-  <p-divider />
+  <p-divider/>
 
   <!--  Password -->
   <div class="flex flex-row gap-5">
     <h2 class="text-2xl font-medium">
       {{ 'settings.account.password' | translate }}
     </h2>
-    <p-button [outlined]="true"
+    <p-button (click)="onEditUserPassword()"
+              [outlined]="true"
               [rounded]="true"
               link
               size="small"
               label="{{ 'actions.edit' | translate }}"
-              icon="pi pi-pencil" />
+              icon="pi pi-pencil"/>
   </div>
 
-  <p-divider />
+  <p-divider/>
 
   <!--  Actions -->
   <div class="flex flex-col gap-5">
@@ -67,16 +68,19 @@
                 severity="danger"
                 size="large"
                 label="{{ 'settings.account.actions.delete-account' | translate }}"
-                icon="pi pi-trash" />
+                icon="pi pi-trash"/>
     </div>
   </div>
 </ng-template>
 
-
 <ng-template #dialogContent>
-  <app-auth-form
-    [fieldConfig]="formConfigUserDetails"
-    (onSubmit)="updateUserDetails($event)"
+  <app-auth-form *ngIf="isDetails"
+                 [fieldConfig]="formConfigUserDetails"
+                 (onSubmit)="updateUserDetails($event)"
+  ></app-auth-form>
+  <app-auth-form *ngIf="isPassword"
+                 [fieldConfig]="formConfigUserPassword"
+                 (onSubmit)="updateUserPassword($event)"
   ></app-auth-form>
 </ng-template>
 
@@ -89,15 +93,18 @@
   <ng-container *ngTemplateOutlet="dialogContent"></ng-container>
 
   <ng-template #footer>
-    <p-button (click)="closeDialog()"
-              [loading]="loading"
-              severity="secondary"
-              icon="pi pi-times"
-              label="{{dialogService.getDialogLabelClose() | translate}}"/>
-    <p-button (click)="dialogService.submitDialog()"
-              [disabled]="formService.isSubmitDisabled()"
-              [loading]="loading"
-              icon="pi pi-check"
-              label="{{dialogService.getDialogLabelSubmit() | translate}}"/>
+
+    <div class="w-[24rem] flex gap-3 justify-end m-auto">
+      <p-button (click)="closeDialog()"
+                [loading]="loading"
+                severity="secondary"
+                icon="pi pi-times"
+                label="{{dialogService.getDialogLabelClose() | translate}}"/>
+      <p-button (click)="dialogService.submitDialog()"
+                [disabled]="formService.isSubmitDisabled()"
+                [loading]="loading"
+                icon="pi pi-check"
+                label="{{dialogService.getDialogLabelSubmit() | translate}}"/>
+    </div>
   </ng-template>
 </p-dialog>
