@@ -21,9 +21,9 @@ export class LoginComponent {
   authFormFieldConfig: AuthFormFieldConfig = {
     hasEmail: true,
     hasPassword: true,
-    submitLabel: "login.submit",
+    submitLabel: "auth.login.submit",
     hasRegisterLink: true,
-    hasForgotLink: true,
+    hasPasswordLink: true,
   };
 
   @ViewChild(AuthFormComponent) authFormComponent!: AuthFormComponent;

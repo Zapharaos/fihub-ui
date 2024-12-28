@@ -21,8 +21,8 @@ export class RegisterComponent {
     hasEmailControl: true,
     hasPasswordFeedback: true,
     hasConfirmation: true,
-    checkboxLabel: "register.agreement",
-    submitLabel: "register.submit",
+    checkboxLabel: "auth.register.agreement",
+    submitLabel: "auth.register.submit",
     hasLoginLink: true,
   };
 

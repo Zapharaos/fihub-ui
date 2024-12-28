@@ -129,6 +129,11 @@
           {{'auth.form.error.agreement' | translate}}
         </p-message>
       </div>
+
+      <div *ngIf="fieldConfig.hasOtp" class="flex flex-col gap-2">
+        <label for="otp">{{'auth.password.verification.label' | translate}}</label>
+        <p-inputotp formControlName="otp" [integerOnly]="true" [length]="6" inputId="otp" class="flex justify-between"/>
+      </div>
     </div>
 
     <!-- Actions -->
@@ -155,10 +160,11 @@
               routerLink="/auth/register"
               label="{{'auth.links.register' | translate}}"
     />
-    <span *ngIf="fieldConfig.hasForgotLink" class="font-black">⸱</span>
-    <p-button *ngIf="fieldConfig.hasForgotLink"
+    <span *ngIf="fieldConfig.hasPasswordLink" class="font-black">⸱</span>
+    <p-button *ngIf="fieldConfig.hasPasswordLink"
               [link]="true"
-              label="{{'auth.links.forgot' | translate}}"
+              routerLink="/auth/password"
+              label="{{'auth.links.password' | translate}}"
     />
   </div>
 </div>

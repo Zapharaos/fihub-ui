@@ -22,6 +22,7 @@ import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {passwordMatchValidator} from "@shared/validators/password-match";
 import {FormService} from "@shared/services/form.service";
+import { InputOtp } from 'primeng/inputotp';
 
 export type AuthFormFieldConfig = {
   hasEmail?: boolean;
@@ -29,11 +30,12 @@ export type AuthFormFieldConfig = {
   hasPassword?: boolean;
   hasPasswordFeedback?: boolean;
   hasConfirmation?: boolean;
+  hasOtp?: boolean;
   checkboxLabel?: string;
   submitLabel?: string;
   hasLoginLink?: boolean,
   hasRegisterLink?: boolean,
-  hasForgotLink?: boolean,
+  hasPasswordLink?: boolean,
   cssFormRaw?: boolean,
   hideImage?: boolean;
   hideActions?: boolean;
@@ -59,7 +61,10 @@ export type AuthFormFieldConfig = {
     ButtonDirective,
     MessagesModule,
     Message,
-    InputIcon, IconField, NgClass
+    InputIcon,
+    IconField,
+    NgClass,
+    InputOtp
   ],
     templateUrl: './auth-form.component.html',
     styleUrl: './auth-form.component.scss'
@@ -73,6 +78,7 @@ export class AuthFormComponent implements OnInit {
   user: UsersUserInputCreate = {};
   loading = false;
   messageError: string = "";
+  otp: string = "";
 
   constructor(
     private translateService: TranslateService,
@@ -196,6 +202,11 @@ export class AuthFormComponent implements OnInit {
     // Checkbox
     if (this.fieldConfig.checkboxLabel) {
       this.formService.addControlCheckbox('checkbox', this.user.checkbox);
+    }
+
+    // OTP
+    if (this.fieldConfig.hasOtp) {
+      this.formService.addControlRequired('otp', this.otp);
     }
   }
 
