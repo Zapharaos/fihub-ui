@@ -23,7 +23,8 @@ model/transactionsTransaction.ts
 model/transactionsTransactionInput.ts
 model/transactionsTransactionType.ts
 model/usersUser.ts
-model/usersUserInput.ts
+model/usersUserInputCreate.ts
+model/usersUserInputPassword.ts
 model/usersUserWithPassword.ts
 param.ts
 variables.ts
