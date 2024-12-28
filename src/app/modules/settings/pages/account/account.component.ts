@@ -61,8 +61,6 @@ export class AccountComponent {
 
   // Dialog
   dialogVisible: boolean = false;
-  isDetails: boolean = false;
-  isPassword: boolean = false;
 
   constructor(
     private router: Router,
@@ -74,34 +72,43 @@ export class AccountComponent {
     protected formService: FormService,
   ) {
 
+    this.dialogService.init([
+      {
+        status: DialogMode.UPDATE,
+        titleLabel: 'settings.account.actions.update-details',
+        submitLabel: 'actions.update',
+        action: () => this.authFormComponent.onSubmitWrapper(),
+      },
+      {
+        status: DialogMode.PASSWORD,
+        titleLabel: 'settings.account.actions.change-password',
+        submitLabel: 'actions.update',
+        action: () => this.authFormComponent.onSubmitWrapper(),
+      },
+    ]);
+
     this.dialogService.dialogVisibilityChange.subscribe((isVisible: boolean) => {
       this.dialogVisible = isVisible;
     });
-
-    this.dialogService.setDialogPropsUpdate(() => this.authFormComponent.onSubmitWrapper());
   }
 
   // Dialog
 
   closeDialog() {
-    this.dialogService.closeDialog();
+    this.dialogService.close();
     this.formService.reset();
-    this.isDetails = false;
-    this.isPassword = false;
   }
 
   // Actions
 
   onEditUserDetails() {
-    this.dialogService.openDialog(DialogMode.UPDATE);
+    this.dialogService.open(DialogMode.UPDATE);
     this.authFormComponent.patchUserFormServiceValue(this.user!);
-    this.isDetails = true;
   }
 
   onEditUserPassword() {
-    // TODO: Implement password change
-    this.dialogService.openDialog(DialogMode.UPDATE);
-    this.isPassword = true;
+    // TODO : check if the form.value must be changed
+    this.dialogService.open(DialogMode.PASSWORD);
   }
 
   onDelete(event: Event) {
@@ -178,4 +185,5 @@ export class AccountComponent {
     });
   }
 
+  protected readonly DialogMode = DialogMode;
 }

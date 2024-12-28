@@ -90,7 +90,7 @@
         "name": "Name",
         "disabled": "Disabled",
         "image": {
-          "label": "Image",
+          "label": "Broker's image",
           "description": "Upload a new image representing the broker."
         }
       },
@@ -208,7 +208,8 @@
       "details": "User details",
       "password": "Password",
       "actions": {
-        "change-password": "Change",
+        "update-details": "Update your details",
+        "change-password": "Change your password",
         "delete-account": "Delete account"
       }
     }

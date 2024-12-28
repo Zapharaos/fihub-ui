@@ -4,14 +4,16 @@ export enum DialogMode {
   HIDDEN = 'hidden',
   CREATE = 'create',
   UPDATE = 'update',
-  IMAGE = 'image'
+  IMAGE = 'image',
+  PASSWORD = 'password',
 }
 
-export interface DialogProps {
-  mode: DialogMode,
-  visible: boolean,
-  create?: () => void,
-  update?: () => void,
+export interface DialogItem {
+  status: DialogMode,
+  action?: () => void,
+  titleLabel: string,
+  closeLabel?: string,
+  submitLabel?: string,
 }
 
 @Injectable({
@@ -19,89 +21,68 @@ export interface DialogProps {
 })
 export class DialogService {
 
-  private dialogProps: DialogProps = {
-    mode: DialogMode.HIDDEN,
-    visible: false
-  };
+  private dialogs: DialogItem[] = [];
+  private visible: boolean = false;
+  private active: DialogMode = DialogMode.HIDDEN;
 
   @Output() dialogVisibilityChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 
-  init(): void {
-    this.dialogProps = {
-      mode: DialogMode.HIDDEN,
-      visible: false
-    };
-    this.dialogVisibilityChange.emit(false);
+  init(dialogs: DialogItem[]): void {
+    this.dialogs = dialogs;
+    this.setVisibility(false);
   }
 
-  setDialogPropsCreate(create: () => void) {
-    this.dialogProps.create = create;
+  reset(): void {
+    this.dialogs = [];
+    this.setVisibility(false);
   }
 
-  setDialogPropsUpdate(update: () => void) {
-    this.dialogProps.update = update;
-  }
-
-  isDialogModeCreate(): boolean {
-    return this.dialogProps.mode === DialogMode.CREATE;
-  }
-
-  isDialogModeUpdate(): boolean {
-    return this.dialogProps.mode === DialogMode.UPDATE;
-  }
-
-  isDialogModeImage(): boolean {
-    return this.dialogProps.mode === DialogMode.IMAGE;
-  }
-
-  getDialogLabelClose(): string {
-    switch (this.dialogProps.mode) {
-      case DialogMode.CREATE:
-        return 'actions.cancel';
-      case DialogMode.UPDATE:
-        return 'actions.cancel';
-      case DialogMode.IMAGE:
-        return 'actions.close';
-      default:
-        return '';
-    }
-  }
-
-  getDialogLabelSubmit(): string {
-    switch (this.dialogProps.mode) {
-      case DialogMode.CREATE:
-        return 'actions.create';
-      case DialogMode.UPDATE:
-        return 'actions.update';
-      default:
-        return '';
-    }
-  }
-
-  openDialog(dialogMode: DialogMode) {
+  open(dialogMode: DialogMode) {
     this.setVisibility(true, dialogMode);
   }
 
-  closeDialog() {
+  close() {
     this.setVisibility(false, DialogMode.HIDDEN);
   }
 
-  submitDialog() {
-    switch (this.dialogProps.mode) {
-      case DialogMode.CREATE:
-        this.dialogProps.create?.();
-        break;
-      case DialogMode.UPDATE:
-        this.dialogProps.update?.();
-        break;
+  submit() {
+    const dialog = this.getActive();
+    if (dialog && dialog.action) {
+      dialog.action();
     }
   }
 
+  isActive(dialogMode: DialogMode): boolean {
+    return this.active === dialogMode;
+  }
+
+  getLabelTitle(): string {
+    return this.getActive()?.titleLabel ?? '';
+  }
+
+  getLabelClose(): string {
+    return this.getActive()?.closeLabel ?? 'actions.cancel';
+  }
+
+  getLabelSubmit(): string {
+    return this.getActive()?.submitLabel ?? 'actions.submit';
+  }
+
+  private getActive(): DialogItem | undefined {
+    return this.dialogs.find(dialog => dialog.status === this.active);
+  }
+
   private setVisibility(visibility: boolean, dialogMode?: DialogMode) {
-    this.dialogProps.visible = visibility;
+    // Verify if the dialogMode corresponds to a dialog that is in the list of dialogs
+    if (dialogMode && dialogMode !== DialogMode.HIDDEN &&
+      !this.dialogs.find(dialog => dialog.status === dialogMode)) {
+      console.error('Dialog mode not found in the list of dialogs');
+      return;
+    }
+    this.active = dialogMode ?? DialogMode.HIDDEN;
+    this.visible = visibility;
     this.dialogVisibilityChange.emit(visibility);
-    this.dialogProps.mode = dialogMode ?? DialogMode.HIDDEN;
   }
 }

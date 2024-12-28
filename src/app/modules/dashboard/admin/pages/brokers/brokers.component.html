@@ -74,15 +74,17 @@
   </p-table>
 </ng-template>
 
+
 <p-dialog [modal]="true"
           [(visible)]="dialogVisible"
           [draggable]="false"
           [style]="{ width: '450px' }"
-          header="{{ 'admin.brokers.dialog.title' | translate }}">
+          (onHide)="closeDialog()"
+          header="{{ dialogService.getLabelTitle() | translate }}">
   <ng-template #content>
 
-    <form *ngIf="!dialogService.isDialogModeImage()"
-          (ngSubmit)="dialogService.submitDialog()"
+    <form *ngIf="!dialogService.isActive(DialogMode.IMAGE)"
+          (ngSubmit)="dialogService.submit()"
           [formGroup]="formService.getForm()"
           class="flex flex-col gap-8 my-4 w-full">
 
@@ -118,7 +120,7 @@
         </div>
       </div>
 
-      <div *ngIf="dialogService.isDialogModeUpdate()"
+      <div *ngIf="dialogService.isActive(DialogMode.UPDATE)"
            class="flex flex-col gap-2">
         <label class="font-medium">{{'admin.brokers.dialog.image.label' | translate}}</label>
         <div class="flex flex-row gap-4 items-center">
@@ -145,10 +147,9 @@
     </form>
 
     <!-- Image -->
-    <div *ngIf="dialogService.isDialogModeImage()"
+    <div *ngIf="dialogService.isActive(DialogMode.IMAGE)"
          class="col-span-12 flex flex-col gap-8">
       <div class="flex flex-col gap-4">
-        <label class="font-medium">{{'admin.brokers.dialog.image.label' | translate}}</label>
         <p class="text-light">{{'admin.brokers.dialog.image.description' | translate}}</p>
       </div>
       <div class="flex flex-col gap-5 justify-evenly items-center">
@@ -169,16 +170,16 @@
     </div>
   </ng-template>
 
-  <ng-template #footer *ngIf="!dialogService.isDialogModeImage()">
+  <ng-template #footer *ngIf="!dialogService.isActive(DialogMode.IMAGE)">
     <p-button (click)="closeDialog()"
               [loading]="loading"
               severity="secondary"
               icon="pi pi-times"
-              label="{{dialogService.getDialogLabelClose() | translate}}"/>
-    <p-button (click)="dialogService.submitDialog()"
+              label="{{dialogService.getLabelClose() | translate}}"/>
+    <p-button (click)="dialogService.submit()"
               [disabled]="formService.isSubmitDisabled()"
               [loading]="loading"
               icon="pi pi-check"
-              label="{{dialogService.getDialogLabelSubmit() | translate}}"/>
+              label="{{dialogService.getLabelSubmit() | translate}}"/>
   </ng-template>
 </p-dialog>

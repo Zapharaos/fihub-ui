@@ -87,17 +87,34 @@ export class BrokersComponent implements OnInit {
     protected dialogService: DialogService,
     protected formService: FormService,
   ) {
+
     this.formService.init(this.fb.group({
       name: ['', Validators.required],
       disabled: [false, Validators.required],
     }))
 
+    this.dialogService.init([
+      {
+        status: DialogMode.CREATE,
+        titleLabel: 'admin.brokers.dialog.title',
+        submitLabel: 'actions.update',
+        action: this.createBroker.bind(this),
+      },
+      {
+        status: DialogMode.UPDATE,
+        titleLabel: 'admin.brokers.dialog.title',
+        submitLabel: 'actions.update',
+        action: this.updateBroker.bind(this),
+      },
+      {
+        status: DialogMode.IMAGE,
+        titleLabel: 'admin.brokers.dialog.image.label',
+      },
+    ]);
+
     this.dialogService.dialogVisibilityChange.subscribe((isVisible: boolean) => {
       this.dialogVisible = isVisible;
     });
-
-    this.dialogService.setDialogPropsCreate(this.createBroker.bind(this));
-    this.dialogService.setDialogPropsUpdate(this.updateBroker.bind(this));
   }
 
   ngOnInit() {
@@ -143,7 +160,7 @@ export class BrokersComponent implements OnInit {
   // Dialog
 
   openDialog(dialogMode: DialogMode, broker?: BrokersBroker) {
-    this.dialogService.openDialog(dialogMode);
+    this.dialogService.open(dialogMode);
 
     switch (dialogMode) {
       case DialogMode.CREATE:
@@ -160,7 +177,7 @@ export class BrokersComponent implements OnInit {
   closeDialog() {
     this.broker = {};
     this.formService.reset();
-    this.dialogService.closeDialog();
+    this.dialogService.close();
   }
 
   // Brokers
@@ -191,7 +208,7 @@ export class BrokersComponent implements OnInit {
       next: (broker: BrokersBroker) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.create-success', {name: broker.name});
-        this.dialogService.openDialog(DialogMode.IMAGE);
+        this.dialogService.open(DialogMode.IMAGE);
         this.broker = broker;
       },
       error: (error: any) => {
@@ -211,7 +228,7 @@ export class BrokersComponent implements OnInit {
       next: (broker: BrokersBroker) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: broker.name});
-        this.dialogService.closeDialog();
+        this.dialogService.close();
       },
       error: (error: any) => {
         handleErrors(error, this.notificationService, this.handleBrokerErrors400.bind(this));
@@ -252,8 +269,8 @@ export class BrokersComponent implements OnInit {
       next: (image: BrokersBrokerImage) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: this.broker.name})
-        if (this.dialogService.isDialogModeImage()) {
-          this.dialogService.closeDialog();
+        if (this.dialogService.isActive(DialogMode.IMAGE)) {
+          this.dialogService.close();
         }
       },
       error: (error: any) => {
@@ -280,4 +297,10 @@ export class BrokersComponent implements OnInit {
 
   protected readonly applyFilterGlobal = applyFilterGlobal;
   protected readonly DialogMode = DialogMode;
+
+  onDialogHide() {
+    console.log('onHide')
+  }
+
+  protected readonly close = close;
 }
