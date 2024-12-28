@@ -9,7 +9,7 @@ import {handleErrors} from "@shared/utils/errors";
 import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {Dialog} from "primeng/dialog";
-import {NgIf, NgTemplateOutlet} from "@angular/common";
+import {NgTemplateOutlet} from "@angular/common";
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
 import {FormService} from "@shared/services/form.service";
@@ -25,7 +25,6 @@ import {finalize} from "rxjs";
     Button,
     TranslatePipe,
     Dialog,
-    NgIf,
     ReactiveFormsModule,
     AuthFormComponent,
     NgTemplateOutlet,

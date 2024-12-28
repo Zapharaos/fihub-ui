@@ -138,7 +138,7 @@
     "links": {
       "login": "Log in",
       "register": "Create an account",
-      "forgot": "Forgot password"
+      "password": "Forgot password"
     },
     "messages": {
       "login-success": "Logged in as {{email}}",
@@ -148,6 +148,28 @@
       "not-authenticated": "You must be logged in to access this page.",
       "delete-success": "Your account has been deleted.",
       "update-success": "Your account has been updated."
+    },
+    "login": {
+      "title": "Log in",
+      "submit": "Connect"
+    },
+    "register": {
+      "title": "Welcome to Fihub",
+      "agreement": "I accept the Terms of Use & Privacy Policy.",
+      "submit": "Register"
+    },
+    "password": {
+      "title": "Forgot password",
+      "forgot": {
+        "submit": "Send request"
+      },
+      "reset": {
+        "submit": "Reset"
+      },
+      "verification": {
+        "label": "Verification code",
+        "submit": "Verify"
+      }
     }
   },
   "brokers": {
@@ -190,15 +212,6 @@
   },
   "dashboard": {
     "title": "Dashboard"
-  },
-  "login": {
-    "title": "Log in",
-    "submit": "Connect"
-  },
-  "register": {
-    "title": "Welcome to Fihub",
-    "agreement": "I accept the Terms of Use & Privacy Policy.",
-    "submit": "Register"
   },
   "settings": {
     "title": "Settings",
