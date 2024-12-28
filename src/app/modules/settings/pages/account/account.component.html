@@ -14,10 +14,20 @@
 </ng-template>
 
 <ng-template #contentTemplate>
+  <!--  User details -->
   <div class="flex flex-col gap-5">
-    <h2 class="text-2xl font-medium">
-      {{ 'settings.account.details' | translate }}
-    </h2>
+    <div class="flex flex-row gap-5">
+      <h2 class="text-2xl font-medium">
+        {{ 'settings.account.details' | translate }}
+      </h2>
+      <p-button (click)="onUserDetailsEdit()"
+                [outlined]="true"
+                [rounded]="true"
+                link
+                size="small"
+                label="{{ 'actions.edit' | translate }}"
+                icon="pi pi-pencil" />
+    </div>
     <div class="flex flex-row gap-10 my-5">
       <div class="flex flex-col gap-5 text-light">
         <p>{{'auth.form.email' | translate}}</p>
@@ -28,18 +38,30 @@
     </div>
   </div>
 
+  <p-divider />
+
+  <!--  Password -->
+  <div class="flex flex-row gap-5">
+    <h2 class="text-2xl font-medium">
+      {{ 'settings.account.password' | translate }}
+    </h2>
+    <p-button [outlined]="true"
+              [rounded]="true"
+              link
+              size="small"
+              label="{{ 'actions.edit' | translate }}"
+              icon="pi pi-pencil" />
+  </div>
+
+  <p-divider />
+
+  <!--  Actions -->
   <div class="flex flex-col gap-5">
     <h2 class="text-2xl font-medium">
       {{ 'actions.actions' | translate }}
     </h2>
     <div class="flex flex-col gap-3">
-      <p-button [routerLink]="'/dashboard/admin/brokers'"
-                [outlined]="true"
-                [raised]="true"
-                size="large"
-                label="{{ 'settings.account.actions.change-password' | translate }}"
-                icon="pi pi-pencil" />
-      <p-button [routerLink]="'/dashboard/admin/brokers'"
+      <p-button (click)="onDelete($event)"
                 [outlined]="true"
                 [raised]="true"
                 severity="danger"
@@ -49,3 +71,33 @@
     </div>
   </div>
 </ng-template>
+
+
+<ng-template #dialogContent>
+  <app-auth-form
+    [fieldConfig]="formConfigUserDetails"
+    (onSubmit)="updateUserDetails($event)"
+  ></app-auth-form>
+</ng-template>
+
+<p-dialog [modal]="true"
+          [(visible)]="dialogVisible"
+          [draggable]="false"
+          [style]="{ width: '450px' }"
+          header="{{ 'settings.account.details' | translate }}">
+
+  <ng-container *ngTemplateOutlet="dialogContent"></ng-container>
+
+  <ng-template #footer>
+    <p-button (click)="closeDialog()"
+              [loading]="loading"
+              severity="secondary"
+              icon="pi pi-times"
+              label="{{dialogService.getDialogLabelClose() | translate}}"/>
+    <p-button (click)="dialogService.submitDialog()"
+              [disabled]="formService.isSubmitDisabled()"
+              [loading]="loading"
+              icon="pi pi-check"
+              label="{{dialogService.getDialogLabelSubmit() | translate}}"/>
+  </ng-template>
+</p-dialog>

@@ -13,11 +13,11 @@ import {
 import {Ripple} from "primeng/ripple";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {MessagesModule} from 'primeng/messages';
-import {UsersUserInput} from "@core/api";
+import {UsersUserInputCreate} from "@core/api";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {passwordMatchValidator} from "@shared/validators/password-match";
@@ -30,43 +30,46 @@ export type AuthFormFieldConfig = {
   hasPasswordFeedback?: boolean;
   hasConfirmation?: boolean;
   checkboxLabel?: string;
-  submitLabel: string;
+  submitLabel?: string;
   hasLoginLink?: boolean,
   hasRegisterLink?: boolean,
   hasForgotLink?: boolean,
+  cssFormRaw?: boolean,
+  hideImage?: boolean;
+  hideActions?: boolean;
 };
 
 @Component({
     selector: 'app-auth-form',
-    imports: [
-        Button,
-        CardModule,
-        InputTextModule,
-        PasswordModule,
-        PrimeTemplate,
-        ReactiveFormsModule,
-        Ripple,
-        RouterLink,
-        TranslatePipe,
-        NgIf,
-        FormsModule,
-        DividerModule,
-        CheckboxModule,
-        ButtonDirective,
-        MessagesModule,
-        Message,
-        InputIcon, IconField
-    ],
+  imports: [
+    Button,
+    CardModule,
+    InputTextModule,
+    PasswordModule,
+    PrimeTemplate,
+    ReactiveFormsModule,
+    Ripple,
+    RouterLink,
+    TranslatePipe,
+    NgIf,
+    FormsModule,
+    DividerModule,
+    CheckboxModule,
+    ButtonDirective,
+    MessagesModule,
+    Message,
+    InputIcon, IconField, NgClass
+  ],
     templateUrl: './auth-form.component.html',
     styleUrl: './auth-form.component.scss'
 })
 export class AuthFormComponent implements OnInit {
-  @Input() title: string = "";
+  @Input() title?: string | undefined;
   @Input() fieldConfig: AuthFormFieldConfig = {submitLabel: ""};
   @Output() onSubmit = new EventEmitter<FormGroup>();
 
   protected readonly logoPath = "assets/svg/logo-initial.svg";
-  user: UsersUserInput = {};
+  user: UsersUserInputCreate = {};
   loading = false;
   messageError: string = "";
 
@@ -189,4 +192,10 @@ export class AuthFormComponent implements OnInit {
       this.formService.addControlCheckbox('checkbox', this.user.checkbox);
     }
   }
+
+  patchUserFormServiceValue(user: UsersUserInputCreate) {
+    this.user = {...user};
+    this.formService.patchValue(user);
+  }
+
 }

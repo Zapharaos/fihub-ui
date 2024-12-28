@@ -9,6 +9,7 @@
     "close": "Close",
     "create": "Create",
     "delete": "Delete",
+    "edit": "Edit",
     "logout": "Log out",
     "save": "Save",
     "submit": "Submit",
@@ -144,7 +145,9 @@
       "logout-success": "You have been successfully logged out.",
       "register-success": "Your account was successfully created.",
       "session-expired": "Your session has expired. Please log in again.",
-      "not-authenticated": "You must be logged in to access this page."
+      "not-authenticated": "You must be logged in to access this page.",
+      "delete-success": "Your account has been deleted.",
+      "update-success": "Your account has been updated."
     }
   },
   "brokers": {
@@ -202,9 +205,10 @@
     "account": {
       "title": "My account",
       "sub-title": "Manage your account settings.",
-      "details": "Account details",
+      "details": "User details",
+      "password": "Password",
       "actions": {
-        "change-password": "Change password",
+        "change-password": "Change",
         "delete-account": "Delete account"
       }
     }
