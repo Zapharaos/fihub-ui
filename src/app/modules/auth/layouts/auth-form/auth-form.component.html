@@ -1,11 +1,11 @@
-<div class="flex flex-col items-center justify-center gap-3">
+<div class="flex flex-col items-center justify-center gap-3 w-full">
 
   <img *ngIf="!fieldConfig.hideImage"
        [src]="logoPath" alt="Fihub Logo"/>
 
   <form [formGroup]="formService.getForm()"
         (ngSubmit)="onSubmitWrapper()"
-        class="flex flex-col gap-12 rounded-md"
+        class="flex flex-col gap-12 rounded-md w-[24rem]"
         [ngClass]="{'mt-8 p-10': !fieldConfig.cssFormRaw}">
 
     <!-- Form title -->
@@ -80,7 +80,7 @@
             <ng-template pTemplate="header">
               <h6 class="text-sm font-semibold">{{'auth.form.pwd.feedback.header' | translate}}</h6>
             </ng-template>
-            <ng-template pTemplate="footer">
+            <ng-template *ngIf="!fieldConfig.hidePwdSuggestions" pTemplate="footer">
               <p-divider />
               <p class="mt-2 mb-4">{{'auth.form.pwd.feedback.suggestions.header' | translate}}</p>
               <ul class="pl-2 ml-2 mt-0 list-disc" style="line-height: 1.5">

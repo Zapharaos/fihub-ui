@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "@core/services/auth.service";
 import {NotificationService} from "@shared/services/notification.service";
 import {TranslatePipe} from "@ngx-translate/core";
-import {UsersService, UsersUser} from "@core/api";
+import {UsersService, UsersUser, UsersUserInputPassword} from "@core/api";
 import {handleErrors} from "@shared/utils/errors";
 import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {ConfirmService} from "@shared/services/confirm.service";
@@ -44,6 +44,15 @@ export class AccountComponent {
     hideActions: true,
   };
 
+  protected readonly formConfigUserPassword: AuthFormFieldConfig = {
+    hasPasswordFeedback: true,
+    hasConfirmation: true,
+    cssFormRaw: true,
+    hideImage: true,
+    hideActions: true,
+    hidePwdSuggestions: true,
+  };
+
   @ViewChild(AuthFormComponent) authFormComponent!: AuthFormComponent;
 
   // Global
@@ -52,6 +61,8 @@ export class AccountComponent {
 
   // Dialog
   dialogVisible: boolean = false;
+  isDetails: boolean = false;
+  isPassword: boolean = false;
 
   constructor(
     private router: Router,
@@ -68,14 +79,6 @@ export class AccountComponent {
     });
 
     this.dialogService.setDialogPropsUpdate(() => this.authFormComponent.onSubmitWrapper());
-
-  }
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/']).then(() => {
-      this.notificationService.showToastSuccess('auth.messages.logout-success')
-    });
   }
 
   // Dialog
@@ -83,15 +86,35 @@ export class AccountComponent {
   closeDialog() {
     this.dialogService.closeDialog();
     this.formService.reset();
+    this.isDetails = false;
+    this.isPassword = false;
   }
 
-  onUserDetailsEdit() {
+  // Actions
+
+  onEditUserDetails() {
     this.dialogService.openDialog(DialogMode.UPDATE);
     this.authFormComponent.patchUserFormServiceValue(this.user!);
+    this.isDetails = true;
+  }
+
+  onEditUserPassword() {
+    // TODO: Implement password change
+    this.dialogService.openDialog(DialogMode.UPDATE);
+    this.isPassword = true;
   }
 
   onDelete(event: Event) {
     this.confirmService.showDeleteConfirmation(event, () => this.deleteAccount());
+  }
+
+  // User
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/']).then(() => {
+      this.notificationService.showToastSuccess('auth.messages.logout-success')
+    });
   }
 
   updateUserDetails(userForm: FormGroup) {
@@ -106,6 +129,31 @@ export class AccountComponent {
         // Update local user
         this.user = user;
         this.authService.currentUser = user;
+        // Clean up
+        this.notificationService.showToastSuccess('auth.messages.update-success')
+        this.closeDialog();
+      },
+      error: (error: any) => {
+        this.authFormComponent.handleError(error)
+      },
+    })
+  }
+
+  updateUserPassword(userForm: FormGroup) {
+    this.authFormComponent.setLoading(true);
+
+    // Retrieving user through Form
+    const user : UsersUserInputPassword = {
+      password: userForm.get('password-feedback')?.value,
+      confirmation: userForm.get('confirmation')?.value,
+    }
+
+    // Calling service to update the user details
+    this.usersService.changeUserPassword(user).pipe(finalize(() => {
+      // Call is over
+      this.authFormComponent.setLoading(false)
+    })).subscribe({
+      next: () => {
         // Clean up
         this.notificationService.showToastSuccess('auth.messages.update-success')
         this.closeDialog();
