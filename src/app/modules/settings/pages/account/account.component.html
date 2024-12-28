@@ -74,11 +74,11 @@
 </ng-template>
 
 <ng-template #dialogContent>
-  <app-auth-form *ngIf="isDetails"
+  <app-auth-form *ngIf="dialogService.isActive(DialogMode.UPDATE)"
                  [fieldConfig]="formConfigUserDetails"
                  (onSubmit)="updateUserDetails($event)"
   ></app-auth-form>
-  <app-auth-form *ngIf="isPassword"
+  <app-auth-form *ngIf="dialogService.isActive(DialogMode.PASSWORD)"
                  [fieldConfig]="formConfigUserPassword"
                  (onSubmit)="updateUserPassword($event)"
   ></app-auth-form>
@@ -88,7 +88,8 @@
           [(visible)]="dialogVisible"
           [draggable]="false"
           [style]="{ width: '450px' }"
-          header="{{ 'settings.account.details' | translate }}">
+          (onHide)="closeDialog()"
+          header="{{ dialogService.getLabelTitle() | translate }}">
 
   <ng-container *ngTemplateOutlet="dialogContent"></ng-container>
 
@@ -99,12 +100,12 @@
                 [loading]="loading"
                 severity="secondary"
                 icon="pi pi-times"
-                label="{{dialogService.getDialogLabelClose() | translate}}"/>
-      <p-button (click)="dialogService.submitDialog()"
+                label="{{dialogService.getLabelClose() | translate}}"/>
+      <p-button (click)="dialogService.submit()"
                 [disabled]="formService.isSubmitDisabled()"
                 [loading]="loading"
                 icon="pi pi-check"
-                label="{{dialogService.getDialogLabelSubmit() | translate}}"/>
+                label="{{dialogService.getLabelSubmit() | translate}}"/>
     </div>
   </ng-template>
 </p-dialog>
