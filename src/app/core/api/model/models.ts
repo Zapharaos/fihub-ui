@@ -8,5 +8,6 @@ export * from './transactionsTransaction';
 export * from './transactionsTransactionInput';
 export * from './transactionsTransactionType';
 export * from './usersUser';
-export * from './usersUserInput';
+export * from './usersUserInputCreate';
+export * from './usersUserInputPassword';
 export * from './usersUserWithPassword';
