@@ -99,16 +99,27 @@ export class AccountComponent {
     this.formService.reset();
   }
 
+  // Form
+
+  submitForm(userForm: FormGroup) {
+    if (this.dialogService.isActive(DialogMode.UPDATE)) {
+      this.updateUserDetails(userForm);
+    } else if (this.dialogService.isActive(DialogMode.PASSWORD)) {
+      this.updateUserPassword(userForm);
+    }
+  }
+
   // Actions
 
   onEditUserDetails() {
     this.dialogService.open(DialogMode.UPDATE);
+    this.authFormComponent.setConfig(this.formConfigUserDetails);
     this.authFormComponent.patchUserFormServiceValue(this.user!);
   }
 
   onEditUserPassword() {
-    // TODO : check if the form.value must be changed
     this.dialogService.open(DialogMode.PASSWORD);
+    this.authFormComponent.setConfig(this.formConfigUserPassword);
   }
 
   onDelete(event: Event) {

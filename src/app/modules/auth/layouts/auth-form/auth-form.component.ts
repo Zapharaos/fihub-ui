@@ -66,7 +66,7 @@ export type AuthFormFieldConfig = {
 })
 export class AuthFormComponent implements OnInit {
   @Input() title?: string | undefined;
-  @Input() fieldConfig: AuthFormFieldConfig = {submitLabel: ""};
+  @Input() fieldConfig: AuthFormFieldConfig = {};
   @Output() onSubmit = new EventEmitter<FormGroup>();
 
   protected readonly logoPath = "assets/svg/logo-initial.svg";
@@ -100,6 +100,11 @@ export class AuthFormComponent implements OnInit {
 
   setLoading(loading: boolean) {
     this.loading = loading;
+  }
+
+  setConfig(fieldConfig: AuthFormFieldConfig) {
+    this.fieldConfig = fieldConfig;
+    this.initFormControls();
   }
 
   handleError(error: any) {

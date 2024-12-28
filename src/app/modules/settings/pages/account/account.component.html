@@ -74,14 +74,7 @@
 </ng-template>
 
 <ng-template #dialogContent>
-  <app-auth-form *ngIf="dialogService.isActive(DialogMode.UPDATE)"
-                 [fieldConfig]="formConfigUserDetails"
-                 (onSubmit)="updateUserDetails($event)"
-  ></app-auth-form>
-  <app-auth-form *ngIf="dialogService.isActive(DialogMode.PASSWORD)"
-                 [fieldConfig]="formConfigUserPassword"
-                 (onSubmit)="updateUserPassword($event)"
-  ></app-auth-form>
+  <app-auth-form (onSubmit)="submitForm($event)"></app-auth-form>
 </ng-template>
 
 <p-dialog [modal]="true"
@@ -94,7 +87,6 @@
   <ng-container *ngTemplateOutlet="dialogContent"></ng-container>
 
   <ng-template #footer>
-
     <div class="w-[24rem] flex gap-3 justify-end m-auto">
       <p-button (click)="closeDialog()"
                 [loading]="loading"
