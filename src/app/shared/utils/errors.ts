@@ -15,6 +15,9 @@ export function handleErrors(error: any, notificationService: NotificationServic
     case 404:
       notificationService.showToastError('http.404.detail', undefined, 'http.404.summary')
       break;
+    case 429:
+      notificationService.showToastError('http.429.detail', undefined, 'http.429.summary')
+      break;
     default:
       notificationService.showToastError('http.500.detail', undefined, 'http.500.summary')
       break;
