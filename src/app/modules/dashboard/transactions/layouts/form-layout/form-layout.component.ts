@@ -113,6 +113,7 @@ export class FormLayoutComponent implements OnInit {
       },
       error: (error: any) => {
         handleErrors(error, this.notificationService);
+        // Could not load brokers : nothing to do on this page
         this.router.navigate(['dashboard/transactions']);
       }
     })
@@ -141,6 +142,7 @@ export class FormLayoutComponent implements OnInit {
       },
       error: (error) => {
         handleErrors(error, this.notificationService);
+        // Could not retrieve the transaction : nothing to do on this page
         this.router.navigate(['/dashboard/transactions']);
       }
     })
@@ -215,8 +217,11 @@ export class FormLayoutComponent implements OnInit {
     })).subscribe({
       next: () => {
         this.transactionStore.clearTransaction();
-        this.notificationService.showToastSuccess('transactions.messages.update-success');
-        this.router.navigate(['/dashboard/transactions', this.transaction?.id]);
+
+        // Success : navigate back to the transaction details page
+        this.router.navigate(['/dashboard/transactions', this.transaction?.id]).then(() => {
+          this.notificationService.showToastSuccess('transactions.messages.update-success');
+        });
       },
       error: (error) => {
         handleErrors(error, this.notificationService, this.handleErrors400.bind(this));

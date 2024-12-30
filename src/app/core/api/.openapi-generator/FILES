@@ -18,6 +18,7 @@ model/brokersBrokerImage.ts
 model/brokersUserBroker.ts
 model/brokersUserBrokerInput.ts
 model/models.ts
+model/passwordInputRequest.ts
 model/renderErrorResponse.ts
 model/transactionsTransaction.ts
 model/transactionsTransactionInput.ts

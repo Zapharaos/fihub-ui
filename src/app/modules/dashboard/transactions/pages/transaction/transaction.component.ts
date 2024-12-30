@@ -63,6 +63,7 @@ export class TransactionComponent implements OnInit {
       },
       error: (error) => {
         handleErrors(error, this.notificationService);
+        // Could not retrieve the transaction : nothing to do on this page
         this.router.navigate(['/dashboard/transactions']);
         return false;
       }
@@ -80,8 +81,10 @@ export class TransactionComponent implements OnInit {
         this.loading = false;
       })).subscribe({
         next: () => {
-          this.notificationService.showToastSuccess('transactions.messages.delete-success');
-          this.router.navigate(['/dashboard/transactions']);
+          // Success : navigate back to transactions page
+          this.router.navigate(['/dashboard/transactions']).then(() => {
+            this.notificationService.showToastSuccess('transactions.messages.delete-success');
+          });
         },
         error: (error) => {
           handleErrors(error, this.notificationService);

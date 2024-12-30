@@ -23,6 +23,7 @@ import {InputIcon} from "primeng/inputicon";
 import {passwordMatchValidator} from "@shared/validators/password-match";
 import {FormService} from "@shared/services/form.service";
 import { InputOtp } from 'primeng/inputotp';
+import {NotificationService} from "@shared/services/notification.service";
 
 export type AuthFormFieldConfig = {
   hasEmail?: boolean;
@@ -82,6 +83,7 @@ export class AuthFormComponent implements OnInit {
 
   constructor(
     private translateService: TranslateService,
+    private notificationService: NotificationService,
     protected formService: FormService
   ) {  }
 
@@ -157,6 +159,11 @@ export class AuthFormComponent implements OnInit {
         // Checkbox - Default
         case 'checkbox-invalid':
           this.formService.setFieldErrors('checkbox', ['submit-invalid']);
+          break;
+
+        // OTP - Default
+        case 'request-active':
+          this.notificationService.showToastWarn('auth.password.messages.request-active');
           break;
 
         // Generic error

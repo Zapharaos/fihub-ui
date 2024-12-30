@@ -160,6 +160,11 @@
     },
     "password": {
       "title": "Forgot password",
+      "messages": {
+        "send-success": "A verification code has been sent to your email address.",
+        "request-active": "A verification code was already sent to your email address.",
+        "reset-success": "Your password has been reset."
+      },
       "forgot": {
         "submit": "Send request"
       },
