@@ -52,10 +52,10 @@ export class RegisterComponent {
       this.authFormComponent.setLoading(false)
     })).subscribe({
       next: () => {
-        // Success
-        this.notificationService.showToastSuccess('auth.messages.register-success', {email: user.email})
-        // Navigate to login page
-        this.router.navigate(['/auth'])
+        // Success : navigate to login page
+        this.router.navigate(['/auth']).then(() => {
+          this.notificationService.showToastSuccess('auth.messages.register-success', {email: user.email})
+        })
       },
       error: (error: any) => {
         // An error has occurred

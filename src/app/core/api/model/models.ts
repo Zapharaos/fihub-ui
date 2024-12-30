@@ -3,6 +3,7 @@ export * from './brokersBroker';
 export * from './brokersBrokerImage';
 export * from './brokersUserBroker';
 export * from './brokersUserBrokerInput';
+export * from './passwordInputRequest';
 export * from './renderErrorResponse';
 export * from './transactionsTransaction';
 export * from './transactionsTransactionInput';
