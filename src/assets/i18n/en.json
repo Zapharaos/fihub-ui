@@ -46,6 +46,10 @@
       "summary": "Not Found",
       "detail": "Could not perform the action. The requested item could not be found."
     },
+    "429": {
+      "summary": "Too Many Requests",
+      "detail": "You have made too many requests in a short period. Please try again later."
+    },
     "500": {
       "summary": "Server Error",
       "detail": "We're experiencing technical difficulties. Please try again later or contact support."

@@ -1,10 +1,11 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
 import {Router} from "@angular/router";
-import {AuthService, UsersService, UsersUserInputPassword} from "@core/api";
+import {AuthService, PasswordResponseRequest, UsersUserInputPassword} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormGroup} from "@angular/forms";
 import {finalize} from "rxjs";
+import {PasswordStoreRequest, PasswordStoreStep, PasswordStore} from "@modules/auth/stores/password.service";
 
 @Component({
   selector: 'app-password',
@@ -14,7 +15,7 @@ import {finalize} from "rxjs";
   templateUrl: './password.component.html',
   styleUrl: './password.component.scss'
 })
-export class PasswordComponent {
+export class PasswordComponent implements OnInit {
 
   protected readonly formConfigForgot: AuthFormFieldConfig = {
     hasEmail: true,
@@ -34,16 +35,25 @@ export class PasswordComponent {
   };
 
   activeConfig: AuthFormFieldConfig = this.formConfigForgot;
-  userID: string = '';
-  requestID: string = '';
 
   @ViewChild(AuthFormComponent) authFormComponent!: AuthFormComponent;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private passwordStore: PasswordStore,
   ) { }
+
+  ngOnInit() {
+    this.passwordStore.request$.subscribe((request) => {
+      if (request) {
+        this.updateStep(request.step);
+      }
+    });
+
+    this.passwordStore.init();
+  }
 
   submit(userForm: FormGroup) {
     if (this.activeConfig === this.formConfigForgot) {
@@ -62,38 +72,43 @@ export class PasswordComponent {
     }).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
-      next: (userID: string) => {
-        this.userID = userID;
-        // Success : next step = verify OTP
-        this.activeConfig = this.formConfigVerification;
-        this.authFormComponent.setConfig(this.formConfigVerification);
-        this.notificationService.showToastSuccess('auth.password.messages.send-success')
+      next: (request: PasswordResponseRequest) => {
+
+        // Success : store request into next step
+        this.passwordStore.request = {
+          userID: request.user_id || '',
+          expiresAt: request.expires_at || '',
+          requestID: '',
+          step: PasswordStoreStep.Verify,
+        }
+
+        // A request is already active
+        if (request.error === 'request-active') {
+          this.notificationService.showToastWarn('auth.password.messages.request-active');
+        } else {
+          this.notificationService.showToastSuccess('auth.password.messages.send-success');
+        }
       },
       error: (error: any) => {
         // An error has occurred
         this.authFormComponent.handleError(error)
-
-        // If the error is that a request is already active, we need to switch to the verification form
-        if (error.error.message === 'request-active') {
-          // TODO : retrieve the user ID from the error
-          this.userID = '8eb3d72c-d7e8-4064-a143-daae180c1b1f';
-          this.activeConfig = this.formConfigVerification;
-          this.authFormComponent.setConfig(this.formConfigVerification);
-        }
       },
     });
   }
 
   verify(userForm: FormGroup) {
     this.authFormComponent.setLoading(true);
-    this.authService.getPasswordResetRequestID(this.userID, userForm.value.otp).pipe(finalize(() => {
+    this.authService.getPasswordResetRequestID(this.passwordStore.request?.userID ?? '', userForm.value.otp).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
       next: (requestID: string) => {
-        this.requestID = requestID;
-        // Success : next step = reset password
-        this.activeConfig = this.formConfigReset;
-        this.authFormComponent.setConfig(this.formConfigReset);
+        // Success : store requestID into next step
+        var copyStore = this.passwordStore.request;
+        if (copyStore) {
+          copyStore.requestID = requestID;
+          copyStore.step = PasswordStoreStep.Reset;
+          this.passwordStore.request = copyStore;
+        }
       },
       error: (error: any) => {
         // An error has occurred
@@ -111,10 +126,14 @@ export class PasswordComponent {
       confirmation: userForm.get('confirmation')?.value,
     }
 
-    this.authService.resetPassword(this.userID, this.requestID, inputPassword).pipe(finalize(() => {
+    // Retrieving userID and requestID from the store
+    const request = this.passwordStore.request;
+
+    this.authService.resetPassword(request?.userID ?? '', request?.requestID ?? '', inputPassword).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
       next: () => {
+        this.passwordStore.reset();
         // Success : navigate to login page
         this.router.navigate(['/auth']).then(() => {
           this.notificationService.showToastSuccess('auth.password.messages.reset-success')
@@ -125,5 +144,24 @@ export class PasswordComponent {
         this.authFormComponent.handleError(error)
       },
     });
+  }
+
+  private updateStep(step: PasswordStoreStep | undefined) {
+    // Apply the step (if any)
+    switch (step) {
+      case PasswordStoreStep.Verify:
+        this.activeConfig = this.formConfigVerification;
+        this.authFormComponent?.setConfig(this.formConfigVerification);
+        break;
+      case PasswordStoreStep.Reset:
+        this.activeConfig = this.formConfigReset;
+        this.authFormComponent?.setConfig(this.formConfigReset);
+        break;
+      case PasswordStoreStep.Forgot:
+      default:
+        this.activeConfig = this.formConfigForgot;
+        this.authFormComponent?.setConfig(this.formConfigForgot);
+        break;
+    }
   }
 }

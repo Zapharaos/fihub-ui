@@ -24,6 +24,7 @@ import {passwordMatchValidator} from "@shared/validators/password-match";
 import {FormService} from "@shared/services/form.service";
 import { InputOtp } from 'primeng/inputotp';
 import {NotificationService} from "@shared/services/notification.service";
+import {handleErrors} from "@shared/utils/errors";
 
 export type AuthFormFieldConfig = {
   hasEmail?: boolean;
@@ -120,59 +121,57 @@ export class AuthFormComponent implements OnInit {
     // Clear messageError
     this.messageError = "";
 
-    // Handle 400 Bad Request error
-    if (error.status === 400) {
-      switch (error.error.message) {
+    handleErrors(error, this.notificationService, this.handleError400.bind(this));
+  }
 
-        // Login credentials - Invalid
-        case 'login-invalid':
-          this.messageError = this.translateService.instant('auth.form.error.login');
-          break;
+  handleError400(error: any) {
+    switch (error.error.message) {
 
-        // Email - Default
-        case 'email-required':
-        case 'email-invalid':
-          this.formService.setFieldErrors('email', ['submit-required']);
-          break;
+      // Login credentials - Invalid
+      case 'login-invalid':
+        this.messageError = this.translateService.instant('auth.form.error.login');
+        break;
 
-        // Email - Used
-        case 'email-used':
-          this.formService.setFieldErrors('email', ['submit-used']);
-          break;
+      // Email - Default
+      case 'email-required':
+      case 'email-invalid':
+        this.formService.setFieldErrors('email', ['submit-required']);
+        break;
 
-        // Password - Default
-        case 'password-required':
-        case 'password-invalid':
-          if (this.fieldConfig.hasPassword) {
-            this.formService.setFieldErrors('password', ['submit-required']);
-          } else if (this.fieldConfig.hasPasswordFeedback){
-            this.formService.setFieldErrors('password-feedback', ['submit-required']);
-          }
-          break;
+      // Email - Used
+      case 'email-used':
+        this.formService.setFieldErrors('email', ['submit-used']);
+        break;
 
-        // Confirmation - Default
-        case 'confirmation-required':
-        case 'confirmation-invalid':
-          this.formService.setFieldErrors('confirmation', ['submit-required']);
-          break;
+      // Password - Default
+      case 'password-required':
+      case 'password-invalid':
+        if (this.fieldConfig.hasPassword) {
+          this.formService.setFieldErrors('password', ['submit-required']);
+        } else if (this.fieldConfig.hasPasswordFeedback){
+          this.formService.setFieldErrors('password-feedback', ['submit-required']);
+        }
+        break;
 
-        // Checkbox - Default
-        case 'checkbox-invalid':
-          this.formService.setFieldErrors('checkbox', ['submit-invalid']);
-          break;
+      // Confirmation - Default
+      case 'confirmation-required':
+      case 'confirmation-invalid':
+        this.formService.setFieldErrors('confirmation', ['submit-required']);
+        break;
 
-        // OTP - Default
-        case 'request-active':
-          this.notificationService.showToastWarn('auth.password.messages.request-active');
-          break;
+      // Checkbox - Default
+      case 'checkbox-invalid':
+        this.formService.setFieldErrors('checkbox', ['submit-invalid']);
+        break;
 
-        // Generic error
-        default:
-          this.messageError = this.translateService.instant('http.500.detail');
-      }
-    } else {
-      // Likely 500 InternalServerError - Generic enough to handle all other possible errors
-      this.messageError = this.translateService.instant('http.500.detail');
+      // OTP - Default
+      case 'request-active':
+        this.notificationService.showToastError('auth.password.messages.request-active');
+        break;
+
+      // Generic error
+      default:
+        this.messageError = this.translateService.instant('http.500.detail');
     }
   }
 

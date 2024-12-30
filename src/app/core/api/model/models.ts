@@ -4,6 +4,7 @@ export * from './brokersBrokerImage';
 export * from './brokersUserBroker';
 export * from './brokersUserBrokerInput';
 export * from './passwordInputRequest';
+export * from './passwordResponseRequest';
 export * from './renderErrorResponse';
 export * from './transactionsTransaction';
 export * from './transactionsTransactionInput';
