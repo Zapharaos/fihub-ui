@@ -1,4 +1,4 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 
 export enum PasswordStoreStep {
@@ -52,10 +52,9 @@ export class PasswordStore {
     if (!request) {
       return true;
     }
-    // TODO : fix dates
+
     const now = new Date();
     const expiresAt = new Date(request.expiresAt);
-    console.log(now, request.expiresAt, now > expiresAt);
     return now > expiresAt;
   }
 

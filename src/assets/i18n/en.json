@@ -136,7 +136,8 @@
         "email-used": "Email is already used.",
         "password-feedback": "Password length must be from 8 to 64 characters.",
         "confirmation": "Password confirmation does not match.",
-        "agreement": "You must agree to the terms and conditions."
+        "agreement": "You must agree to the terms and conditions.",
+        "verification": "Verification code is invalid."
       }
     },
     "links": {

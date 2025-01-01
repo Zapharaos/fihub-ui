@@ -169,6 +169,11 @@ export class AuthFormComponent implements OnInit {
         this.notificationService.showToastError('auth.password.messages.request-active');
         break;
 
+      // OTP - Invalid
+      case 'otp-invalid':
+        this.formService.setFieldErrors('otp', ['submit-invalid']);
+        break;
+
       // Generic error
       default:
         this.messageError = this.translateService.instant('http.500.detail');
