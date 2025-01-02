@@ -18,6 +18,7 @@ import {applyFilterGlobal, onRowEditCancel, onRowEditInit, onRowEditSave} from "
 import {ConfirmService} from "@shared/services/confirm.service";
 import {BrokerImageService, UserBrokerWithImage} from "@shared/services/broker-image.service";
 import {handleErrors} from "@shared/utils/errors";
+import {Skeleton} from "primeng/skeleton";
 
 // TODO : temp fields
 export interface TableBroker extends BrokersUserBroker {
@@ -39,6 +40,7 @@ export interface TableBroker extends BrokersUserBroker {
         ReactiveFormsModule,
         RouterLink,
         DashboardContentLayoutComponent,
+        Skeleton,
     ],
     templateUrl: './list.component.html',
     styleUrl: './list.component.scss'

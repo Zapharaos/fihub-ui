@@ -14,16 +14,18 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {BrokerImageService, TransactionWithImage} from "@shared/services/broker-image.service";
 import {handleErrors} from "@shared/utils/errors";
+import {Skeleton} from "primeng/skeleton";
 
 @Component({
     selector: 'app-transaction',
-    imports: [
-        DashboardContentLayoutComponent,
-        Button,
-        CommonModule,
-        TabsModule,
-        TranslatePipe,
-    ],
+  imports: [
+    DashboardContentLayoutComponent,
+    Button,
+    CommonModule,
+    TabsModule,
+    TranslatePipe,
+    Skeleton,
+  ],
     templateUrl: './transaction.component.html',
     styleUrl: './transaction.component.scss'
 })

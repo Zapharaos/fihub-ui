@@ -27,6 +27,7 @@
     [value]="userBrokers"
     [globalFilterFields]="tablePropertiesFilter"
     [loading]="loading"
+    [showLoader]="false"
     [styleClass]="'p-datatable-lg'"
     [rowHover]="true"
     sortField="broker.name" [sortOrder]="1">
@@ -38,6 +39,16 @@
         <th></th>
       </tr>
     </ng-template>
+
+    <ng-template pTemplate="loadingbody">
+      <tr *ngFor="let i of [1, 2, 3, 4, 5]">
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+      </tr>
+    </ng-template>
+
     <ng-template pTemplate="body" let-userBroker let-editing="editing" let-ri="rowIndex">
       <tr [pEditableRow]="userBroker">
         <td>

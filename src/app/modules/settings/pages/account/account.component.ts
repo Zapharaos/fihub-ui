@@ -194,6 +194,4 @@ export class AccountComponent {
       }
     });
   }
-
-  protected readonly DialogMode = DialogMode;
 }
