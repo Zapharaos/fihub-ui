@@ -44,7 +44,7 @@
             <p>{{'transactions.transaction.overview.priceUnit' | translate}}</p>
             <p>{{'transactions.transaction.overview.fee' | translate}}</p>
           </div>
-          <div class="flex flex-col gap-5 font-medium">
+          <div *ngIf="!loading" class="flex flex-col gap-5 font-medium">
             <div class="flex flex-row gap-3">
               <img *ngIf="transaction?.broker?.imageUrl"
                    [src]="transaction?.broker?.imageUrl"
@@ -60,6 +60,16 @@
             <p>{{transaction?.price | currency}}</p>
             <p>{{transaction?.price_unit | currency}}</p>
             <p>{{transaction?.fee | currency}}</p>
+          </div>
+          <div *ngIf="loading" class="flex flex-col gap-5 font-medium">
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
           </div>
         </div>
       </p-tabpanel>

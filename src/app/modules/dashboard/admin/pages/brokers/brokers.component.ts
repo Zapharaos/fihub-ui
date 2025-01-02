@@ -18,7 +18,7 @@ import {Tag} from "primeng/tag";
 import {FileUploadHandlerEvent, FileUploadModule} from "primeng/fileupload";
 import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {Dialog} from "primeng/dialog";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {ToggleSwitch} from "primeng/toggleswitch";
 import {ButtonProps} from "primeng/button/button.interface";
 import {ConfirmService} from "@shared/services/confirm.service";
@@ -26,27 +26,30 @@ import {FormService} from "@shared/services/form.service";
 import {Message} from "primeng/message";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
 import {handleErrors} from "@shared/utils/errors";
+import {Skeleton} from "primeng/skeleton";
 
 @Component({
     selector: 'app-admin-brokers',
-    imports: [
-        DashboardContentLayoutComponent,
-        Button,
-        IconField,
-        InputIcon,
-        InputText,
-        TranslatePipe,
-        PrimeTemplate,
-        ReactiveFormsModule,
-        TableModule,
-        FormsModule,
-        Tag,
-        FileUploadModule,
-        Dialog,
-        NgIf,
-        ToggleSwitch,
-        Message
-    ],
+  imports: [
+    DashboardContentLayoutComponent,
+    Button,
+    IconField,
+    InputIcon,
+    InputText,
+    TranslatePipe,
+    PrimeTemplate,
+    ReactiveFormsModule,
+    TableModule,
+    FormsModule,
+    Tag,
+    FileUploadModule,
+    Dialog,
+    NgIf,
+    ToggleSwitch,
+    Message,
+    Skeleton,
+    NgForOf
+  ],
     templateUrl: './brokers.component.html',
     styleUrl: './brokers.component.scss'
 })
@@ -297,10 +300,4 @@ export class BrokersComponent implements OnInit {
 
   protected readonly applyFilterGlobal = applyFilterGlobal;
   protected readonly DialogMode = DialogMode;
-
-  onDialogHide() {
-    console.log('onHide')
-  }
-
-  protected readonly close = close;
 }

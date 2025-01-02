@@ -12,12 +12,13 @@ import {InputIcon} from "primeng/inputicon";
 import {applyFilterGlobal} from "@shared/utils/table";
 import {InputTextModule} from "primeng/inputtext";
 import {Router, RouterLink} from "@angular/router";
-import {CurrencyPipe, NgIf} from "@angular/common";
+import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 import {BrokerImageService, TransactionWithImage} from "@shared/services/broker-image.service";
 import {handleErrors} from "@shared/utils/errors";
+import {Skeleton} from "primeng/skeleton";
 
 @Component({
     selector: 'app-transactions-list',
@@ -34,6 +35,8 @@ import {handleErrors} from "@shared/utils/errors";
         RouterLink,
         CurrencyPipe,
         NgIf,
+        NgForOf,
+        Skeleton,
     ],
     templateUrl: './list.component.html',
     styleUrl: './list.component.scss'

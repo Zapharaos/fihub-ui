@@ -19,6 +19,7 @@
             icon="pi pi-plus" />
 </ng-template>
 
+
 <ng-template #contentTemplate>
   <p-table
     #dt
@@ -26,12 +27,12 @@
     [value]="brokers"
     [globalFilterFields]="tablePropertiesFilter"
     [loading]="loading"
+    [showLoader]="false"
     [styleClass]="'p-datatable-lg'"
-    [rowHover]="true"
+    (onRowSelect)="onRowSelect($event)"
     sortField="name" [sortOrder]="1"
     selectionMode="single"
-    [(selection)]="broker"
-    (onRowSelect)="onRowSelect($event)">
+    [(selection)]="broker">
     <ng-template pTemplate="header">
       <tr>
         <th>{{ 'admin.brokers.table-column.name' | translate }}</th>
@@ -40,6 +41,16 @@
         <th></th>
       </tr>
     </ng-template>
+
+    <ng-template pTemplate="loadingbody">
+      <tr *ngFor="let i of [1, 2, 3, 4, 5]">
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+      </tr>
+    </ng-template>
+
     <ng-template pTemplate="body" let-broker>
       <tr [pSelectableRow]="broker">
         <td>
@@ -73,7 +84,6 @@
     </ng-template>
   </p-table>
 </ng-template>
-
 
 <p-dialog [modal]="true"
           [(visible)]="dialogVisible"
@@ -172,7 +182,6 @@
 
   <ng-template #footer *ngIf="!dialogService.isActive(DialogMode.IMAGE)">
     <p-button (click)="closeDialog()"
-              [loading]="loading"
               severity="secondary"
               icon="pi pi-times"
               label="{{dialogService.getLabelClose() | translate}}"/>

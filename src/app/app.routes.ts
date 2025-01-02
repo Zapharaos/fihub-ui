@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import {authGuard, noAuthGuard} from "@shared/guards/auth.guard";
 import {DashboardLayoutComponent} from "@modules/dashboard/layouts/dashboard-layout/dashboard-layout.component";
-import {BasicLayoutComponent} from "@shared/components/basic-layout/basic-layout.component";
+import {BasicLayoutComponent} from "@shared/layouts/basic-layout/basic-layout.component";
 
 export const routes: Routes = [
   {

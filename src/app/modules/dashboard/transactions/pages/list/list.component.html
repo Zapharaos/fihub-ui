@@ -27,6 +27,7 @@
     [value]="transactions"
     [globalFilterFields]="tablePropertiesFilter"
     [loading]="loading"
+    [showLoader]="false"
     [styleClass]="'p-datatable-lg'"
     [rowHover]="true"
     [sortMode]="'multiple'"
@@ -46,6 +47,20 @@
         <th pSortableColumn="fee">{{ 'transactions.table-column.fee' | translate }} <p-sortIcon field="fee" /></th>
       </tr>
     </ng-template>
+
+    <ng-template pTemplate="loadingbody">
+      <tr *ngFor="let i of [1, 2, 3, 4, 5]">
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+      </tr>
+    </ng-template>
+
     <ng-template pTemplate="body" let-transaction>
       <tr [pSelectableRow]="transaction">
         <td>{{ transaction.date }}</td>

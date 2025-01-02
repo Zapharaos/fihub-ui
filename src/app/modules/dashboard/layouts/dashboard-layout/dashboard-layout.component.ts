@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {TranslateModule} from "@ngx-translate/core";
-import {BasicLayoutComponent} from "@shared/components/basic-layout/basic-layout.component";
+import {BasicLayoutComponent} from "@shared/layouts/basic-layout/basic-layout.component";
 import {LayoutItem} from "@shared/models/layout-item";
 
 @Component({
