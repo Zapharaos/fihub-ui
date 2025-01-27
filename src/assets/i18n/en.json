@@ -225,6 +225,7 @@
   },
   "settings": {
     "title": "Settings",
+    "language": "Language",
     "account": {
       "title": "My account",
       "sub-title": "Manage your account settings.",
