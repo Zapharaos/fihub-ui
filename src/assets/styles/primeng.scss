@@ -1,0 +1,27 @@
+// ListBox
+
+.p-listbox .p-listbox-list-container {
+  @apply scroll-smooth scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-muted;
+}
+
+// Password
+
+.p-password-overlay .p-password-content {
+  margin-top: 1rem;
+}
+
+// IconField
+
+p-inputicon {
+  z-index: 2;
+}
+
+.p-iconfield .p-password-input {
+  padding-inline-start: calc((var(--p-form-field-padding-x)* 2) + var(--p-icon-size));
+}
+
+// SortIcon
+
+p-sorticon {
+  color: var(--text-secondary-color);
+}
