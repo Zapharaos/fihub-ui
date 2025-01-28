@@ -6,12 +6,13 @@ import {NotificationService} from "@shared/services/notification.service";
 import {FormGroup} from "@angular/forms";
 import {finalize} from "rxjs";
 import {PasswordStoreRequest, PasswordStoreStep, PasswordStore} from "@modules/auth/stores/password.service";
+import {LanguageService} from "@shared/services/language.service";
 
 @Component({
   selector: 'app-password',
-    imports: [
-        AuthFormComponent
-    ],
+  imports: [
+    AuthFormComponent
+  ],
   templateUrl: './password.component.html',
   styleUrl: './password.component.scss'
 })
@@ -43,7 +44,9 @@ export class PasswordComponent implements OnInit {
     private authService: AuthService,
     private notificationService: NotificationService,
     private passwordStore: PasswordStore,
-  ) { }
+    private languageService: LanguageService,
+  ) {
+  }
 
   ngOnInit() {
     this.passwordStore.request$.subscribe((request) => {
@@ -67,9 +70,12 @@ export class PasswordComponent implements OnInit {
 
   forgot(userForm: FormGroup) {
     this.authFormComponent.setLoading(true);
-    this.authService.createPasswordResetRequest({
-      email: userForm.value.email,
-    }).pipe(finalize(() => {
+    this.authService.createPasswordResetRequest(
+      {
+        email: userForm.value.email,
+      },
+      this.languageService.language?.code
+    ).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
       next: (request: PasswordResponseRequest) => {
@@ -121,7 +127,7 @@ export class PasswordComponent implements OnInit {
     this.authFormComponent.setLoading(true);
 
     // Retrieving inputPassword through Form
-    const inputPassword : UsersUserInputPassword = {
+    const inputPassword: UsersUserInputPassword = {
       password: userForm.get('password-feedback')?.value,
       confirmation: userForm.get('confirmation')?.value,
     }
