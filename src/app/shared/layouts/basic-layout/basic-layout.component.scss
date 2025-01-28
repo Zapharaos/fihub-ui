@@ -1,8 +1,8 @@
 // Header
-header div:first-of-type {
+header > div:first-of-type {
   height: var(--header-height);
 }
-header img {
+header .logo {
   fill: var(--primary-color);
   height: calc(var(--header-height) * 3/4);
   max-width: 100%;

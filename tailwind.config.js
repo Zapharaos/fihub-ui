@@ -4,12 +4,18 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'primary': 'var(--primary-color)',
+        'muted': 'var(--p-text-muted-color)',
+      }
+    },
   },
   plugins: [
     require('tailwindcss-primeui'),
     require('tailwind-scrollbar')({
-      nocompatible: true
+      nocompatible: true,
+      preferredStrategy: 'pseudoelements',
     }),
   ]
 }

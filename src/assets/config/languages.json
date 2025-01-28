@@ -1,0 +1,12 @@
+[
+  { "name": "العربية", "code": "ar" },
+  { "name": "English", "code": "en" },
+  { "name": "Español", "code": "es" },
+  { "name": "Français", "code": "fr" },
+  { "name": "हिन्दी", "code": "hi" },
+  { "name": "Italiano", "code": "it" },
+  { "name": "한국어", "code": "ko" },
+  { "name": "Русский", "code": "ru" },
+  { "name": "Kiswahili", "code": "sw" },
+  { "name": "中文", "code": "zh" }
+]

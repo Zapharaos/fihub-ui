@@ -1,0 +1,14 @@
+// Popover panel
+
+.panel-content{
+  position: absolute;
+  top: calc(100% + 1rem);
+  inset-inline-end: 0;
+  width: 18rem;
+  padding: .75rem;
+  background-color: var(--overlay-background);
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  transform-origin: top;
+  box-shadow: 0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a;
+}

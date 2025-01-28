@@ -42,6 +42,8 @@ export class PasswordStore {
     if (localRequest && !this.isRequestExpired(localRequest)) {
       this._request.next(localRequest);
     }
+
+    this.reset();
   }
 
   reset() {
