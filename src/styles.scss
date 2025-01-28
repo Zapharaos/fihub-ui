@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "primeicons/primeicons.css";
+@use "primeicons/primeicons.css";
 
-@import "assets/styles/docs";
-@import "assets/styles/flags";
-@import "assets/styles/primeng";
-@import "assets/styles/themes";
+@use "assets/styles/docs";
+@use "assets/styles/flags";
+@use "assets/styles/primeng";
+@use "assets/styles/themes";
 
 @layer tailwind-base, primeng, tailwind-utilities;
 

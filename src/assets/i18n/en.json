@@ -64,6 +64,9 @@
   "router": {
     "back": "Back"
   },
+  "search": {
+    "no-results": "No results found"
+  },
   "footer": {
     "terms": "Terms",
     "privacy": "Privacy"
