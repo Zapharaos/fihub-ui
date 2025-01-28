@@ -1,4 +1,5 @@
-<div class="group flex h-full w-full justify-center items-center">
+<div (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()"
+     class="group flex h-full w-full justify-center items-center">
   <div class="relative">
 
     <!-- Button -->
@@ -8,9 +9,8 @@
       ></i>
     </button>
 
-
     <!-- Panel -->
-    <div class="panel-content hidden group-hover:block">
+    <div *ngIf="showPanel" class="panel-content">
       <!-- Content -->
       <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
     </div>

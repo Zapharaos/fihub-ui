@@ -13,13 +13,15 @@
       <div class="h-full flex gap-5">
 
         <!-- Language -->
-        <app-panel icon="pi-language" [contentTemplate]="contentTemplate" ></app-panel>
+        <app-panel icon="pi-language" [contentTemplate]="contentTemplate"></app-panel>
 
         <ng-template #contentTemplate>
           <span class="text-light">{{ 'settings.language' | translate }}</span>
           <p-listbox [options]="languageService.languages"
+                     [(ngModel)]="languageService.language"
                      (onChange)="languageService.setLanguage($event.value)"
                      [filter]="true"
+                     emptyFilterMessage="{{ 'search.no-results' | translate }}"
                      optionLabel="name"
                      class="w-full md:w-56"
           />

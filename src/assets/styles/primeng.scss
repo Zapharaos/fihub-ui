@@ -1,5 +1,14 @@
 // ListBox
 
+.p-listbox {
+  --p-listbox-option-focus-background: transparent;
+  --p-listbox-option-selected-background: transparent;
+  --p-listbox-option-selected-focus-background: transparent;
+  --p-listbox-option-focus-color: var(--primary-color);
+  --p-listbox-option-selected-color: var(--primary-color);
+  --p-listbox-option-selected-focus-color: var(--primary-color);
+}
+
 .p-listbox .p-listbox-list-container {
   @apply scroll-smooth scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-muted;
 }

@@ -68,5 +68,7 @@ export class LanguageService {
 
   private applyLanguage() {
     this.translateService.use(this.language!.code);
+    // Move the selected language to the top of the list
+    this.languages = [this.language!, ...languages.filter(lang => lang.code !== this.language!.code)];
   }
 }
