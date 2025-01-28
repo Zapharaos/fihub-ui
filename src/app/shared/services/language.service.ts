@@ -31,12 +31,14 @@ export class LanguageService {
 
   init() {
     // Trying to retrieve the language from local storage
-    const language = this.getLanguage();
+    const code = this.getLanguage();
 
-    // Nothing in local storage : defaults to preferred color scheme
-    if (!language) {
+    // Nothing in local storage : defaults to preferred language
+    if (!code) {
       const languageCode = this.translateService.getBrowserLang() || this.defaultLanguage;
       this.language = this.languages.find(language => language.code === languageCode);
+    } else {
+      this.language = this.findLanguage(code);
     }
 
     // Apply language without saving
@@ -44,8 +46,20 @@ export class LanguageService {
   }
 
   setLanguage(language: Language): void {
+    // Check if the language is supported
+    if (!this.findLanguage(language.code)) {
+      console.error('Language not supported', language.code);
+      return;
+    }
+
+    // Save the language
     this.language = language;
     localStorage.setItem('language', language.code);
+    this.applyLanguage();
+  }
+
+  private findLanguage(languageCode: string): Language | undefined {
+    return this.languages.find(language => language.code === languageCode);
   }
 
   private getLanguage(): string | undefined {
@@ -53,8 +67,6 @@ export class LanguageService {
   }
 
   private applyLanguage() {
-    if (this.language) {
-      this.translateService.use(this.language.code);
-    }
+    this.translateService.use(this.language!.code);
   }
 }

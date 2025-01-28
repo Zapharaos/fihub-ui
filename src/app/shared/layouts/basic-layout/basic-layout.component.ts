@@ -11,11 +11,7 @@ import {AuthService} from "@core/services/auth.service";
 import {Listbox} from "primeng/listbox";
 import {FormsModule} from "@angular/forms";
 import {PanelComponent} from "@shared/components/panel/panel.component";
-
-interface Country {
-  name: string,
-  code: string
-}
+import {LanguageService} from "@shared/services/language.service";
 
 @Component({
     selector: 'app-basic-layout',
@@ -44,24 +40,11 @@ export class BasicLayoutComponent {
   @Input() items: LayoutItem[] | undefined;
   @Input() actionsTemplate!: TemplateRef<any>;
 
-  countries: Country[] = [
-    { name: 'Australia', code: 'AU' },
-    { name: 'Brazil', code: 'BR' },
-    { name: 'China', code: 'CN' },
-    { name: 'Egypt', code: 'EG' },
-    { name: 'France', code: 'FR' },
-    { name: 'Germany', code: 'DE' },
-    { name: 'India', code: 'IN' },
-    { name: 'Japan', code: 'JP' },
-    { name: 'Spain', code: 'ES' },
-    { name: 'United States', code: 'US' }
-  ];
-  selectedCountry!: Country;
-
   constructor(
     private router: Router,
     protected themeService: ThemeService,
     protected authService: AuthService,
+    protected languageService: LanguageService,
   ) { }
 
   home() {
