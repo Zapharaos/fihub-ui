@@ -104,15 +104,22 @@ export class AuthService {
      * Request a password reset
      * Requests a password reset for the user with the provided email.
      * @param request request (json)
+     * @param lang Language code
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createPasswordResetRequest(request: PasswordInputRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PasswordResponseRequest>;
-    public createPasswordResetRequest(request: PasswordInputRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PasswordResponseRequest>>;
-    public createPasswordResetRequest(request: PasswordInputRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PasswordResponseRequest>>;
-    public createPasswordResetRequest(request: PasswordInputRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createPasswordResetRequest(request: PasswordInputRequest, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PasswordResponseRequest>;
+    public createPasswordResetRequest(request: PasswordInputRequest, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PasswordResponseRequest>>;
+    public createPasswordResetRequest(request: PasswordInputRequest, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PasswordResponseRequest>>;
+    public createPasswordResetRequest(request: PasswordInputRequest, lang?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling createPasswordResetRequest.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (lang !== undefined && lang !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>lang, 'lang');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -165,6 +172,7 @@ export class AuthService {
             {
                 context: localVarHttpContext,
                 body: request,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
