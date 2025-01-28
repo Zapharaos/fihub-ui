@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "primeicons/primeicons.css";
+@use "primeicons/primeicons.css";
+
+@use "assets/styles/docs";
+@use "assets/styles/flags";
+@use "assets/styles/primeng";
+@use "assets/styles/themes";
 
 @layer tailwind-base, primeng, tailwind-utilities;
 
@@ -78,110 +83,21 @@ body {
   }
 }
 
-// Themes
-
-:root {
-  --primary-text-color: var(--p-primary-600);
-  --primary-color: var(--p-primary-color);
-  --primary-contrast-color: var(--p-primary-contrast-color);
-  --primary-hover-color: var(--p-primary-hover-color);
-  --text-color: var(--p-surface-700);
-  --text-secondary-color: var(--p-surface-500);
-  --glow-image: url(https://www.primefaces.org/cdn/primevue/images/layout/pattern.png);
-  --glow-blend: hard-light, multiply;
-  --topbar-sticky-background: rgba(255, 255, 255, .7);
-  --mobile-menu-background: #ffffff;
-  --card-border: 1px solid var(--p-surface-200);
-  --card-background: #ffffff;
-  --border-color: var(--p-surface-200);
-  --ground-background: var(--p-surface-50);
-  --overlay-background: #ffffff;
-  --hover-background: var(--p-surface-100);
-  --code-background: var(--p-surface-950);
-  --high-contrast-text-color: var(--p-surface-900);
-  --hover-border-color: var(--p-surface-400);
-  --mark-background: var(--p-surface-200);
-  --mark-text-color: var(--p-surface-700);
-  --selection-background: var(--p-surface-200);
-  --selection-text-color: var(--p-surface-950);
-  --code-button-text-color: var(--p-surface-300);
-  --docsearch-mask-background: var(--p-mask-background);
-  --logo-color: var(--text-secondary-color);
-
-  // Table
-  --p-datatable-header-cell-selected-background: var(--p-primary-100);
-  --p-datatable-header-cell-hover-background: var(--p-surface-100);
-  --p-datatable-row-hover-background: var(--p-surface-100);
-
-  // Docs
-  --docs-color: var(--p-surface-700);
-}
-
-
-:root.p-dark {
-  --primary-text-color: var(--p-primary-400);
-  --primary-color: var(--p-primary-color);
-  --primary-contrast-color: var(--p-primary-contrast-color);
-  --primary-hover-color: var(--p-primary-hover-color);
-  --text-color: var(--p-surface-0);
-  --test: var(--p-surface-100);
-  --text-secondary-color: var(--p-surface-400);
-  --glow-image: url(https://www.primefaces.org/cdn/primevue/images/layout/pattern.png), radial-gradient(50% 50% at center -25px, var(--p-primary-color) 0%, #000000 100%);
-  --glow-blend: hard-light, color-dodge;
-  --topbar-sticky-background: rgba(0, 0, 0, .3);
-  --mobile-menu-background: rgba(0, 0, 0, .3);
-  --card-border: 1px solid transparent;
-  --card-background: var(--p-surface-900);
-  --border-color: var(--p-surface-700);
-  --ground-background: var(--p-surface-950);
-  --overlay-background: var(--p-surface-900);
-  --hover-background: var(--p-surface-800);
-  --code-background: var(--p-surface-900);
-  --high-contrast-text-color: var(--p-surface-0);
-  --hover-border-color: var(--p-surface-500);
-  --mark-background: var(--p-surface-700);
-  --mark-text-color: var(--p-surface-200);
-  --selection-background: var(--p-surface-700);
-  --selection-text-color: var(--p-surface-0);
-  --code-button-text-color: var(--p-surface-300);
-  --docsearch-mask-background: var(--p-mask-background);
-  --logo-color: var(--text-secondary-color);
-
-  // Table
-  --p-datatable-header-cell-selected-background: var(--p-primary-900);
-  --p-datatable-header-cell-hover-background: var(--p-surface-900);
-  --p-datatable-row-hover-background: var(--p-surface-900);
-
-  // Docs
-  --docs-color: var(--p-surface-300);
-}
-
 // Utils
 
 .bg {
   background-color: var(--ground-background);
 }
 
-// PrimeNG - Password
+// App - Panel
 
-.p-password-overlay .p-password-content {
-  margin-top: 1rem;
+app-panel .p-listbox {
+  --p-listbox-background: transparent;
+  --p-listbox-border-color: transparent;
+  --p-listbox-shadow: none;
 }
-
-// PrimeNG - IconField
-
-p-inputicon {
-  z-index: 2;
-}
-
-.p-iconfield .p-password-input {
-  padding-inline-start: calc((var(--p-form-field-padding-x)* 2) + var(--p-icon-size));
-}
-
-// PrimeNG - SortIcon
-
-p-sorticon {
-  color: var(--text-secondary-color);
+app-panel .p-listbox-header .p-inputtext {
+  padding-block: 0.25rem;
 }
 
 // Auth form - Centered
@@ -195,6 +111,7 @@ p-sorticon {
 }
 
 // Text
+
 .text-light {
   color: var(--text-secondary-color);
 }
@@ -229,72 +146,3 @@ p-sorticon {
   }
 }
 
-// DOCS : Terms, Privacy, ... etc.
-
-.docs {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-
-.docs section,
-.docs section .sub-section{
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.docs h1 {
-  font-weight: 800; // font-extrabold
-  font-size: 1.875rem; /* text-3xl ; 30px */
-  line-height: 2.25rem; /* text-3xl ; 36px */
-}
-
-.docs h2 {
-  font-weight: 600; // font-bold
-  font-size: 1.25rem; /* text-xl ; 20px */
-  line-height: 1.75rem; /* text-xl ; 28px */
-}
-
-.docs h3 {
-  font-weight: 600; // font-semibold
-  font-size: 1.125rem; /* text-lg ; 18px */
-  line-height: 1.75rem; /* text-lg ; 28px */
-}
-
-.docs h1, h2, h3 {
-  color: var(--text-color);
-}
-
-.docs div, .docs li {
-  text-align: justify;
-  color: var(--docs-color);
-}
-
-.docs section .links {
-  display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
-  gap: 0.5rem;
-}
-
-.docs ul {
-  list-style: disc;
-  margin-left: 2rem;
-}
-
-.docs li {
-  margin-top: 0.5rem;
-}
-
-.docs ul ul {
-  list-style: circle;
-}
-
-.docs a {
-  color: var(--p-primary-color);
-}
-.docs a:hover {
-  color: var(--p-primary-hover-color);
-  text-decoration: underline;
-}

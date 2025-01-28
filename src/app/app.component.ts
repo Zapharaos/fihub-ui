@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {ToastModule} from "primeng/toast";
-import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TranslateModule} from "@ngx-translate/core";
 import {ThemeService} from "@shared/services/theme.service";
 import {ConfirmDialog} from "primeng/confirmdialog";
 import {Button} from "primeng/button";
 import {ReactiveFormsModule} from "@angular/forms";
+import {LanguageService} from "@shared/services/language.service";
 
 
 @Component({
@@ -17,16 +18,12 @@ import {ReactiveFormsModule} from "@angular/forms";
 export class AppComponent implements OnInit {
 
   constructor(
-    private translateService: TranslateService,
     private themeService: ThemeService,
-  ) {
-    // Translations
-    this.translateService.addLangs(['fr', 'en']);
-    this.translateService.setDefaultLang('en');
-    this.translateService.use(this.translateService.getBrowserLang() || "en");
-  }
+    private languageService: LanguageService
+  ) { }
 
   ngOnInit(){
     this.themeService.init();
+    this.languageService.init();
   };
 }

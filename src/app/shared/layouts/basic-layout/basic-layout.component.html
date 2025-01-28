@@ -6,11 +6,26 @@
       <!-- Left side -->
       <div>
         <!-- Title -->
-        <img [src]="logoPath" alt="Fihub Logo" (click)="home()" class="hover:cursor-pointer"/>
+        <img [src]="logoPath" alt="Fihub Logo" (click)="home()" class="logo hover:cursor-pointer"/>
       </div>
 
       <!-- Right side -->
-      <div class="flex gap-5">
+      <div class="h-full flex gap-5">
+
+        <!-- Language -->
+        <app-panel icon="pi-language" [contentTemplate]="contentTemplate"></app-panel>
+
+        <ng-template #contentTemplate>
+          <span class="text-light">{{ 'settings.language' | translate }}</span>
+          <p-listbox [options]="languageService.languages"
+                     [(ngModel)]="languageService.language"
+                     (onChange)="languageService.setLanguage($event.value)"
+                     [filter]="true"
+                     emptyFilterMessage="{{ 'search.no-results' | translate }}"
+                     optionLabel="name"
+                     class="w-full md:w-56"
+          />
+        </ng-template>
 
         <!-- Theme -->
         <button (click)="themeService.toggleTheme()" class="flex items-center justify-center">
@@ -29,10 +44,10 @@
         <!-- Actions - NonAuthenticated -->
         <div *ngIf="!authService.isAuthenticated()" class="flex gap-5 justify-between items-center">
           <!-- Sign-up -->
-          <p-button [routerLink]="'/auth/register'" [outlined]="true" label="{{ 'actions.sign-up' | translate }}" />
+          <p-button [routerLink]="'/auth/register'" [outlined]="true" label="{{ 'actions.sign-up' | translate }}"/>
 
           <!-- Sign-in -->
-          <p-button [routerLink]="'/auth'" label="{{ 'actions.sign-in' | translate }}" />
+          <p-button [routerLink]="'/auth'" label="{{ 'actions.sign-in' | translate }}"/>
         </div>
 
         <!-- Toggle Sidebar -->
@@ -66,7 +81,8 @@
                [routerLink]="item.route"
                routerLinkActive="menu-active"
                [routerLinkActiveOptions]="{exact: item.routeActiveExact ?? false }"
-               class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover" pRipple>
+               class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover"
+               pRipple>
 
               <!-- Icon + Label -->
               <div class="flex py-3">
@@ -82,7 +98,7 @@
 
             <!-- Item : with sub-items -->
             <div *ngIf="item.items" (click)="toggleSubItems(item)" pRipple
-               class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover select-none hover:cursor-pointer">
+                 class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover select-none hover:cursor-pointer">
 
               <!-- Icon + Label -->
               <div class="flex py-3">

@@ -8,6 +8,10 @@ import {LayoutItem} from "@shared/models/layout-item";
 import {FooterComponent} from "@shared/components/footer/footer.component";
 import {ThemeService} from "@shared/services/theme.service";
 import {AuthService} from "@core/services/auth.service";
+import {Listbox} from "primeng/listbox";
+import {FormsModule} from "@angular/forms";
+import {PanelComponent} from "@shared/components/panel/panel.component";
+import {LanguageService} from "@shared/services/language.service";
 
 @Component({
     selector: 'app-basic-layout',
@@ -22,6 +26,9 @@ import {AuthService} from "@core/services/auth.service";
     NgClass,
     NgForOf,
     FooterComponent,
+    Listbox,
+    FormsModule,
+    PanelComponent,
   ],
     templateUrl: './basic-layout.component.html',
     styleUrl: './basic-layout.component.scss'
@@ -37,6 +44,7 @@ export class BasicLayoutComponent {
     private router: Router,
     protected themeService: ThemeService,
     protected authService: AuthService,
+    protected languageService: LanguageService,
   ) { }
 
   home() {
