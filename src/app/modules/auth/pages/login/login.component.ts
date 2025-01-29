@@ -62,7 +62,7 @@ export class LoginComponent {
           this.router.navigate(['/dashboard']);
         }
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         // An error has occurred
         this.authFormComponent.handleError(error)
       },

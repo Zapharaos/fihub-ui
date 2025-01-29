@@ -9,8 +9,6 @@ export class AuthService {
   private loaded = false;
   redirectUrl?: string;
 
-  constructor() {}
-
   /**
    * Returns whether the authentication service has been loaded
    * (i.e. the current user has been fetched from the API)

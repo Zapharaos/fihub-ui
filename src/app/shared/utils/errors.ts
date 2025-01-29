@@ -1,6 +1,10 @@
 import {NotificationService} from "@shared/services/notification.service";
 
-export function handleErrors(error: any, notificationService: NotificationService, handler400?: (error: any) => void) {
+export interface ResponseError extends Error {
+  status?: number;
+}
+
+export function handleErrors(error: ResponseError, notificationService: NotificationService, handler400?: (error: ResponseError) => void) {
   switch (error.status) {
     case 400:
       if (handler400) {

@@ -23,8 +23,6 @@ export class PasswordStore {
   private readonly _request = new BehaviorSubject<PasswordStoreRequest | null>(null);
   readonly request$ = this._request.asObservable();
 
-  constructor() { }
-
   get request(): PasswordStoreRequest | undefined {
     return this._request.getValue() ?? undefined;
   }
@@ -42,8 +40,6 @@ export class PasswordStore {
     if (localRequest && !this.isRequestExpired(localRequest)) {
       this._request.next(localRequest);
     }
-
-    this.reset();
   }
 
   reset() {

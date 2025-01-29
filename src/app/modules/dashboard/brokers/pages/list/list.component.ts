@@ -47,9 +47,9 @@ export interface TableBroker extends BrokersUserBroker {
 })
 export class ListComponent implements OnInit {
 
-  loading: boolean = true;
+  loading = true;
   userBrokers!: UserBrokerWithImage[];
-  clonedUserBrokers: { [s: string]: BrokersUserBroker } = {};
+  clonedUserBrokers: Record<string, BrokersUserBroker> = {};
   protected readonly tablePropertiesFilter = ['broker.name']
   @ViewChild('dt') dt: Table | undefined;
 
@@ -74,7 +74,7 @@ export class ListComponent implements OnInit {
       next: (brokers: UserBrokerWithImage[]) => {
         this.userBrokers = brokers;
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         handleErrors(error, this.notificationService);
       }
     })
@@ -82,17 +82,19 @@ export class ListComponent implements OnInit {
 
   deleteBroker(broker: BrokersUserBroker) {
     this.loading = true;
-    this.userBrokerService.deleteUserBroker(broker.broker?.id!).pipe(finalize(() => {
-      this.loading = false;
-    })).subscribe({
-      next: () => {
-        this.loadBrokers()
-        this.notificationService.showToastSuccess('brokers.messages.delete-success', {name: broker.broker?.name})
-      },
-      error: (error: any) => {
-        handleErrors(error, this.notificationService);
-      }
-    })
+    if (broker.broker?.id) {
+      this.userBrokerService.deleteUserBroker(broker.broker.id).pipe(finalize(() => {
+        this.loading = false;
+      })).subscribe({
+        next: () => {
+          this.loadBrokers()
+          this.notificationService.showToastSuccess('brokers.messages.delete-success', {name: broker.broker?.name})
+        },
+        error: (error: Error) => {
+          handleErrors(error, this.notificationService);
+        }
+      })
+    }
   }
 
   // Table
