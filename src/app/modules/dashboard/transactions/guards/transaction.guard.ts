@@ -3,7 +3,7 @@ import {inject} from "@angular/core";
 import {NotificationService} from "@shared/services/notification.service";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 
-export const transactionGuard: CanActivateChildFn = (childRoute, state) => {
+export const transactionGuard: CanActivateChildFn = (childRoute) => {
 
   const router = inject(Router);
   const notificationService = inject(NotificationService);

@@ -5,7 +5,7 @@ import {AuthService, PasswordResponseRequest, UsersUserInputPassword} from "@cor
 import {NotificationService} from "@shared/services/notification.service";
 import {FormGroup} from "@angular/forms";
 import {finalize} from "rxjs";
-import {PasswordStoreRequest, PasswordStoreStep, PasswordStore} from "@modules/auth/stores/password.service";
+import {PasswordStoreStep, PasswordStore} from "@modules/auth/stores/password.service";
 import {LanguageService} from "@shared/services/language.service";
 
 @Component({
@@ -95,7 +95,7 @@ export class PasswordComponent implements OnInit {
           this.notificationService.showToastSuccess('auth.password.messages.send-success');
         }
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         // An error has occurred
         this.authFormComponent.handleError(error)
       },
@@ -109,14 +109,14 @@ export class PasswordComponent implements OnInit {
     })).subscribe({
       next: (requestID: string) => {
         // Success : store requestID into next step
-        var copyStore = this.passwordStore.request;
+        const copyStore = this.passwordStore.request;
         if (copyStore) {
           copyStore.requestID = requestID;
           copyStore.step = PasswordStoreStep.Reset;
           this.passwordStore.request = copyStore;
         }
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         // An error has occurred
         this.authFormComponent.handleError(error)
       },
@@ -145,7 +145,7 @@ export class PasswordComponent implements OnInit {
           this.notificationService.showToastSuccess('auth.password.messages.reset-success')
         })
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         // An error has occurred
         this.authFormComponent.handleError(error)
       },

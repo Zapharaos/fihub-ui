@@ -22,12 +22,10 @@ export interface DialogItem {
 export class DialogService {
 
   private dialogs: DialogItem[] = [];
-  private visible: boolean = false;
+  private visible = false;
   private active: DialogMode = DialogMode.HIDDEN;
 
   @Output() dialogVisibilityChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  constructor() { }
 
   init(dialogs: DialogItem[]): void {
     this.dialogs = dialogs;

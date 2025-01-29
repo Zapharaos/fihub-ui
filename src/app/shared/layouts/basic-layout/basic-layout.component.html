@@ -6,7 +6,7 @@
       <!-- Left side -->
       <div>
         <!-- Title -->
-        <img [src]="logoPath" alt="Fihub Logo" (click)="home()" class="logo hover:cursor-pointer"/>
+        <img [src]="logoPath" alt="Fihub Logo" (click)="home()" (keydown.enter)="home()" tabindex="0" class="logo hover:cursor-pointer"/>
       </div>
 
       <!-- Right side -->
@@ -95,9 +95,8 @@
               </div>
             </a>
 
-
             <!-- Item : with sub-items -->
-            <div *ngIf="item.items" (click)="toggleSubItems(item)" pRipple
+            <div *ngIf="item.items" (click)="toggleSubItems(item)" (keydown.enter)="toggleSubItems(item)" tabindex="0" pRipple
                  class="flex flex-row justify-between items-center px-6 rounded-r-xl max-md:rounded-none menu-hover select-none hover:cursor-pointer">
 
               <!-- Icon + Label -->

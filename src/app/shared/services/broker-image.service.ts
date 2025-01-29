@@ -107,8 +107,10 @@ export class BrokerImageService {
           return this.brokerImagesService.getBrokerImage(userBroker.broker.id!, userBroker.broker.image_id).pipe(
             map(image => {
               const imageUrl = URL.createObjectURL(image);
-              // Cache the image for future use
-              this.brokerImageStore.brokerImages?.set(userBroker.broker?.image_id!, imageUrl);
+              if (userBroker.broker?.image_id) {
+                // Cache the image for future use
+                this.brokerImageStore.brokerImages?.set(userBroker.broker.image_id!, imageUrl);
+              }
               return {
                 ...userBroker,
                 broker: {
@@ -198,8 +200,10 @@ export class BrokerImageService {
     return this.brokerImagesService.getBrokerImage(transaction.broker.id!, transaction.broker.image_id).pipe(
       map(image => {
         const imageUrl = URL.createObjectURL(image);
-        // Cache the image for future use
-        this.brokerImageStore.brokerImages?.set(transaction.broker?.image_id!, imageUrl);
+        if (transaction.broker?.image_id) {
+          // Cache the image for future use
+          this.brokerImageStore.brokerImages?.set(transaction.broker.image_id, imageUrl);
+        }
         return {
           ...transaction,
           broker: {

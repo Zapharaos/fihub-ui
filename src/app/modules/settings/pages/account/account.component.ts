@@ -55,11 +55,11 @@ export class AccountComponent {
   @ViewChild(AuthFormComponent) authFormComponent!: AuthFormComponent;
 
   // Global
-  loading: boolean = false;
+  loading = false;
   user = this.authService.currentUser;
 
   // Dialog
-  dialogVisible: boolean = false;
+  dialogVisible = false;
 
   constructor(
     private router: Router,
@@ -150,7 +150,7 @@ export class AccountComponent {
         this.notificationService.showToastSuccess('auth.messages.update-success')
         this.closeDialog();
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         this.authFormComponent.handleError(error)
       },
     })
@@ -175,7 +175,7 @@ export class AccountComponent {
         this.notificationService.showToastSuccess('auth.messages.update-success')
         this.closeDialog();
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         this.authFormComponent.handleError(error)
       },
     })
@@ -189,7 +189,7 @@ export class AccountComponent {
           this.notificationService.showToastSuccess('auth.messages.delete-success')
         });
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         handleErrors(error, this.notificationService);
       }
     });

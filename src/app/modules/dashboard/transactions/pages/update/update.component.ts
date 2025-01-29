@@ -16,7 +16,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class UpdateComponent {
 
-  backRoute: string = '/dashboard/transactions/';
+  backRoute = '/dashboard/transactions/';
 
   constructor(
     private route: ActivatedRoute,

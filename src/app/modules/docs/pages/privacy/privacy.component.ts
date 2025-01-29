@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {TableModule} from "primeng/table";
 
-type PersonalInfoUSA = {
+interface PersonalInfoUSA {
   category: string;
   example: string;
   collected: boolean;
