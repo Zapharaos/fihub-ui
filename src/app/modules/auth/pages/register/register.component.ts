@@ -57,7 +57,7 @@ export class RegisterComponent {
           this.notificationService.showToastSuccess('auth.messages.register-success', {email: user.email})
         })
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         // An error has occurred
         this.authFormComponent.handleError(error)
       },

@@ -134,13 +134,13 @@
   </div>
 
   <!--  Submit  -->
-  <button [disabled]="formService.isSubmitDisabled()"
+  <p-button [disabled]="formService.isSubmitDisabled()"
           [loading]="loading"
           icon="pi {{submitIcon}}"
           label="{{submitLabel | translate}}"
-          pButton pRipple
+          pRipple
           type="submit"
           class="w-fit"
-  ></button>
+  />
 
 </form>

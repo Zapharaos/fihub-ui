@@ -1,18 +1,21 @@
 import {Table} from "primeng/table";
 
-export function applyFilterGlobal($event: any, dt: Table | undefined, stringVal: any) {
+export function applyFilterGlobal($event: Event, dt: Table | undefined, stringVal: string) {
   dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
 }
 
-export function onRowEditInit(itemsClone: { [key: string]: any }, item: any) {
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export function onRowEditInit(itemsClone: Record<string, any>, item: any) {
   itemsClone[item.id as string] = { ...item };
 }
 
-export function onRowEditCancel(items: any[], itemsClone: { [key: string]: any }, item: any, index: number) {
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export function onRowEditCancel(items: any[], itemsClone: Record<string, any>, item: any, index: number) {
   items[index] = itemsClone[item.id as string];
   delete itemsClone[item.id as string];
 }
 
-export function onRowEditSave(itemsClone: { [key: string]: any }, item: any) {
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export function onRowEditSave(itemsClone: Record<string, any>, item: any) {
   delete itemsClone[item.id as string];
 }

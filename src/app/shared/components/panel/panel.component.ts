@@ -12,9 +12,9 @@ import {NgIf, NgTemplateOutlet} from "@angular/common";
 })
 export class PanelComponent {
   @Input() icon!: string;
-  @Input() contentTemplate!: TemplateRef<any>;
+  @Input() contentTemplate!: TemplateRef<unknown>;
 
-  showPanel: boolean = false;
+  showPanel = false;
 
   onMouseEnter() {
     this.showPanel = true;

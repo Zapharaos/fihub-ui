@@ -4,7 +4,9 @@ import {finalize, Observable} from "rxjs";
 import {AuthService} from "@core/services/auth.service";
 import {UsersService} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
+import {ResponseError} from "@shared/utils/errors";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const noAuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
@@ -19,7 +21,7 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
   return true;
 }
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (_route, state) => {
   const authService = inject(AuthService);
   const userService = inject(UsersService);
   const notificationService = inject(NotificationService);
@@ -42,7 +44,7 @@ export const authGuard: CanActivateFn = (route, state) => {
           subscriber.next(true);
           subscriber.complete();
         },
-        error: error => {
+        error: (error: ResponseError) => {
           if (error.status === 401) {
             authService.logout();
             router.navigate(['/auth']).then(() => {

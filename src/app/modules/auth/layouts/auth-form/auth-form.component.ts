@@ -24,9 +24,9 @@ import {passwordMatchValidator} from "@shared/validators/password-match";
 import {FormService} from "@shared/services/form.service";
 import { InputOtp } from 'primeng/inputotp';
 import {NotificationService} from "@shared/services/notification.service";
-import {handleErrors} from "@shared/utils/errors";
+import {handleErrors, ResponseError} from "@shared/utils/errors";
 
-export type AuthFormFieldConfig = {
+export interface AuthFormFieldConfig {
   hasEmail?: boolean;
   hasEmailControl?: boolean;
   hasPassword?: boolean;
@@ -42,7 +42,7 @@ export type AuthFormFieldConfig = {
   hideImage?: boolean;
   hideActions?: boolean;
   hidePwdSuggestions?: boolean;
-};
+}
 
 @Component({
     selector: 'app-auth-form',
@@ -74,13 +74,13 @@ export type AuthFormFieldConfig = {
 export class AuthFormComponent implements OnInit {
   @Input() title?: string | undefined;
   @Input() fieldConfig: AuthFormFieldConfig = {};
-  @Output() onSubmit = new EventEmitter<FormGroup>();
+  @Output() formSubmit = new EventEmitter<FormGroup>();
 
   protected readonly logoPath = "assets/svg/logo-initial.svg";
   user: UsersUserInputCreate = {};
   loading = false;
-  messageError: string = "";
-  otp: string = "";
+  messageError = "";
+  otp = "";
 
   constructor(
     private translateService: TranslateService,
@@ -104,7 +104,7 @@ export class AuthFormComponent implements OnInit {
       return
     }
     // Emit submit event back to parent
-    this.onSubmit.emit(this.formService.getForm());
+    this.formSubmit.emit(this.formService.getForm());
   }
 
   setLoading(loading: boolean) {
@@ -116,7 +116,7 @@ export class AuthFormComponent implements OnInit {
     this.initFormControls();
   }
 
-  handleError(error: any) {
+  handleError(error: ResponseError) {
 
     // Clear messageError
     this.messageError = "";
@@ -124,8 +124,8 @@ export class AuthFormComponent implements OnInit {
     handleErrors(error, this.notificationService, this.handleError400.bind(this));
   }
 
-  handleError400(error: any) {
-    switch (error.error.message) {
+  handleError400(error: ResponseError) {
+    switch (error.message) {
 
       // Login credentials - Invalid
       case 'login-invalid':

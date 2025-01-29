@@ -50,10 +50,11 @@ export class FormService {
     return this.form.get(fieldName)?.value;
   }
 
-  isFieldValueEqual(fieldName: string, valueToCompare: any) {
+  isFieldValueEqual(fieldName: string, valueToCompare: unknown) {
     return this.form.get(fieldName)?.value === valueToCompare;
   }
 
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   patchValue(value: any) {
     this.form.patchValue(value);
   }
@@ -103,25 +104,25 @@ export class FormService {
     return false;
   }
 
-  addControl(fieldName: string, object: any, validators?: ValidatorFn | ValidatorFn[]) {
+  addControl(fieldName: string, object: unknown, validators?: ValidatorFn | ValidatorFn[]) {
     this.form.addControl(fieldName, new FormControl(object, validators));
   }
 
-  addControlRequired(fieldName: string, object: any) {
+  addControlRequired(fieldName: string, object: unknown) {
     this.form.addControl(fieldName, new FormControl(object, [Validators.required]));
   }
 
-  addControlPostEmail(fieldName: string, object: any) {
+  addControlPostEmail(fieldName: string, object: unknown) {
     this.form.addControl(fieldName, new FormControl(object, [Validators.email, Validators.required]));
   }
 
-  addControlPostPassword(fieldName: string, object: any) {
+  addControlPostPassword(fieldName: string, object: unknown) {
     this.form.addControl(fieldName, new FormControl(object, [
       Validators.minLength(8), Validators.maxLength(64), Validators.required]
     ));
   }
 
-  addControlCheckbox(fieldName: string, object: any) {
+  addControlCheckbox(fieldName: string, object: unknown) {
     this.form.addControl(fieldName, new FormControl(object, [Validators.requiredTrue]));
   }
 

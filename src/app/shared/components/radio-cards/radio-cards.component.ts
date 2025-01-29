@@ -6,7 +6,7 @@ import {FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Message} from "primeng/message";
 import {FormService} from "@shared/services/form.service";
 
-export type RadioCardItem = {
+export interface RadioCardItem {
   key: string;
   name: string;
   icon?: string;

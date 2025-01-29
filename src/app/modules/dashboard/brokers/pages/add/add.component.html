@@ -67,7 +67,7 @@
         <div class="flex flex-col gap-2">
           <label for="apiKey" class="font-medium">{{'brokers.add.label.api-key' | translate}}</label>
           <input formControlName="apiKey"
-                 [autofocus]="true"
+
                  pInputText
                  type="text"
                  id="apiKey"
@@ -81,7 +81,7 @@
         <div class="flex flex-col gap-2">
           <label for="apiSecret" class="font-medium">{{'brokers.add.label.api-secret' | translate}}</label>
           <input formControlName="apiSecret"
-                 [autofocus]="true"
+
                  pInputText
                  type="text"
                  id="apiSecret"
@@ -95,14 +95,14 @@
     </div>
 
     <!--  Submit  -->
-    <button [disabled]="formService.isSubmitDisabled()"
+    <p-button [disabled]="formService.isSubmitDisabled()"
             [loading]="loading"
-            icon="pi pi-plus"
             label="{{'brokers.add.label.submit' | translate}}"
-            pButton pRipple
+            icon="pi pi-plus"
+            pRipple
             type="submit"
             class="w-fit"
-    ></button>
+    />
 
   </form>
 </ng-template>
