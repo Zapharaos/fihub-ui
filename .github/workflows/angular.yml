@@ -1,9 +1,6 @@
 name: Angular
 
 on:
-  push:
-    branches:
-      - 30-cicd
   pull_request:
     branches:
       - main
