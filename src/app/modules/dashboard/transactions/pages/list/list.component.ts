@@ -76,7 +76,7 @@ export class ListComponent implements OnInit {
       next: (transactions: TransactionWithImage[]) => {
         this.transactions = transactions;
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         handleErrors(error, this.notificationService);
       }
     });
@@ -97,7 +97,7 @@ export class ListComponent implements OnInit {
 
   // Table
 
-  onRowSelect(event: any) {
+  onRowSelect() {
 
     // Store transaction
     this.transactionStore.transaction = this.selectedTransaction;

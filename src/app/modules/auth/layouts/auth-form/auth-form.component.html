@@ -30,7 +30,7 @@
         <p-iconfield>
           <p-inputicon styleClass="pi pi-envelope" />
           <input formControlName="email"
-                 [autofocus]="true"
+
                  pInputText
                  type="text"
                  id="email"
@@ -142,13 +142,13 @@
 
     <!-- Actions -->
     <div *ngIf="!fieldConfig.hideActions" class="flex flex-col gap-3">
-      <button [disabled]="formService.isSubmitDisabled()"
+      <p-button [disabled]="formService.isSubmitDisabled()"
               [loading]="loading"
               label="{{ fieldConfig.submitLabel ?? '' | translate }}"
               class="w-full"
               pButton pRipple
               type="submit"
-      ></button>
+      />
     </div>
   </form>
 

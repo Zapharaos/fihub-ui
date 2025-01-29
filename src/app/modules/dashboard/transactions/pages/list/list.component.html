@@ -34,7 +34,7 @@
     [multiSortMeta]="[{field: 'date', order: -1}]"
     selectionMode="single"
     [(selection)]="selectedTransaction"
-    (onRowSelect)="onRowSelect($event)">
+    (onRowSelect)="onRowSelect()">
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="date">{{ 'transactions.table-column.date' | translate }} <p-sortIcon field="date" /></th>

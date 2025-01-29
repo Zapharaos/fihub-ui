@@ -74,7 +74,7 @@
 </ng-template>
 
 <ng-template #dialogContent>
-  <app-auth-form (onSubmit)="submitForm($event)"></app-auth-form>
+  <app-auth-form (formSubmit)="submitForm($event)"></app-auth-form>
 </ng-template>
 
 <p-dialog [modal]="true"

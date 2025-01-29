@@ -14,10 +14,9 @@ import {InputText} from "primeng/inputtext";
 import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards/radio-cards.component";
 import {Ripple} from "primeng/ripple";
 import {Message} from "primeng/message";
-import {TableBroker} from "@modules/dashboard/brokers/pages/list/list.component";
 import {FormService} from "@shared/services/form.service";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
-import {handleErrors} from "@shared/utils/errors";
+import {handleErrors, ResponseError} from "@shared/utils/errors";
 
 @Component({
     selector: 'app-brokers-add',
@@ -56,7 +55,7 @@ export class AddComponent implements OnInit {
     this.configSynchronized
   ];
 
-  loading: boolean = true;
+  loading = true;
   brokers!: BrokerWithImage[];
 
   constructor(
@@ -102,7 +101,7 @@ export class AddComponent implements OnInit {
       next: (brokers: BrokersBroker[]) => {
         this.brokers = brokers;
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         handleErrors(error, this.notificationService);
       }
     })
@@ -124,20 +123,20 @@ export class AddComponent implements OnInit {
     this.userBrokerService.createUserBroker(userBroker).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (brokers: TableBroker[]) => {
+      next: () => {
         // Success
         this.notificationService.showToastSuccess('brokers.messages.add-success')
         this.formService.rollbackToDefault();
         this.loadBrokers() // update data
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
       },
     })
   }
 
-  handleErrors400(error: any) {
-    switch (error.error.message) {
+  handleErrors400(error: ResponseError) {
+    switch (error.message) {
       case 'broker-required':
         this.formService.setFieldErrors('broker', ['submit-required']);
         break;

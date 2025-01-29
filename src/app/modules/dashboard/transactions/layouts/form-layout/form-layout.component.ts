@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {
-  TransactionsService, TransactionsTransaction,
+  TransactionsService,
   TransactionsTransactionInput,
   TransactionsTransactionType
 } from "@core/api";
@@ -21,25 +21,27 @@ import {NgIf} from "@angular/common";
 import {Message} from "primeng/message";
 import {DatePicker} from "primeng/datepicker";
 import {InputNumber} from "primeng/inputnumber";
-import {ButtonDirective} from "primeng/button";
+import {Button} from "primeng/button";
 import {InputText} from "primeng/inputtext";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
-import {handleErrors} from "@shared/utils/errors";
+import {handleErrors, ResponseError} from "@shared/utils/errors";
+import {Ripple} from "primeng/ripple";
 
 @Component({
     selector: 'app-transactions-form-layout',
-    imports: [
-        ReactiveFormsModule,
-        TranslatePipe,
-        Select,
-        NgIf,
-        Message,
-        DatePicker,
-        InputNumber,
-        ButtonDirective,
-        InputText
-    ],
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    Select,
+    NgIf,
+    Message,
+    DatePicker,
+    InputNumber,
+    InputText,
+    Button,
+    Ripple
+  ],
     templateUrl: './form-layout.component.html',
     styleUrl: './form-layout.component.scss'
 })
@@ -48,12 +50,12 @@ export class FormLayoutComponent implements OnInit {
   protected readonly transactionTypes = Object.values(TransactionsTransactionType)
     .map(type => ({ label: type, value: type }));
 
-  isCreateForm: boolean = true;
-  loading: boolean = true;
+  isCreateForm = true;
+  loading = true;
   brokers!: BrokerWithImage[];
   transaction: TransactionWithImage | undefined;
-  submitLabel: string = '';
-  submitIcon: string = '';
+  submitLabel = '';
+  submitIcon = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -111,7 +113,7 @@ export class FormLayoutComponent implements OnInit {
           this.loadForm();
         }
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         handleErrors(error, this.notificationService);
         // Could not load brokers : nothing to do on this page
         this.router.navigate(['dashboard/transactions']);
@@ -212,27 +214,29 @@ export class FormLayoutComponent implements OnInit {
 
   updateTransaction(transaction: TransactionsTransactionInput) {
     this.loading = true;
-    this.transactionsService.updateTransaction(this.transaction?.id!, transaction).pipe(finalize(() => {
-      this.loading = false;
-    })).subscribe({
-      next: () => {
-        this.transactionStore.clearTransaction();
+    if (this.transaction?.id) {
+      this.transactionsService.updateTransaction(this.transaction.id, transaction).pipe(finalize(() => {
+        this.loading = false;
+      })).subscribe({
+        next: () => {
+          this.transactionStore.clearTransaction();
 
-        // Success : navigate back to the transaction details page
-        this.router.navigate(['/dashboard/transactions', this.transaction?.id]).then(() => {
-          this.notificationService.showToastSuccess('transactions.messages.update-success');
-        });
-      },
-      error: (error) => {
-        handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
-      }
-    })
+          // Success : navigate back to the transaction details page
+          this.router.navigate(['/dashboard/transactions', this.transaction?.id]).then(() => {
+            this.notificationService.showToastSuccess('transactions.messages.update-success');
+          });
+        },
+        error: (error) => {
+          handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
+        }
+      })
+    }
   }
 
   // Errors
 
-  handleErrors400(error: any) {
-    switch (error.error.message) {
+  handleErrors400(error: ResponseError) {
+    switch (error.message) {
       case 'broker-required':
         this.formService.setFieldErrors('broker', ['submit-required']);
         break;

@@ -36,9 +36,9 @@ import {LanguageService} from "@shared/services/language.service";
 export class BasicLayoutComponent {
 
   protected readonly logoPath = "assets/svg/logo-initial.svg";
-  sidebarVisible: boolean = true;
+  sidebarVisible = true;
   @Input() items: LayoutItem[] | undefined;
-  @Input() actionsTemplate!: TemplateRef<any>;
+  @Input() actionsTemplate!: TemplateRef<unknown>;
 
   constructor(
     private router: Router,
@@ -65,11 +65,11 @@ export class BasicLayoutComponent {
     item.subItemsInvisible = !item.subItemsInvisible;
   }
 
-  isSubItemActive(item: any): boolean {
+  isSubItemActive(item: LayoutItem): boolean {
     if (!item.items) {
       return false;
     }
-    return item.items.some((subItem: any) => this.router.isActive(subItem.route, { paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' }));
+    return item.items.some((subItem: LayoutItem) => this.router.isActive(subItem.route!, { paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' }));
   }
 
   isItemOpen(item: LayoutItem): boolean {

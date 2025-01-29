@@ -21,12 +21,10 @@ import {RouterLink} from "@angular/router";
     styleUrl: './dashboard-content-layout.component.scss'
 })
 export class DashboardContentLayoutComponent {
-  @Input() title: string = "";
-  @Input() subTitle: string = "";
-  @Input() backRoute: string = "";
-  @Input() backTitle: string = "";
-  @Input() actionsTemplate!: TemplateRef<any>;
-  @Input() contentTemplate!: TemplateRef<any>;
-
-  constructor() { }
+  @Input() title = "";
+  @Input() subTitle = "";
+  @Input() backRoute = "";
+  @Input() backTitle = "";
+  @Input() actionsTemplate!: TemplateRef<unknown>;
+  @Input() contentTemplate!: TemplateRef<unknown>;
 }
