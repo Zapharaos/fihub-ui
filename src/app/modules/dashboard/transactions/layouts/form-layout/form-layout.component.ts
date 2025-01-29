@@ -21,7 +21,7 @@ import {NgIf} from "@angular/common";
 import {Message} from "primeng/message";
 import {DatePicker} from "primeng/datepicker";
 import {InputNumber} from "primeng/inputnumber";
-import {Button, ButtonDirective} from "primeng/button";
+import {Button} from "primeng/button";
 import {InputText} from "primeng/inputtext";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
@@ -38,7 +38,6 @@ import {Ripple} from "primeng/ripple";
     Message,
     DatePicker,
     InputNumber,
-    ButtonDirective,
     InputText,
     Button,
     Ripple
