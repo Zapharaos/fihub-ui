@@ -5,6 +5,7 @@
 
   <form [formGroup]="formService.getForm()"
         (ngSubmit)="onSubmitWrapper()"
+        (keydown.enter)="onSubmitWrapper()"
         class="flex flex-col gap-12 rounded-md w-[24rem]"
         [ngClass]="{'mt-8 p-10': !fieldConfig.cssFormRaw}">
 
@@ -132,7 +133,7 @@
 
       <div *ngIf="fieldConfig.hasOtp" class="flex flex-col gap-2">
         <label for="otp">{{'auth.password.verification.label' | translate}}</label>
-        <p-inputotp formControlName="otp" [integerOnly]="true" [length]="6" inputId="otp" class="flex justify-between"/>
+        <p-input-otp formControlName="otp" [integerOnly]="true" [length]="6" class="flex justify-between"/>
         <p-message *ngIf="formService.hasSpecifiedErrors('otp', ['required'], ['submit-invalid'])"
                    severity="error" variant="simple" size="small">
           {{'auth.form.error.verification' | translate}}
@@ -142,12 +143,14 @@
 
     <!-- Actions -->
     <div *ngIf="!fieldConfig.hideActions" class="flex flex-col gap-3">
-      <p-button [disabled]="formService.isSubmitDisabled()"
-              [loading]="loading"
-              label="{{ fieldConfig.submitLabel ?? '' | translate }}"
-              class="w-full"
-              pButton pRipple
-              type="submit"
+
+      <p-button
+        (click)="onSubmitWrapper()"
+        [disabled]="formService.isSubmitDisabled()"
+        [loading]="loading"
+        label="{{ fieldConfig.submitLabel ?? '' | translate }}"
+        styleClass="w-full"
+        pRipple
       />
     </div>
   </form>

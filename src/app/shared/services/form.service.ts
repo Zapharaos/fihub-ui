@@ -122,6 +122,12 @@ export class FormService {
     ));
   }
 
+  addControlOtp(fieldName: string, object: unknown) {
+    this.form.addControl(fieldName, new FormControl(object, [
+      Validators.minLength(6), Validators.maxLength(6), Validators.required]
+    ));
+  }
+
   addControlCheckbox(fieldName: string, object: unknown) {
     this.form.addControl(fieldName, new FormControl(object, [Validators.requiredTrue]));
   }
