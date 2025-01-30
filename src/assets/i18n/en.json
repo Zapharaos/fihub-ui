@@ -168,7 +168,8 @@
         "email": "Email",
         "roles": "Roles",
         "created": "Created",
-        "updated": "Updated"
+        "updated": "Updated",
+        "roles-count": "{{count}} roles"
       }
     }
   },

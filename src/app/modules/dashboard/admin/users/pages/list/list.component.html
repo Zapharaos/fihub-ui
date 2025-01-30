@@ -46,11 +46,26 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-role>
+    <ng-template pTemplate="body" let-user>
       <tr>
         <td>
+          {{user.email}}
+        </td>
+        <td>
+          <p-tag *ngIf="user.roles && user.roles.length === 1" [value]="user.roles[0].name" />
+          <p *ngIf="user.roles && user.roles.length > 1">
+            {{ 'admin.users.table-column.roles-multiple' | translate: { count: user.roles.length } }}
+          </p>
+        </td>
+        <td>
+          {{user.created_at}}
+        </td>
+        <td>
+          {{user.updated_at}}
+        </td>
+        <td>
           <div class="flex items-center justify-center gap-2">
-            <p-button (click)="onRowSelect(role)"
+            <p-button (click)="onRowSelect(user)"
                       icon="pi pi-pencil"
                       severity="secondary"
                       [rounded]="true"/>
