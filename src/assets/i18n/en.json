@@ -160,6 +160,16 @@
         "title": "Update the role",
         "sub-title": "Edit the role with the desired permissions."
       }
+    },
+    "users": {
+      "title": "Users",
+      "sub-title": "View and manage the users.",
+      "table-column": {
+        "email": "Email",
+        "roles": "Roles",
+        "created": "Created",
+        "updated": "Updated"
+      }
     }
   },
   "auth": {
