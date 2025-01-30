@@ -11,4 +11,8 @@ export const routes: Routes = [
     path: 'brokers',
     component: BrokersComponent,
   },
+  {
+    path: 'roles',
+    loadChildren: () => import('./roles/roles.routes').then(m => m.routes),
+  }
 ];

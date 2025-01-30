@@ -1,0 +1,75 @@
+<app-dashboard-content-layout
+  title="admin.roles.title"
+  subTitle="admin.roles.sub-title"
+  [actionsTemplate]="actionsTemplate"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
+<ng-template #actionsTemplate>
+  <p-iconfield>
+    <p-inputicon styleClass="pi pi-search" />
+    <input pInputText type="text"
+           (input)="applyFilterGlobal($event, dt, 'contains')"
+           placeholder="{{'actions.search-placeholder' | translate}}"
+    />
+  </p-iconfield>
+  <p-button [routerLink]="'/dashboard/admin/roles/add'"
+            [disabled]="loading"
+            label="{{'admin.roles.actions.add' | translate}}"
+            icon="pi pi-plus" />
+</ng-template>
+
+<ng-template #contentTemplate>
+  <p-table
+    #dt
+    dataKey="id"
+    [value]="roles"
+    [globalFilterFields]="tablePropertiesFilter"
+    [loading]="loading"
+    [showLoader]="false"
+    [styleClass]="'p-datatable-lg'"
+    sortField="name" [sortOrder]="1">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'admin.roles.table-column.name' | translate }}</th>
+        <th>{{ 'admin.roles.table-column.permissions' | translate }}</th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="loadingbody">
+      <tr *ngFor="let i of [1, 2, 3, 4, 5]">
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-role>
+      <tr>
+        <td>
+          {{role.name}}
+        </td>
+        <td>
+          <ul>
+            <li *ngFor="let permission of role.permissions">{{ permission.value }}</li>
+          </ul>
+        </td>
+        <td>
+          <div class="flex items-center justify-center gap-2">
+            <p-button (click)="onRowSelect(role)"
+                      icon="pi pi-pencil"
+                      severity="secondary"
+                      [rounded]="true"/>
+            <p-button (click)="onRowDelete($event, role)"
+                      icon="pi pi-trash"
+                      severity="danger"
+                      [rounded]="true"
+                      [outlined]="true"/>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
