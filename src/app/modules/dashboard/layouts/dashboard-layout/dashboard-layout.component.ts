@@ -40,6 +40,10 @@ export class DashboardLayoutComponent {
           {
             label: 'admin.roles.title',
             route: '/dashboard/admin/roles',
+          },
+          {
+            label: 'admin.users.title',
+            route: '/dashboard/admin/users',
           }
         ]
       },
