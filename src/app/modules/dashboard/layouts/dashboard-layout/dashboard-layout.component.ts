@@ -36,6 +36,10 @@ export class DashboardLayoutComponent {
           {
             label: 'admin.brokers.title',
             route: '/dashboard/admin/brokers',
+          },
+          {
+            label: 'admin.roles.title',
+            route: '/dashboard/admin/roles',
           }
         ]
       },
