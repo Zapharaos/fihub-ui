@@ -17,17 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { PermissionsPermission } from '../model/permissionsPermission';
+// @ts-ignore
 import { RenderErrorResponse } from '../model/renderErrorResponse';
-// @ts-ignore
-import { RolesRoleWithPermissions } from '../model/rolesRoleWithPermissions';
-// @ts-ignore
-import { UsersUser } from '../model/usersUser';
-// @ts-ignore
-import { UsersUserInputCreate } from '../model/usersUserInputCreate';
-// @ts-ignore
-import { UsersUserInputPassword } from '../model/usersUserInputPassword';
-// @ts-ignore
-import { UsersUserWithRoles } from '../model/usersUserWithRoles';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -38,7 +30,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class PermissionsService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -101,18 +93,18 @@ export class UsersService {
     }
 
     /**
-     * Change the password of the currently authenticated user
-     * Changes the password of the currently authenticated user.
-     * @param password password (json)
+     * Create a new permission
+     * Create a new permission. (Permission: &lt;b&gt;admin.permissions.create&lt;/b&gt;)
+     * @param permission permission (json)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public changeUserPassword(password: UsersUserInputPassword, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
-    public changeUserPassword(password: UsersUserInputPassword, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
-    public changeUserPassword(password: UsersUserInputPassword, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
-    public changeUserPassword(password: UsersUserInputPassword, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (password === null || password === undefined) {
-            throw new Error('Required parameter password was null or undefined when calling changeUserPassword.');
+    public createPermission(permission: PermissionsPermission, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PermissionsPermission>;
+    public createPermission(permission: PermissionsPermission, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PermissionsPermission>>;
+    public createPermission(permission: PermissionsPermission, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PermissionsPermission>>;
+    public createPermission(permission: PermissionsPermission, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (permission === null || permission === undefined) {
+            throw new Error('Required parameter permission was null or undefined when calling createPermission.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -167,11 +159,11 @@ export class UsersService {
             }
         }
 
-        let localVarPath = `/api/v1/users/me/password`;
-        return this.httpClient.request<string>('put', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions`;
+        return this.httpClient.request<PermissionsPermission>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: password,
+                body: permission,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -183,18 +175,18 @@ export class UsersService {
     }
 
     /**
-     * Create a new user
-     * Create a new user.
-     * @param user user (json)
+     * Delete permission
+     * Deletes a permission. (Permission: &lt;b&gt;admin.permissions.delete&lt;/b&gt;)
+     * @param id permission ID
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUser(user: UsersUserInputCreate, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UsersUser>;
-    public createUser(user: UsersUserInputCreate, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UsersUser>>;
-    public createUser(user: UsersUserInputCreate, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UsersUser>>;
-    public createUser(user: UsersUserInputCreate, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (user === null || user === undefined) {
-            throw new Error('Required parameter user was null or undefined when calling createUser.');
+    public deletePermission(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
+    public deletePermission(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
+    public deletePermission(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
+    public deletePermission(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling deletePermission.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -229,15 +221,6 @@ export class UsersService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -249,76 +232,7 @@ export class UsersService {
             }
         }
 
-        let localVarPath = `/api/v1/users`;
-        return this.httpClient.request<UsersUser>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: user,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Delete the currently authenticated user
-     * Deletes the currently authenticated user.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public deleteUserSelf(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<string>;
-    public deleteUserSelf(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
-    public deleteUserSelf(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
-    public deleteUserSelf(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Bearer) required
-        localVarCredential = this.configuration.lookupCredential('Bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        let localVarTransferCache: boolean | undefined = options && options.transferCache;
-        if (localVarTransferCache === undefined) {
-            localVarTransferCache = true;
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/users/me`;
+        let localVarPath = `/api/v1/permissions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<string>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -333,18 +247,18 @@ export class UsersService {
     }
 
     /**
-     * Get all roles for a specified user id
-     * Gets a list of all roles. (Permission: &lt;b&gt;admin.users.roles.list&lt;/b&gt;)
-     * @param id user ID
+     * Get a permission
+     * Get a permission by id. (Permission: &lt;b&gt;permissions.read&lt;/b&gt;)
+     * @param id permission id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUserRoles(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<RolesRoleWithPermissions>>;
-    public getUserRoles(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<RolesRoleWithPermissions>>>;
-    public getUserRoles(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<RolesRoleWithPermissions>>>;
-    public getUserRoles(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getPermission(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PermissionsPermission>;
+    public getPermission(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PermissionsPermission>>;
+    public getPermission(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PermissionsPermission>>;
+    public getPermission(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getUserRoles.');
+            throw new Error('Required parameter id was null or undefined when calling getPermission.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -390,8 +304,8 @@ export class UsersService {
             }
         }
 
-        let localVarPath = `/api/v1/users/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/roles`;
-        return this.httpClient.request<Array<RolesRoleWithPermissions>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request<PermissionsPermission>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -405,15 +319,15 @@ export class UsersService {
     }
 
     /**
-     * Get the currently authenticated user
-     * Retrieves the currently authenticated user.
+     * Get all permissions
+     * Gets a list of all permissions. (Permission: &lt;b&gt;admin.permissions.list&lt;/b&gt;)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUserSelf(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UsersUser>;
-    public getUserSelf(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UsersUser>>;
-    public getUserSelf(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UsersUser>>;
-    public getUserSelf(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getPermissions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<PermissionsPermission>>;
+    public getPermissions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<PermissionsPermission>>>;
+    public getPermissions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<PermissionsPermission>>>;
+    public getPermissions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -458,8 +372,8 @@ export class UsersService {
             }
         }
 
-        let localVarPath = `/api/v1/users/me`;
-        return this.httpClient.request<UsersUser>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions`;
+        return this.httpClient.request<Array<PermissionsPermission>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -473,22 +387,22 @@ export class UsersService {
     }
 
     /**
-     * Set roles on a user
-     * Set roles on a user. (Permission: &lt;b&gt;admin.users.roles.update&lt;/b&gt;)
-     * @param id user ID
-     * @param user user (json)
+     * Update permission
+     * Updates the permission. (Permission: &lt;b&gt;admin.permissions.update&lt;/b&gt;)
+     * @param id permission ID
+     * @param permission permission (json)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public setUserRoles(id: string, user: UsersUserWithRoles, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UsersUserWithRoles>;
-    public setUserRoles(id: string, user: UsersUserWithRoles, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UsersUserWithRoles>>;
-    public setUserRoles(id: string, user: UsersUserWithRoles, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UsersUserWithRoles>>;
-    public setUserRoles(id: string, user: UsersUserWithRoles, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updatePermission(id: string, permission: PermissionsPermission, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PermissionsPermission>;
+    public updatePermission(id: string, permission: PermissionsPermission, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PermissionsPermission>>;
+    public updatePermission(id: string, permission: PermissionsPermission, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PermissionsPermission>>;
+    public updatePermission(id: string, permission: PermissionsPermission, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling setUserRoles.');
+            throw new Error('Required parameter id was null or undefined when calling updatePermission.');
         }
-        if (user === null || user === undefined) {
-            throw new Error('Required parameter user was null or undefined when calling setUserRoles.');
+        if (permission === null || permission === undefined) {
+            throw new Error('Required parameter permission was null or undefined when calling updatePermission.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -543,93 +457,11 @@ export class UsersService {
             }
         }
 
-        let localVarPath = `/api/v1/users/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/roles`;
-        return this.httpClient.request<UsersUserWithRoles>('put', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request<PermissionsPermission>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: user,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Update the currently authenticated user
-     * Updates the currently authenticated user.
-     * @param user user (json)
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public updateUserSelf(user: UsersUser, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UsersUser>;
-    public updateUserSelf(user: UsersUser, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UsersUser>>;
-    public updateUserSelf(user: UsersUser, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UsersUser>>;
-    public updateUserSelf(user: UsersUser, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (user === null || user === undefined) {
-            throw new Error('Required parameter user was null or undefined when calling updateUserSelf.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Bearer) required
-        localVarCredential = this.configuration.lookupCredential('Bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        let localVarTransferCache: boolean | undefined = options && options.transferCache;
-        if (localVarTransferCache === undefined) {
-            localVarTransferCache = true;
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/users/me`;
-        return this.httpClient.request<UsersUser>('put', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: user,
+                body: permission,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
