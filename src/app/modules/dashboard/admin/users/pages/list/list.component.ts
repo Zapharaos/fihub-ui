@@ -10,10 +10,14 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {applyFilterGlobal} from "@shared/utils/table";
 import {RouterLink} from "@angular/router";
 import {Table, TableModule} from "primeng/table";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {UsersUserWithRoles} from "@core/api";
+import {RolesService, UserRolesService, UsersService, UsersUserWithRoles} from "@core/api";
+import {finalize} from "rxjs";
+import {handleErrors} from "@shared/utils/errors";
+import {NotificationService} from "@shared/services/notification.service";
+import {Tag} from "primeng/tag";
 
 @Component({
   selector: 'app-list',
@@ -27,7 +31,9 @@ import {UsersUserWithRoles} from "@core/api";
     NgForOf,
     PrimeTemplate,
     Skeleton,
-    TableModule
+    TableModule,
+    NgIf,
+    Tag
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
@@ -44,14 +50,30 @@ export class ListComponent implements OnInit {
   protected readonly tablePropertiesFilter = ['email', 'roleValues', 'created_at', 'updated_at'];
 
   constructor(
-
+    private usersService: UsersService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
-
+    this.loadUsers();
   }
 
   // Load
+
+  loadUsers() {
+    this.loading = true;
+    this.usersService.getAllUsersWithRoles().pipe(finalize(() => {
+      this.loading = false
+    })).subscribe({
+      next: (users: UsersUserWithRoles[]) => {
+        console.log(users)
+        this.users = users;
+      },
+      error: (error) => {
+        handleErrors(error, this.notificationService);
+      }
+    })
+  }
 
   // Table
 
