@@ -28,7 +28,6 @@
         [loading]="loading" [showLoader]="false"
         [rowHover]="true" [styleClass]="'checkable-override-selectable'" [size]="'large'"
         [sortMode]="'multiple'" [multiSortMeta]="[{field: 'value', order: 1}]"
-        [customSort]="true" (sortFunction)="multipleSortWithTableCheckbox($event, dt)"
         [paginator]="true" [rows]="25" [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true"
       >
         <ng-template #caption>
