@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Button, ButtonDirective} from "primeng/button";
+import {Button} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
@@ -60,7 +60,6 @@ export interface AuthFormFieldConfig {
     FormsModule,
     DividerModule,
     CheckboxModule,
-    ButtonDirective,
     MessagesModule,
     Message,
     InputIcon,
@@ -217,7 +216,7 @@ export class AuthFormComponent implements OnInit {
 
     // OTP
     if (this.fieldConfig.hasOtp) {
-      this.formService.addControlRequired('otp', this.otp);
+      this.formService.addControlOtp('otp', this.otp);
     }
   }
 
