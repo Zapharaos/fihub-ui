@@ -119,7 +119,9 @@
         "permissions": "Permissions"
       },
       "actions": {
-        "add": "Add role"
+        "add": "Add role",
+        "show-selected": "Show non-selected permissions",
+        "hide-selected": "Hide non-selected permissions"
       },
       "messages": {
         "create-success": "Role {{name}} has been created.",

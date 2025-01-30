@@ -9,24 +9,20 @@ import {FormService} from "@shared/services/form.service";
 import {
   PermissionsPermission,
   PermissionsService,
-  RolePermissionsService,
   RolesRole, RolesRoleWithPermissions,
   RolesService,
-  TransactionsService
 } from "@core/api";
-import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
-import {BrokerImageService} from "@shared/services/broker-image.service";
-import {numberPositiveValidator} from "@shared/validators/number";
-import {DatePicker} from "primeng/datepicker";
 import {Message} from "primeng/message";
 import {NgForOf, NgIf} from "@angular/common";
 import {InputText} from "primeng/inputtext";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {TableModule} from "primeng/table";
+import {TableModule, TableRowSelectEvent} from "primeng/table";
 import {finalize} from "rxjs";
 import {handleErrors, ResponseError} from "@shared/utils/errors";
-import {minArrayLengthValidator, notEmptyValidator} from "@shared/validators/array";
+import {applyFilterGlobal, multipleSortWithTableCheckbox} from "@shared/utils/table";
+import {IconField} from "primeng/iconfield";
+import {InputIcon} from "primeng/inputicon";
 
 @Component({
   selector: 'app-admin-roles-form-layout',
@@ -41,7 +37,9 @@ import {minArrayLengthValidator, notEmptyValidator} from "@shared/validators/arr
     NgForOf,
     PrimeTemplate,
     Skeleton,
-    TableModule
+    TableModule,
+    IconField,
+    InputIcon
   ],
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss'
@@ -57,6 +55,10 @@ export class FormComponent implements OnInit {
   role: RolesRoleWithPermissions = {};
   submitLabel = '';
   submitIcon = '';
+  showSelectedPermissionsOnly = false;
+
+  // TODO : update : retrieve role and permissions from API
+  // TODO : update : filter by selected
 
   constructor(
     private route: ActivatedRoute,
@@ -76,8 +78,7 @@ export class FormComponent implements OnInit {
     if (this.isCreateForm) {
       this.submitLabel = 'admin.roles.form.label.submit-add';
       this.submitIcon = 'pi-plus';
-    }
-    else {
+    } else {
       this.submitLabel = 'admin.roles.form.label.submit-update';
       this.submitIcon = 'pi-check';
     }
@@ -171,7 +172,7 @@ export class FormComponent implements OnInit {
     }
 
     // Call API
-    if(!this.role) {
+    if (!this.role) {
       this.updateRole(role);
     } else {
       this.createRole(role);
@@ -191,4 +192,19 @@ export class FormComponent implements OnInit {
         break;
     }
   }
+
+  // Table
+
+  onRowSelect(event: TableRowSelectEvent) {
+    if (!this.role.permissions?.some(p => p.id === event.data.id)) {
+      this.role.permissions?.push(event.data);
+    }
+  }
+
+  toggleSelectedPermissionsOnly() {
+    this.showSelectedPermissionsOnly = !this.showSelectedPermissionsOnly;
+  }
+
+  protected readonly multipleSortWithTableCheckbox = multipleSortWithTableCheckbox;
+  protected readonly applyFilterGlobal = applyFilterGlobal;
 }

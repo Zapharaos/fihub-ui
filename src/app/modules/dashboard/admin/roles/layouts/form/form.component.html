@@ -22,19 +22,38 @@
         #dt
         id="permissions"
         dataKey="id"
-        [value]="permissions"
+        [value]="showSelectedPermissionsOnly ? role.permissions ?? [] : permissions"
         [globalFilterFields]="tablePropertiesFilter"
-        [(selection)]="role.permissions"
-        [loading]="loading"
-        [showLoader]="false"
-        [styleClass]="'p-datatable-lg'"
-        sortField="value" [sortOrder]="1">
+        [(selection)]="role.permissions" selectionMode="multiple" (onRowSelect)="onRowSelect($event)"
+        [loading]="loading" [showLoader]="false"
+        [rowHover]="true" [styleClass]="'checkable-override-selectable'" [size]="'large'"
+        [sortMode]="'multiple'" [multiSortMeta]="[{field: 'value', order: 1}]"
+        [customSort]="true" (sortFunction)="multipleSortWithTableCheckbox($event, dt)"
+        [paginator]="true" [rows]="25" [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true"
+      >
+        <ng-template #caption>
+          <div class="flex justify-between">
+
+            <p-button [outlined]="true" (click)="toggleSelectedPermissionsOnly()" pRipple
+                      icon="pi {{ showSelectedPermissionsOnly ? 'pi-eye' : 'pi-eye-slash' }}"
+                      label="{{ (showSelectedPermissionsOnly ? 'admin.roles.actions.show-selected' : 'admin.roles.actions.hide-selected') | translate }}"
+            />
+            <p-iconfield styleClass="flex h-fit">
+              <p-inputicon styleClass="pi pi-search" />
+              <input pInputText type="text"
+                     (input)="applyFilterGlobal($event, dt, 'contains')"
+                     placeholder="{{'actions.search-placeholder' | translate}}"
+              />
+            </p-iconfield>
+          </div>
+        </ng-template>
+
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
-            <th>{{ 'admin.roles.form.label.permissions.value' | translate }}</th>
-            <th>{{ 'admin.roles.form.label.permissions.scope' | translate }}</th>
-            <th>{{ 'admin.roles.form.label.permissions.description' | translate }}</th>
+            <th pSortableColumn="value">{{ 'admin.roles.form.label.permissions.value' | translate }} <p-sortIcon field="value" /></th>
+            <th pSortableColumn="scope">{{ 'admin.roles.form.label.permissions.scope' | translate }} <p-sortIcon field="scope" /></th>
+            <th pSortableColumn="description">{{ 'admin.roles.form.label.permissions.description' | translate }} <p-sortIcon field="description" /></th>
           </tr>
         </ng-template>
 
@@ -44,12 +63,11 @@
             <td><p-skeleton width="100%"></p-skeleton></td>
             <td><p-skeleton width="100%"></p-skeleton></td>
             <td><p-skeleton width="100%"></p-skeleton></td>
-            <td><p-skeleton width="100%"></p-skeleton></td>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-permission>
-          <tr>
+          <tr [pSelectableRow]="permission">
             <td>
               <p-tableCheckbox [value]="permission" />
             </td>
