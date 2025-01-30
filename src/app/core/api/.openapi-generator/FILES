@@ -5,8 +5,13 @@ api/api.ts
 api/auth.service.ts
 api/brokerImages.service.ts
 api/brokers.service.ts
+api/permissions.service.ts
+api/rolePermissions.service.ts
+api/roleUsers.service.ts
+api/roles.service.ts
 api/transactions.service.ts
 api/userBroker.service.ts
+api/userRoles.service.ts
 api/users.service.ts
 configuration.ts
 encoder.ts
@@ -20,7 +25,10 @@ model/brokersUserBrokerInput.ts
 model/models.ts
 model/passwordInputRequest.ts
 model/passwordResponseRequest.ts
+model/permissionsPermission.ts
 model/renderErrorResponse.ts
+model/rolesRole.ts
+model/rolesRoleWithPermissions.ts
 model/transactionsTransaction.ts
 model/transactionsTransactionInput.ts
 model/transactionsTransactionType.ts
@@ -28,5 +36,6 @@ model/usersUser.ts
 model/usersUserInputCreate.ts
 model/usersUserInputPassword.ts
 model/usersUserWithPassword.ts
+model/usersUserWithRoles.ts
 param.ts
 variables.ts
