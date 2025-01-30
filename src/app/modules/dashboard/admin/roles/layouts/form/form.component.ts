@@ -23,6 +23,8 @@ import {handleErrors, ResponseError} from "@shared/utils/errors";
 import {applyFilterGlobal, multipleSortWithTableCheckbox} from "@shared/utils/table";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
+import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
+import {RoleService} from "@modules/dashboard/admin/roles/services/roles.service";
 
 @Component({
   selector: 'app-admin-roles-form-layout',
@@ -57,9 +59,6 @@ export class FormComponent implements OnInit {
   submitIcon = '';
   showSelectedPermissionsOnly = false;
 
-  // TODO : update : retrieve role and permissions from API
-  // TODO : update : filter by selected
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -67,12 +66,19 @@ export class FormComponent implements OnInit {
     private fb: FormBuilder,
     protected formService: FormService,
     private permissionsService: PermissionsService,
-    private roleService: RolesService,
+    private rolesService: RolesService,
+    private roleService: RoleService,
+    private roleStore: RoleStore,
   ) {
 
     // Retrieve role ID
     const roleID = this.route.snapshot.paramMap.get('id') ?? undefined;
     this.isCreateForm = roleID === undefined;
+
+    // Init form
+    this.formService.init(this.fb.group({
+      name: ['', [Validators.minLength(this.nameLengthMin), Validators.required]],
+    }));
 
     // Set form submit label
     if (this.isCreateForm) {
@@ -81,19 +87,14 @@ export class FormComponent implements OnInit {
     } else {
       this.submitLabel = 'admin.roles.form.label.submit-update';
       this.submitIcon = 'pi-check';
-    }
 
-    // Init form
-    this.formService.init(this.fb.group({
-      name: ['', [Validators.minLength(this.nameLengthMin), Validators.required]],
-    }));
+      this.loadRole();
+    }
   }
 
   ngOnInit() {
     this.loadPermissions();
   }
-
-  // Permissions
 
   loadPermissions() {
     this.loading = true;
@@ -109,11 +110,38 @@ export class FormComponent implements OnInit {
     })
   }
 
+  loadRole() {
+    // Retrieve role data
+    const role = this.roleStore.role;
+
+    // If the role is already loaded
+    if (role) {
+      this.role = role;
+      this.patchForm();
+      return;
+    }
+
+    // If the role is not loaded, then retrieve it from the API
+    const roleID = this.route.snapshot.paramMap.get('id');
+    this.roleService.getRoleWithPermissions(roleID!).subscribe({
+      next: (role: RolesRole) => {
+        this.roleStore.role = role;
+        this.role = role;
+        this.patchForm();
+      },
+      error: (error: Error) => {
+        handleErrors(error, this.notificationService);
+        // Could not retrieve the role : nothing to do on this page
+        this.router.navigate(['/dashboard/admin/roles']);
+      }
+    })
+  }
+
   // Roles
 
   createRole(role: RolesRoleWithPermissions) {
     this.loading = true;
-    this.roleService.createRole(role).pipe(finalize(() => {
+    this.rolesService.createRole(role).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (r: RolesRole) => {
@@ -128,7 +156,7 @@ export class FormComponent implements OnInit {
 
   updateRole(role: RolesRoleWithPermissions) {
     this.loading = true;
-    this.roleService.updateRole(role.id!, role).pipe(finalize(() => {
+    this.rolesService.updateRole(role.id!, role).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (r: RolesRole) => {
@@ -145,7 +173,8 @@ export class FormComponent implements OnInit {
 
   setPermissions(role: RolesRole, permissions: PermissionsPermission[]) {
     this.loading = true;
-    this.roleService.getRolePermissions(role.id!).pipe(finalize(() => {
+    // TODO : setPermissions API call
+    this.rolesService.getRolePermissions(role.id!).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {
@@ -167,16 +196,23 @@ export class FormComponent implements OnInit {
     }
 
     const role: RolesRoleWithPermissions = {
+      id: this.role.id,
       name: this.formService.getFormValue().name,
       permissions: this.role.permissions,
     }
 
     // Call API
-    if (!this.role) {
-      this.updateRole(role);
-    } else {
+    if (this.isCreateForm) {
       this.createRole(role);
+    } else {
+      this.updateRole(role);
     }
+  }
+
+  patchForm() {
+    this.formService.patchValue({
+      name: this.role.name,
+    });
   }
 
   // Errors
@@ -205,6 +241,5 @@ export class FormComponent implements OnInit {
     this.showSelectedPermissionsOnly = !this.showSelectedPermissionsOnly;
   }
 
-  protected readonly multipleSortWithTableCheckbox = multipleSortWithTableCheckbox;
   protected readonly applyFilterGlobal = applyFilterGlobal;
 }

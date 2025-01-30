@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   DashboardContentLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
@@ -6,40 +6,26 @@ import {Button} from "primeng/button";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {InputText} from "primeng/inputtext";
-import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {TranslatePipe} from "@ngx-translate/core";
 import {applyFilterGlobal} from "@shared/utils/table";
 import {Table, TableModule} from "primeng/table";
 import {NotificationService} from "@shared/services/notification.service";
 import {PrimeTemplate} from "primeng/api";
 import {
-  BrokerImagesService,
-  BrokersBroker,
-  BrokersService,
-  RolesRole,
   RolesRoleWithPermissions,
   RolesService
 } from "@core/api";
-import {finalize, forkJoin, map, Observable, switchMap} from "rxjs";
-import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Tag} from "primeng/tag";
-import {FileUploadHandlerEvent, FileUploadModule} from "primeng/fileupload";
-import {DialogMode, DialogService} from "@shared/services/dialog.service";
-import {Dialog} from "primeng/dialog";
-import {NgForOf, NgIf} from "@angular/common";
-import {ToggleSwitch} from "primeng/toggleswitch";
-import {ButtonProps} from "primeng/button/button.interface";
+import {finalize} from "rxjs";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FileUploadModule} from "primeng/fileupload";
+import {NgForOf} from "@angular/common";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {FormService} from "@shared/services/form.service";
-import {Message} from "primeng/message";
-import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
-import {handleErrors, ResponseError} from "@shared/utils/errors";
+import {handleErrors} from "@shared/utils/errors";
 import {Skeleton} from "primeng/skeleton";
 import {Router, RouterLink} from "@angular/router";
-
-
-interface Role extends RolesRoleWithPermissions {
-  permissionValues: string;
-}
+import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
+import {RoleService, Role} from "@modules/dashboard/admin/roles/services/roles.service";
 
 @Component({
     selector: 'app-admin-roles',
@@ -78,7 +64,9 @@ export class ListComponent implements OnInit {
     private notificationService: NotificationService,
     protected formService: FormService,
     private rolesService: RolesService,
-    private confirmService: ConfirmService
+    private roleService: RoleService,
+    private roleStore: RoleStore,
+    private confirmService: ConfirmService,
   ) { }
 
   ngOnInit() {
@@ -89,7 +77,7 @@ export class ListComponent implements OnInit {
 
   loadRoles() {
     this.loading = true;
-    this.getRolesWithPermissions().pipe(finalize(() => {
+    this.roleService.getRolesWithPermissions().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (roles: Role[]) => {
@@ -104,6 +92,10 @@ export class ListComponent implements OnInit {
   // Table
 
   onRowSelect(role: RolesRoleWithPermissions) {
+    // Store role
+    this.roleStore.role = role;
+
+    // Navigate to update page
     this.router.navigate(['/dashboard/admin/roles', role?.id, 'update']);
   }
 
@@ -112,23 +104,6 @@ export class ListComponent implements OnInit {
   }
 
   // Roles
-
-  getRolesWithPermissions(): Observable<Role[]> {
-    return this.rolesService.getRoles().pipe(
-      switchMap((roles: RolesRole[]) => {
-        const rolesWithPermissions$ = roles.map(role =>
-          this.rolesService.getRolePermissions(role.id!).pipe(
-            map(permissions => ({
-              ...role,
-              permissions,
-              permissionValues: permissions.map(p => p.value).join(', ')
-            }))
-          )
-        );
-        return forkJoin(rolesWithPermissions$);
-      })
-    );
-  }
 
   deleteRole(role: RolesRoleWithPermissions) {
     this.loading = true;

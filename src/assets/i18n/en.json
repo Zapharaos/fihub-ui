@@ -154,6 +154,11 @@
         "back": "Roles",
         "title": "Add a role",
         "sub-title": "Create a new role with specific permissions."
+      },
+      "update": {
+        "back": "Roles",
+        "title": "Update the role",
+        "sub-title": "Edit the role with the desired permissions."
       }
     }
   },
