@@ -29,7 +29,8 @@
     [showLoader]="false"
     [rowHover]="true"
     [styleClass]="'p-datatable-lg'"
-    sortField="name" [sortOrder]="1">
+    sortField="name" [sortOrder]="1"
+    selectionMode="single" [(selection)]="role" (onRowSelect)="onRowSelect(role)">
     <ng-template pTemplate="header">
       <tr>
         <th>{{ 'admin.roles.table-column.name' | translate }}</th>
@@ -48,14 +49,12 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-role>
-      <tr>
+      <tr [pSelectableRow]="role">
         <td>
           {{role.name}}
         </td>
-        <td>
-          <ul>
-            <li *ngFor="let permission of role.permissions">{{ permission.value }}</li>
-          </ul>
+        <td *ngIf="role.permissions">
+          {{ role.permissions.length }}
         </td>
         <td>
           <div class="flex items-center justify-center gap-2">

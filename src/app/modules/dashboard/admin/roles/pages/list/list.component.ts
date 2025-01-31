@@ -18,7 +18,7 @@ import {
 import {finalize} from "rxjs";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FileUploadModule} from "primeng/fileupload";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {FormService} from "@shared/services/form.service";
 import {handleErrors} from "@shared/utils/errors";
@@ -26,6 +26,10 @@ import {Skeleton} from "primeng/skeleton";
 import {Router, RouterLink} from "@angular/router";
 import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
 import {RoleService, Role} from "@modules/dashboard/admin/roles/services/roles.service";
+import {Tag} from "primeng/tag";
+import {Listbox} from "primeng/listbox";
+import {PanelComponent} from "@shared/components/panel/panel.component";
+import {Badge} from "primeng/badge";
 
 @Component({
     selector: 'app-admin-roles',
@@ -43,7 +47,12 @@ import {RoleService, Role} from "@modules/dashboard/admin/roles/services/roles.s
     Skeleton,
     NgForOf,
     Button,
-    RouterLink
+    RouterLink,
+    NgIf,
+    Tag,
+    Listbox,
+    PanelComponent,
+    Badge
   ],
     templateUrl: './list.component.html',
     styleUrl: './list.component.scss'
@@ -54,6 +63,7 @@ export class ListComponent implements OnInit {
   loading = true;
 
   // Table
+  role!: Role
   roles: Role[] = []
   @ViewChild('dt') dt: Table | undefined;
 
