@@ -20,11 +20,12 @@ import {Skeleton} from "primeng/skeleton";
 import {TableModule, TableRowSelectEvent} from "primeng/table";
 import {finalize} from "rxjs";
 import {handleErrors, ResponseError} from "@shared/utils/errors";
-import {applyFilterGlobal, multipleSortWithTableCheckbox} from "@shared/utils/table";
+import {applyFilterGlobal} from "@shared/utils/table";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
 import {RoleService} from "@modules/dashboard/admin/roles/services/roles.service";
+import {notEmptyValidator} from "@shared/validators/array";
 
 @Component({
   selector: 'app-admin-roles-form-layout',
@@ -53,7 +54,7 @@ export class FormComponent implements OnInit {
 
   isCreateForm = true;
   loading = true;
-  permissions!: PermissionsPermission[];
+  permissions: PermissionsPermission[] = [];
   role: RolesRoleWithPermissions = {};
   submitLabel = '';
   submitIcon = '';
@@ -76,8 +77,10 @@ export class FormComponent implements OnInit {
     this.isCreateForm = roleID === undefined;
 
     // Init form
+
     this.formService.init(this.fb.group({
       name: ['', [Validators.minLength(this.nameLengthMin), Validators.required]],
+      permissions: [this.role.permissions, notEmptyValidator()]
     }));
 
     // Set form submit label
@@ -173,8 +176,7 @@ export class FormComponent implements OnInit {
 
   setPermissions(role: RolesRole, permissions: PermissionsPermission[]) {
     this.loading = true;
-    // TODO : setPermissions API call
-    this.rolesService.getRolePermissions(role.id!).pipe(finalize(() => {
+    this.rolesService.setRolePermissions(role.id!, permissions).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {
@@ -198,7 +200,7 @@ export class FormComponent implements OnInit {
     const role: RolesRoleWithPermissions = {
       id: this.role.id,
       name: this.formService.getFormValue().name,
-      permissions: this.role.permissions,
+      permissions: this.formService.getFormValue().permissions,
     }
 
     // Call API
@@ -212,6 +214,7 @@ export class FormComponent implements OnInit {
   patchForm() {
     this.formService.patchValue({
       name: this.role.name,
+      permissions: this.role.permissions
     });
   }
 
@@ -235,6 +238,16 @@ export class FormComponent implements OnInit {
     if (!this.role.permissions?.some(p => p.id === event.data.id)) {
       this.role.permissions?.push(event.data);
     }
+    this.formService.setControlValue('permissions', this.role.permissions, true);
+  }
+
+  onHeaderCheckboxToggle(event: { checked: boolean }) {
+    if (event.checked) {
+      this.role.permissions = this.permissions;
+    } else {
+      this.role.permissions = [];
+    }
+    this.formService.setControlValue('permissions', this.role.permissions);
   }
 
   toggleSelectedPermissionsOnly() {
