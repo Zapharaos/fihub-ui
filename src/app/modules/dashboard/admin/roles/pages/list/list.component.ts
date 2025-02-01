@@ -25,7 +25,6 @@ import {handleErrors} from "@shared/utils/errors";
 import {Skeleton} from "primeng/skeleton";
 import {Router, RouterLink} from "@angular/router";
 import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
-import {RoleService, Role} from "@modules/dashboard/admin/roles/services/roles.service";
 
 @Component({
     selector: 'app-admin-roles',
@@ -55,8 +54,8 @@ export class ListComponent implements OnInit {
   loading = true;
 
   // Table
-  role!: Role
-  roles: Role[] = []
+  role!: RolesRoleWithPermissions
+  roles: RolesRoleWithPermissions[] = []
   @ViewChild('dt') dt: Table | undefined;
 
   protected readonly tablePropertiesFilter = ['name', 'permissionValues'];
@@ -66,7 +65,6 @@ export class ListComponent implements OnInit {
     private notificationService: NotificationService,
     protected formService: FormService,
     private rolesService: RolesService,
-    private roleService: RoleService,
     private roleStore: RoleStore,
     private confirmService: ConfirmService,
   ) { }
@@ -79,10 +77,10 @@ export class ListComponent implements OnInit {
 
   loadRoles() {
     this.loading = true;
-    this.roleService.getRolesWithPermissions().pipe(finalize(() => {
+    this.rolesService.getRoles().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (roles: Role[]) => {
+      next: (roles: RolesRoleWithPermissions[]) => {
         this.roles = roles;
       },
       error: (error: Error) => {

@@ -53,8 +53,8 @@
         <td>
           {{role.name}}
         </td>
-        <td *ngIf="role.permissions">
-          {{ role.permissions.length }}
+        <td>
+          {{ role.permissions ? role.permissions.length : 0 }}
         </td>
         <td>
           <div class="flex items-center justify-center gap-2">

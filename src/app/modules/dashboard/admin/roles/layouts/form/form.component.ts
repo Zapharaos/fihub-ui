@@ -9,7 +9,7 @@ import {FormService} from "@shared/services/form.service";
 import {
   PermissionsPermission,
   PermissionsService,
-  RolesRole, RolesRoleWithPermissions,
+  RolesRoleWithPermissions,
   RolesService,
 } from "@core/api";
 import {Message} from "primeng/message";
@@ -24,7 +24,6 @@ import {applyFilterGlobal} from "@shared/utils/table";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
-import {RoleService} from "@modules/dashboard/admin/roles/services/roles.service";
 import {notEmptyValidator} from "@shared/validators/array";
 
 @Component({
@@ -68,7 +67,6 @@ export class FormComponent implements OnInit {
     protected formService: FormService,
     private permissionsService: PermissionsService,
     private rolesService: RolesService,
-    private roleService: RoleService,
     private roleStore: RoleStore,
   ) {
 
@@ -125,8 +123,8 @@ export class FormComponent implements OnInit {
 
     // If the role is not loaded, then retrieve it from the API
     const roleID = this.route.snapshot.paramMap.get('id');
-    this.roleService.getRoleWithPermissions(roleID!).subscribe({
-      next: (role: RolesRole) => {
+    this.rolesService.getRole(roleID!).subscribe({
+      next: (role: RolesRoleWithPermissions) => {
         this.roleStore.role = role;
         this.role = role;
         this.patchForm();
@@ -146,9 +144,11 @@ export class FormComponent implements OnInit {
     this.rolesService.createRole(role).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (r: RolesRole) => {
-        this.notificationService.showToastSuccess('admin.roles.messages.create-success', {name: r.name});
-        this.setPermissions(r, role.permissions ?? []);
+      next: (r: RolesRoleWithPermissions) => {
+        // Success : navigate back to the roles page
+        this.router.navigate(['/dashboard/admin/roles']).then(() => {
+          this.notificationService.showToastSuccess('admin.roles.messages.create-success', {name: r.name});
+        })
       },
       error: (error: Error) => {
         handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
@@ -161,29 +161,14 @@ export class FormComponent implements OnInit {
     this.rolesService.updateRole(role.id!, role).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (r: RolesRole) => {
-        this.notificationService.showToastSuccess('admin.roles.messages.update-success', {name: r.name});
-        this.setPermissions(r, role.permissions ?? []);
+      next: (r: RolesRoleWithPermissions) => {
+        // Success : navigate back to the roles page
+        this.router.navigate(['/dashboard/admin/roles']).then(() => {
+          this.notificationService.showToastSuccess('admin.roles.messages.update-success', {name: r.name});
+        })
       },
       error: (error: Error) => {
         handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
-      }
-    })
-  }
-
-  // Role permissions
-
-  setPermissions(role: RolesRole, permissions: PermissionsPermission[]) {
-    this.loading = true;
-    this.rolesService.setRolePermissions(role.id!, permissions).pipe(finalize(() => {
-      this.loading = false;
-    })).subscribe({
-      next: () => {
-        // Success : navigate back to the roles page
-        this.router.navigate(['/dashboard/admin/roles']);
-      },
-      error: (error: Error) => {
-        this.notificationService.showToastError('admin.roles.messages.permissions.set-error');
       }
     })
   }
@@ -219,6 +204,7 @@ export class FormComponent implements OnInit {
 
   // Errors
 
+  // TODO : check errors
   handleErrors400(error: ResponseError) {
     switch (error.message) {
       case 'name-required':
@@ -237,6 +223,11 @@ export class FormComponent implements OnInit {
     if (!this.role.permissions?.some(p => p.id === event.data.id)) {
       this.role.permissions?.push(event.data);
     }
+    this.formService.setControlValue('permissions', this.role.permissions, true);
+  }
+
+  onRowUnselect(event: TableRowSelectEvent) {
+    this.role.permissions = this.role.permissions?.filter(p => p.id !== event.data.id);
     this.formService.setControlValue('permissions', this.role.permissions, true);
   }
 
