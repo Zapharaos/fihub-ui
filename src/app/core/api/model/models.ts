@@ -7,7 +7,6 @@ export * from './passwordInputRequest';
 export * from './passwordResponseRequest';
 export * from './permissionsPermission';
 export * from './renderErrorResponse';
-export * from './rolesRole';
 export * from './rolesRoleWithPermissions';
 export * from './transactionsTransaction';
 export * from './transactionsTransactionInput';

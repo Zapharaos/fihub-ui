@@ -27,7 +27,6 @@ model/passwordInputRequest.ts
 model/passwordResponseRequest.ts
 model/permissionsPermission.ts
 model/renderErrorResponse.ts
-model/rolesRole.ts
 model/rolesRoleWithPermissions.ts
 model/transactionsTransaction.ts
 model/transactionsTransactionInput.ts
