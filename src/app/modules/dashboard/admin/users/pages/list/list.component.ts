@@ -8,8 +8,8 @@ import {InputIcon} from "primeng/inputicon";
 import {InputText} from "primeng/inputtext";
 import {TranslatePipe} from "@ngx-translate/core";
 import {applyFilterGlobal} from "@shared/utils/table";
-import {RouterLink} from "@angular/router";
-import {Table, TableModule} from "primeng/table";
+import {Router, RouterLink} from "@angular/router";
+import {Table, TableModule, TableRowSelectEvent} from "primeng/table";
 import {NgForOf, NgIf} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
@@ -18,11 +18,11 @@ import {finalize} from "rxjs";
 import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
 import {Tag} from "primeng/tag";
+import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
 
 @Component({
   selector: 'app-list',
   imports: [
-    Button,
     DashboardContentLayoutComponent,
     IconField,
     InputIcon,
@@ -44,14 +44,17 @@ export class ListComponent implements OnInit {
   loading = true;
 
   // Table
+  user!: UsersUserWithRoles;
   users: UsersUserWithRoles[] = []
   @ViewChild('dt') dt: Table | undefined;
 
   protected readonly tablePropertiesFilter = ['email', 'roleValues', 'created_at', 'updated_at'];
 
   constructor(
+    private router: Router,
     private usersService: UsersService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private usersStore: UserStore
   ) { }
 
   ngOnInit() {
@@ -66,7 +69,6 @@ export class ListComponent implements OnInit {
       this.loading = false
     })).subscribe({
       next: (users: UsersUserWithRoles[]) => {
-        console.log(users)
         this.users = users;
       },
       error: (error) => {
@@ -77,8 +79,9 @@ export class ListComponent implements OnInit {
 
   // Table
 
-  onRowSelect(user: UsersUserWithRoles) {
-    console.log(user)
+  onRowSelect() {
+    this.usersStore.user = this.user;
+    this.router.navigate([`/dashboard/admin/users/${this.user.id}/update`]);
   }
 
   protected readonly applyFilterGlobal = applyFilterGlobal;

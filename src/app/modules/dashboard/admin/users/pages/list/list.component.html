@@ -25,14 +25,14 @@
     [showLoader]="false"
     [rowHover]="true"
     [size]="'large'"
-    sortField="updated_at" [sortOrder]="1">
+    sortField="updated_at" [sortOrder]="-1"
+    selectionMode="single" [(selection)]="user" (onRowSelect)="onRowSelect()">
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="email">{{ 'admin.users.table-column.email' | translate }} <p-sortIcon field="email" /></th>
         <th pSortableColumn="roleValues">{{ 'admin.users.table-column.roles' | translate }} <p-sortIcon field="roleValues" /></th>
         <th pSortableColumn="created_at">{{ 'admin.users.table-column.created' | translate }} <p-sortIcon field="created_at" /></th>
         <th pSortableColumn="updated_at">{{ 'admin.users.table-column.updated' | translate }} <p-sortIcon field="updated_at" /></th>
-        <th></th>
       </tr>
     </ng-template>
 
@@ -42,12 +42,11 @@
         <td><p-skeleton width="100%"></p-skeleton></td>
         <td><p-skeleton width="100%"></p-skeleton></td>
         <td><p-skeleton width="100%"></p-skeleton></td>
-        <td><p-skeleton width="100%"></p-skeleton></td>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-user>
-      <tr>
+      <tr [pSelectableRow]="user">
         <td>
           {{user.email}}
         </td>
@@ -62,14 +61,6 @@
         </td>
         <td>
           {{user.updated_at}}
-        </td>
-        <td>
-          <div class="flex items-center justify-center gap-2">
-            <p-button (click)="onRowSelect(user)"
-                      icon="pi pi-pencil"
-                      severity="secondary"
-                      [rounded]="true"/>
-          </div>
         </td>
       </tr>
     </ng-template>
