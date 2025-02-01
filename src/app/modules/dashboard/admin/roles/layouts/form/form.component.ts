@@ -77,7 +77,6 @@ export class FormComponent implements OnInit {
     this.isCreateForm = roleID === undefined;
 
     // Init form
-
     this.formService.init(this.fb.group({
       name: ['', [Validators.minLength(this.nameLengthMin), Validators.required]],
       permissions: [this.role.permissions, notEmptyValidator()]

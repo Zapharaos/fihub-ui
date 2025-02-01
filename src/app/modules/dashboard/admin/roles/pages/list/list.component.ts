@@ -26,10 +26,6 @@ import {Skeleton} from "primeng/skeleton";
 import {Router, RouterLink} from "@angular/router";
 import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
 import {RoleService, Role} from "@modules/dashboard/admin/roles/services/roles.service";
-import {Tag} from "primeng/tag";
-import {Listbox} from "primeng/listbox";
-import {PanelComponent} from "@shared/components/panel/panel.component";
-import {Badge} from "primeng/badge";
 
 @Component({
     selector: 'app-admin-roles',
@@ -49,10 +45,6 @@ import {Badge} from "primeng/badge";
     Button,
     RouterLink,
     NgIf,
-    Tag,
-    Listbox,
-    PanelComponent,
-    Badge
   ],
     templateUrl: './list.component.html',
     styleUrl: './list.component.scss'

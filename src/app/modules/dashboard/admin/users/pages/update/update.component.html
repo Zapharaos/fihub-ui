@@ -1,0 +1,92 @@
+<app-dashboard-content-layout
+  title="admin.users.update.title"
+  subTitle="admin.users.update.sub-title"
+  backRoute="/dashboard/admin/users"
+  backTitle="admin.users.update.back"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
+<ng-template #contentTemplate>
+  <form [formGroup]="formService.getForm()" (ngSubmit)="submit()" class="flex flex-col gap-10 w-full dashboard-form">
+
+    <!--  Form fields  -->
+    <div class="grid grid-cols-12 gap-x-4 gap-y-8">
+      <!-- Roles -->
+      <div class="col-span-12 grid grid-cols-1 gap-4">
+        <label for="roles" class="font-medium">{{'admin.users.form.label.roles.title' | translate}}</label>
+        <p class="text-light">{{'admin.users.form.label.roles.sub-title' | translate}}</p>
+        <p-table
+          #dt
+          id="roles"
+          dataKey="id"
+          [value]="showSelectedRolesOnly ? user.roles ?? [] : roles"
+          [globalFilterFields]="tablePropertiesFilter"
+          selectionMode="multiple" [(selection)]="user.roles" (onRowSelect)="onRowSelect($event)"
+          (onHeaderCheckboxToggle)="onHeaderCheckboxToggle($event)"
+          [loading]="loading" [showLoader]="false"
+          [rowHover]="true" [styleClass]="'checkable-override-selectable'" [size]="'large'"
+          [sortMode]="'multiple'" [multiSortMeta]="[{field: 'value', order: 1}]"
+          [paginator]="true" [rows]="25" [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true"
+        >
+          <ng-template #caption>
+            <div class="flex justify-between">
+
+              <p-button [outlined]="true" (click)="toggleSelectedRolesOnly()" pRipple
+                        icon="pi {{ showSelectedRolesOnly ? 'pi-eye' : 'pi-eye-slash' }}"
+                        label="{{ (showSelectedRolesOnly ? 'admin.users.actions.show-selected' : 'admin.users.actions.hide-selected') | translate }}"
+              />
+              <p-iconfield styleClass="flex h-fit">
+                <p-inputicon styleClass="pi pi-search" />
+                <input pInputText type="text"
+                       (input)="applyFilterGlobal($event, dt, 'contains')"
+                       placeholder="{{'actions.search-placeholder' | translate}}"
+                />
+              </p-iconfield>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+              <th pSortableColumn="value">{{ 'admin.users.form.label.roles.name' | translate }} <p-sortIcon field="value" /></th>
+              <th pSortableColumn="scope">{{ 'admin.users.form.label.roles.permissions' | translate }} <p-sortIcon field="scope" /></th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="loadingbody">
+            <tr *ngFor="let i of [1, 2, 3, 4, 5]">
+              <td><p-skeleton width="100%"></p-skeleton></td>
+              <td><p-skeleton width="100%"></p-skeleton></td>
+              <td><p-skeleton width="100%"></p-skeleton></td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-role>
+            <tr [pSelectableRow]="role">
+              <td>
+                <p-tableCheckbox [value]="role" />
+              </td>
+              <td>
+                {{role.name}}
+              </td>
+              <td *ngIf="role.permissions">
+                {{ role.permissions.length }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <!--  Submit  -->
+    <p-button [disabled]="formService.isSubmitDisabled()"
+              [loading]="loading"
+              (click)="submit()"
+              icon="pi pi-check"
+              label="{{ 'admin.users.actions.submit-update' | translate}}"
+              pRipple
+              type="submit"
+              class="w-fit"
+    />
+  </form>
+</ng-template>

@@ -170,6 +170,33 @@
         "created": "Created",
         "updated": "Updated",
         "roles-count": "{{count}} roles"
+      },
+      "actions": {
+        "submit-update": "Update roles",
+        "show-selected": "Show non-selected roles",
+        "hide-selected": "Hide non-selected roles"
+      },
+      "form": {
+        "label": {
+          "roles": {
+            "title": "Roles",
+            "sub-title": "Select the roles that the user will have.",
+            "name": "Name",
+            "permissions": "Permissions"
+          }
+        },
+        "error": {
+          "email-required": "Please provide an email.",
+          "email-used": "Email is already used."
+        }
+      },
+      "messages": {
+        "update-success": "User roles have been updated."
+      },
+      "update": {
+        "back": "Users",
+        "title": "Update the user",
+        "sub-title": "Edit the user's roles."
       }
     }
   },
