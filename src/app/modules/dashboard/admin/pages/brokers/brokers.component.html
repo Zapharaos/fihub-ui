@@ -19,16 +19,15 @@
             icon="pi pi-plus" />
 </ng-template>
 
-
 <ng-template #contentTemplate>
   <p-table
     #dt
     dataKey="id"
+    [size]="'large'"
     [value]="brokers"
     [globalFilterFields]="tablePropertiesFilter"
     [loading]="loading"
     [showLoader]="false"
-    [styleClass]="'p-datatable-lg'"
     (onRowSelect)="onRowSelect()"
     sortField="name" [sortOrder]="1"
     selectionMode="single"
