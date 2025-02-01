@@ -59,6 +59,11 @@ export class FormService {
     this.form.patchValue(value);
   }
 
+  setControlValue(fieldName: string, value: unknown, dirty?: boolean) {
+    this.form.get(fieldName)?.setValue(value);
+    this.form.get(fieldName)?.markAsDirty();
+  }
+
   hasErrorTouched(fieldName: string): boolean {
     const ctrl = this.form.get(fieldName);
     if (ctrl) {
