@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {UsersUserWithRoles} from "@core/api";
 import {hasPermissions} from "@shared/utils/permissions";
-import {BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

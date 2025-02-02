@@ -25,8 +25,8 @@ export function onRowEditSave(itemsClone: Record<string, any>, item: any) {
 export function multipleSortWithTableCheckbox(event: SortEvent, table: Table) {
   const multiSortMeta = event.multiSortMeta || [];
   event.data?.sort((data1, data2) => {
-    for (let i = 0; i < multiSortMeta.length; i++) {
-      const meta = multiSortMeta[i];
+
+    for (const meta of multiSortMeta) {
       let value1, value2;
 
       if (meta.field === 'tableCheckbox') {
