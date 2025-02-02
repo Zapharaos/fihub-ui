@@ -32,7 +32,8 @@
     "required": "This field is required.",
     "min-length": "This field must be at least {{length}} characters long.",
     "number-positive": "Number must be at least 0.",
-    "number-positive-strict": "Number must be superior to 0."
+    "number-positive-strict": "Number must be superior to 0.",
+    "no-permission": "You do not have the permission to access this page."
   },
   "http": {
     "400": {
@@ -147,7 +148,8 @@
         },
         "error": {
           "name-required": "Please provide a name.",
-          "name-used": "Role name is already used."
+          "name-used": "Role name is already used.",
+          "permissions-limit": "You can only select up to {{limit}} permissions."
         }
       },
       "add": {
