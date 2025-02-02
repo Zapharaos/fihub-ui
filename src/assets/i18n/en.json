@@ -168,8 +168,7 @@
         "email": "Email",
         "roles": "Roles",
         "created": "Created",
-        "updated": "Updated",
-        "roles-count": "{{count}} roles"
+        "updated": "Updated"
       },
       "actions": {
         "submit-update": "Update roles",
