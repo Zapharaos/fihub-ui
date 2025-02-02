@@ -18,7 +18,7 @@ import {Tag} from "primeng/tag";
 import {FileUploadHandlerEvent, FileUploadModule} from "primeng/fileupload";
 import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {Dialog} from "primeng/dialog";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {ToggleSwitch} from "primeng/toggleswitch";
 import {ButtonProps} from "primeng/button/button.interface";
 import {ConfirmService} from "@shared/services/confirm.service";
@@ -27,6 +27,7 @@ import {Message} from "primeng/message";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
 import {handleErrors, ResponseError} from "@shared/utils/errors";
 import {Skeleton} from "primeng/skeleton";
+import {PermissionDirective} from "@shared/directives/permission.directive";
 
 @Component({
     selector: 'app-admin-brokers',
@@ -48,7 +49,9 @@ import {Skeleton} from "primeng/skeleton";
     ToggleSwitch,
     Message,
     Skeleton,
-    NgForOf
+    NgForOf,
+    PermissionDirective,
+    NgTemplateOutlet
   ],
     templateUrl: './brokers.component.html',
     styleUrl: './brokers.component.scss'

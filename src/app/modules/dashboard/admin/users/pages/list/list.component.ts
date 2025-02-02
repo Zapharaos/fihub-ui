@@ -10,7 +10,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {applyFilterGlobal} from "@shared/utils/table";
 import {Router, RouterLink} from "@angular/router";
 import {Table, TableModule, TableRowSelectEvent} from "primeng/table";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
 import {RolesService, UserRolesService, UsersService, UsersUserWithRoles} from "@core/api";
@@ -19,6 +19,8 @@ import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
 import {Tag} from "primeng/tag";
 import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
+import {DialogMode} from "@shared/services/dialog.service";
+import {PermissionDirective} from "@shared/directives/permission.directive";
 
 @Component({
   selector: 'app-list',
@@ -33,7 +35,10 @@ import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
     Skeleton,
     TableModule,
     NgIf,
-    Tag
+    Tag,
+    Button,
+    PermissionDirective,
+    NgTemplateOutlet
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
@@ -85,4 +90,5 @@ export class ListComponent implements OnInit {
   }
 
   protected readonly applyFilterGlobal = applyFilterGlobal;
+  protected readonly DialogMode = DialogMode;
 }

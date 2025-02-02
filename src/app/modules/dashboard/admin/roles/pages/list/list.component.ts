@@ -18,13 +18,14 @@ import {
 import {finalize} from "rxjs";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FileUploadModule} from "primeng/fileupload";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgTemplateOutlet} from "@angular/common";
 import {ConfirmService} from "@shared/services/confirm.service";
 import {FormService} from "@shared/services/form.service";
 import {handleErrors} from "@shared/utils/errors";
 import {Skeleton} from "primeng/skeleton";
 import {Router, RouterLink} from "@angular/router";
 import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
+import {PermissionDirective} from "@shared/directives/permission.directive";
 
 @Component({
     selector: 'app-admin-roles',
@@ -43,6 +44,8 @@ import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
     NgForOf,
     Button,
     RouterLink,
+    PermissionDirective,
+    NgTemplateOutlet,
   ],
     templateUrl: './list.component.html',
     styleUrl: './list.component.scss'

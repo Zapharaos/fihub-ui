@@ -10,9 +10,6 @@ export class AuthService {
   currentUser: UsersUserWithRoles | undefined;
   redirectUrl?: string;
   private loaded = false;
-
-
-  // private permissions = new Set<string>();
   private _permissions = new BehaviorSubject<Set<string>>(new Set<string>());
   permissions$ = this._permissions.asObservable();
 
