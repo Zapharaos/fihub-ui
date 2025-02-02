@@ -9,7 +9,7 @@ export function matchPermission(pattern: string, permission: string): boolean {
   }
 
   // Escape special characters in the pattern
-  pattern = pattern.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  pattern = pattern.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
 
   // Replace wildcard (*) with a regex-friendly wildcard (.*)
   pattern = pattern.replace(/\\\*/g, '.*');

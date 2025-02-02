@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Button} from "primeng/button";
 import {
   DashboardContentLayoutComponent
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
@@ -8,12 +7,12 @@ import {InputIcon} from "primeng/inputicon";
 import {InputText} from "primeng/inputtext";
 import {TranslatePipe} from "@ngx-translate/core";
 import {applyFilterGlobal} from "@shared/utils/table";
-import {Router, RouterLink} from "@angular/router";
-import {Table, TableModule, TableRowSelectEvent} from "primeng/table";
+import {Router} from "@angular/router";
+import {Table, TableModule} from "primeng/table";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {RolesService, UserRolesService, UsersService, UsersUserWithRoles} from "@core/api";
+import {UsersService, UsersUserWithRoles} from "@core/api";
 import {finalize} from "rxjs";
 import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
@@ -36,7 +35,6 @@ import {PermissionDirective} from "@shared/directives/permission.directive";
     TableModule,
     NgIf,
     Tag,
-    Button,
     PermissionDirective,
     NgTemplateOutlet
   ],

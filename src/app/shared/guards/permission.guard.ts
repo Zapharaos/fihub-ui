@@ -3,7 +3,8 @@ import {inject} from "@angular/core";
 import {AuthService} from "@core/services/auth.service";
 import {NotificationService} from "@shared/services/notification.service";
 
-export const permissionGuard: CanActivateFn = (route, _state) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const permissionGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
 
   if (!route.data['permission']) {
