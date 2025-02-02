@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {UsersUserWithRoles} from "@core/api";
 import {hasPermissions} from "@shared/utils/permissions";
+import {BehaviorSubject, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,11 @@ export class AuthService {
   currentUser: UsersUserWithRoles | undefined;
   redirectUrl?: string;
   private loaded = false;
-  private permissions = new Set<string>();
+
+
+  // private permissions = new Set<string>();
+  private _permissions = new BehaviorSubject<Set<string>>(new Set<string>());
+  permissions$ = this._permissions.asObservable();
 
   /**
    * Returns whether the authentication service has been loaded
@@ -48,14 +53,14 @@ export class AuthService {
       for (const role of user.roles) {
         if (role.permissions) {
           for (const permission of role.permissions) {
-            if (permission.value && permission.value !== '*') {
+            if (permission.value) {
               this.permissions.add(permission.value);
             }
           }
         }
       }
     }
-    console.log(this.permissions);
+    this.notifyPermissionsChanged();
   }
 
   logout() {
@@ -83,6 +88,18 @@ export class AuthService {
 
   currentUserHasPermission(permission: string | string[]): boolean {
     return !this.currentUser ? false : hasPermissions(permission, this.permissions);
+  }
+
+  private get permissions(): Set<string> {
+    return this._permissions.getValue();
+  }
+
+  private set permissions(val: Set<string>) {
+    this._permissions.next(val);
+  }
+
+  private notifyPermissionsChanged() {
+    this._permissions.next(new Set(this.permissions));
   }
 
 }

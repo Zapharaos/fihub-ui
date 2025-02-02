@@ -31,19 +31,23 @@ export class DashboardLayoutComponent {
           {
             label: 'admin.overview.title',
             route: '/dashboard/admin',
-            routeActiveExact: true
+            routeActiveExact: true,
+            permission: 'front.admin.overview',
           },
           {
             label: 'admin.brokers.title',
             route: '/dashboard/admin/brokers',
+            permission: 'front.admin.brokers',
           },
           {
             label: 'admin.roles.title',
             route: '/dashboard/admin/roles',
+            permission: 'front.admin.roles',
           },
           {
             label: 'admin.users.title',
             route: '/dashboard/admin/users',
+            permission: 'front.admin.users',
           }
         ]
       },
