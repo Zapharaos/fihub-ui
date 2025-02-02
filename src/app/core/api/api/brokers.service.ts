@@ -94,7 +94,7 @@ export class BrokersService {
 
     /**
      * Create a new broker
-     * Create a new broker.
+     * Create a new broker. (Permission: &lt;b&gt;admin.brokers.create&lt;/b&gt;)
      * @param broker broker (json)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -176,7 +176,7 @@ export class BrokersService {
 
     /**
      * Delete a broker
-     * Deletes a broker.
+     * Deletes a broker. (Permission: &lt;b&gt;admin.brokers.delete&lt;/b&gt;)
      * @param id broker ID
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -396,7 +396,7 @@ export class BrokersService {
 
     /**
      * Update a broker
-     * Updates a broker.
+     * Updates a broker. (Permission: &lt;b&gt;admin.brokers.update&lt;/b&gt;)
      * @param id broker ID
      * @param broker broker (json)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

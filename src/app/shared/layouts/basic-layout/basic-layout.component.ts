@@ -12,6 +12,7 @@ import {Listbox} from "primeng/listbox";
 import {FormsModule} from "@angular/forms";
 import {PanelComponent} from "@shared/components/panel/panel.component";
 import {LanguageService} from "@shared/services/language.service";
+import {CallbackPipe} from "@shared/pipes/callback.pipe";
 
 @Component({
     selector: 'app-basic-layout',
@@ -29,6 +30,7 @@ import {LanguageService} from "@shared/services/language.service";
     Listbox,
     FormsModule,
     PanelComponent,
+    CallbackPipe,
   ],
     templateUrl: './basic-layout.component.html',
     styleUrl: './basic-layout.component.scss'
@@ -45,7 +47,17 @@ export class BasicLayoutComponent {
     protected themeService: ThemeService,
     protected authService: AuthService,
     protected languageService: LanguageService,
-  ) { }
+  ) {
+    // If the permissions change, we need to re-evaluate the permissions of the items
+    this.authService.permissions$.subscribe(() => {
+      this.filterPermission = this.filterPermission.bind(this);
+    });
+  }
+
+  filterPermission = (item: LayoutItem): boolean => {
+    if (!item.permission) return true;
+    return this.authService.currentUserHasPermission(item.permission);
+  }
 
   home() {
     this.router.navigate(['/']);

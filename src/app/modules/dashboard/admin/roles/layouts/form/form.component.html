@@ -1,0 +1,100 @@
+<form [formGroup]="formService.getForm()" (ngSubmit)="submit()" class="flex flex-col gap-10 w-full dashboard-form">
+
+  <!--  Form fields  -->
+  <div class="grid grid-cols-12 gap-x-4 gap-y-8">
+
+    <!-- Name -->
+    <div class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="name" class="font-medium">{{'admin.roles.form.label.name' | translate}}</label>
+        <input pInputText id="name" formControlName="name" autocomplete="off" />
+        <p-message *ngIf="formService.hasErrorTouched('name')" severity="error" variant="simple" size="small">
+          {{'error.min-length' | translate: { length: nameLengthMin } }}
+        </p-message>
+      </div>
+    </div>
+
+    <!-- Permissions -->
+    <div class="col-span-12 grid grid-cols-1 gap-4">
+      <label for="permissions" class="font-medium">{{'admin.roles.form.label.permissions.title' | translate}}</label>
+      <p class="text-light">{{'admin.roles.form.label.permissions.sub-title' | translate}}</p>
+      <p-table
+        #dt
+        id="permissions"
+        dataKey="id"
+        [value]="showSelectedPermissionsOnly ? role.permissions ?? [] : permissions"
+        [globalFilterFields]="tablePropertiesFilter"
+        selectionMode="multiple" [(selection)]="role.permissions"
+        (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+        (onHeaderCheckboxToggle)="onHeaderCheckboxToggle($event)"
+        [loading]="loading" [showLoader]="false"
+        [rowHover]="true" [styleClass]="'checkable-override-selectable'" [size]="'large'"
+        [sortMode]="'multiple'" [multiSortMeta]="[{field: 'value', order: 1}]"
+        [paginator]="true" [rows]="25" [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true"
+      >
+        <ng-template #caption>
+          <div class="flex justify-between">
+
+            <p-button [outlined]="true" (click)="toggleSelectedPermissionsOnly()" pRipple
+                      icon="pi {{ showSelectedPermissionsOnly ? 'pi-eye' : 'pi-eye-slash' }}"
+                      label="{{ (showSelectedPermissionsOnly ? 'admin.roles.actions.show-selected' : 'admin.roles.actions.hide-selected') | translate }}"
+            />
+            <p-iconfield styleClass="flex h-fit">
+              <p-inputicon styleClass="pi pi-search" />
+              <input pInputText type="text"
+                     (input)="applyFilterGlobal($event, dt, 'contains')"
+                     placeholder="{{'actions.search-placeholder' | translate}}"
+              />
+            </p-iconfield>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+            <th pSortableColumn="value">{{ 'admin.roles.form.label.permissions.value' | translate }} <p-sortIcon field="value" /></th>
+            <th pSortableColumn="scope">{{ 'admin.roles.form.label.permissions.scope' | translate }} <p-sortIcon field="scope" /></th>
+            <th pSortableColumn="description">{{ 'admin.roles.form.label.permissions.description' | translate }} <p-sortIcon field="description" /></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr *ngFor="let i of [1, 2, 3, 4, 5]">
+            <td><p-skeleton width="100%"></p-skeleton></td>
+            <td><p-skeleton width="100%"></p-skeleton></td>
+            <td><p-skeleton width="100%"></p-skeleton></td>
+            <td><p-skeleton width="100%"></p-skeleton></td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-permission>
+          <tr [pSelectableRow]="permission">
+            <td>
+              <p-tableCheckbox [value]="permission" />
+            </td>
+            <td>
+              {{permission.value}}
+            </td>
+            <td>
+              {{permission.scope}}
+            </td>
+            <td>
+              {{permission.description}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!--  Submit  -->
+  <p-button [disabled]="formService.isSubmitDisabled()"
+            [loading]="loading"
+            (click)="submit()"
+            icon="pi {{submitIcon}}"
+            label="{{submitLabel | translate}}"
+            pRipple
+            type="submit"
+            class="w-fit"
+  />
+</form>

@@ -30,8 +30,10 @@
   "error": {
     "default": "An error has occurred.",
     "required": "This field is required.",
+    "min-length": "This field must be at least {{length}} characters long.",
     "number-positive": "Number must be at least 0.",
-    "number-positive-strict": "Number must be superior to 0."
+    "number-positive-strict": "Number must be superior to 0.",
+    "no-permission": "You do not have the permission to access this page."
   },
   "http": {
     "400": {
@@ -108,6 +110,94 @@
       "messages": {
         "create-success": "Broker {{name}} has been created.",
         "update-success": "Broker {{name}} has been updated."
+      }
+    },
+    "roles": {
+      "title": "Roles",
+      "sub-title": "View and manage the roles that defines the user's allowed actions.",
+      "table-column": {
+        "name": "Name",
+        "permissions": "Permissions"
+      },
+      "actions": {
+        "add": "Add role",
+        "show-selected": "Show non-selected permissions",
+        "hide-selected": "Hide non-selected permissions"
+      },
+      "messages": {
+        "create-success": "Role {{name}} has been created.",
+        "update-success": "Role {{name}} has been updated.",
+        "delete-success": "Role {{name}} was removed.",
+        "permissions": {
+          "set-success": "Role permissions have been set.",
+          "set-error": "Failed to set permissions."
+        }
+      },
+      "form": {
+        "label": {
+          "name": "Name",
+          "permissions": {
+            "title": "Permissions",
+            "sub-title": "Select the permissions that the role will have.",
+            "value": "Value",
+            "scope": "Scope",
+            "description": "Description"
+          },
+          "submit-add": "Add role",
+          "submit-update": "Edit the role"
+        },
+        "error": {
+          "name-required": "Please provide a name.",
+          "name-used": "Role name is already used.",
+          "permissions-limit": "You can only select up to {{limit}} permissions."
+        }
+      },
+      "add": {
+        "back": "Roles",
+        "title": "Add a role",
+        "sub-title": "Create a new role with specific permissions."
+      },
+      "update": {
+        "back": "Roles",
+        "title": "Update the role",
+        "sub-title": "Edit the role with the desired permissions."
+      }
+    },
+    "users": {
+      "title": "Users",
+      "sub-title": "View and manage the users.",
+      "table-column": {
+        "email": "Email",
+        "roles": "Roles",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "actions": {
+        "submit-update": "Update roles",
+        "show-selected": "Show non-selected roles",
+        "hide-selected": "Hide non-selected roles"
+      },
+      "form": {
+        "label": {
+          "roles": {
+            "title": "Roles",
+            "sub-title": "Select the roles that the user will have.",
+            "name": "Name",
+            "permissions": "Permissions"
+          }
+        },
+        "error": {
+          "email-required": "Please provide an email.",
+          "email-used": "Email is already used."
+        }
+      },
+      "messages": {
+        "update-success": "User roles have been updated."
+      },
+      "update": {
+        "back": "Users",
+        "title": "Update the user",
+        "sub-title": "Edit the user's roles."
       }
     }
   },

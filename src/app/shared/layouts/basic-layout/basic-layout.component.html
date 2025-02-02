@@ -74,7 +74,7 @@
         <ul class="flex flex-col space-y-2">
 
           <!-- Items -->
-          <li *ngFor="let item of items">
+          <li *ngFor="let item of items | callback: filterPermission">
 
             <!-- Item : single -->
             <a *ngIf="!item.items"
@@ -117,7 +117,7 @@
             <ul *ngIf="isItemOpen(item)" class="flex flex-col space-y-2">
 
               <!-- Sub - Item -->
-              <li *ngFor="let subItem of item.items">
+              <li *ngFor="let subItem of item.items | callback: filterPermission">
                 <a [routerLink]="subItem.route" routerLinkActive="menu-active"
                    [routerLinkActiveOptions]="{exact: subItem.routeActiveExact ?? false }"
                    class="flex flex-row justify-between items-center px-6 rounded-r-xl menu-hover" pRipple>

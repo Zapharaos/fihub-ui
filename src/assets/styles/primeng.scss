@@ -13,6 +13,24 @@
   @apply scroll-smooth scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-muted;
 }
 
+// Paginator
+p-paginator .p-paginator-current {
+  margin-left: auto;
+}
+
+// Table with Checkable Rows
+
+p-table .checkable-override-selectable .p-datatable-tbody > tr.p-datatable-row-selected {
+  --p-datatable-row-selected-background: transparent;
+}
+p-table .checkable-override-selectable .p-datatable-tbody > tr.p-datatable-row-selected:hover {
+  --p-datatable-row-selected-background: var(--p-datatable-row-hover-background);
+}
+p-table .checkable-override-selectable .p-datatable-tbody > tr.p-datatable-row-selected > td,
+p-table .checkable-override-selectable .p-datatable-tbody > tr:has(+ .p-datatable-row-selected) > td {
+  --p-datatable-body-cell-selected-border-color: var(--p-datatable-body-cell-border-color);
+}
+
 // Password
 
 .p-password-overlay .p-password-content {

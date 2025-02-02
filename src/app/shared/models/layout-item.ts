@@ -5,4 +5,5 @@ export interface LayoutItem {
   routeActiveExact?: boolean;
   items?: LayoutItem[];
   subItemsInvisible?: boolean;
+  permission?: string;
 }

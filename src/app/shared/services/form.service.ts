@@ -59,6 +59,13 @@ export class FormService {
     this.form.patchValue(value);
   }
 
+  setControlValue(fieldName: string, value: unknown, dirty?: boolean) {
+    this.form.get(fieldName)?.setValue(value);
+    if (dirty) {
+      this.form.get(fieldName)?.markAsDirty();
+    }
+  }
+
   hasErrorTouched(fieldName: string): boolean {
     const ctrl = this.form.get(fieldName);
     if (ctrl) {
@@ -119,6 +126,12 @@ export class FormService {
   addControlPostPassword(fieldName: string, object: unknown) {
     this.form.addControl(fieldName, new FormControl(object, [
       Validators.minLength(8), Validators.maxLength(64), Validators.required]
+    ));
+  }
+
+  addControlOtp(fieldName: string, object: unknown) {
+    this.form.addControl(fieldName, new FormControl(object, [
+      Validators.minLength(6), Validators.maxLength(6), Validators.required]
     ));
   }
 
