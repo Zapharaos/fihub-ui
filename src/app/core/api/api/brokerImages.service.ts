@@ -107,7 +107,7 @@ export class BrokerImagesService {
 
     /**
      * Create a new broker image
-     * Create a new broker image.
+     * Create a new broker image. (Permission: &lt;b&gt;admin.brokers.create&lt;/b&gt;)
      * @param id broker ID
      * @param file image file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -206,7 +206,7 @@ export class BrokerImagesService {
 
     /**
      * Delete a broker image
-     * Delete a broker image.
+     * Delete a broker image. (Permission: &lt;b&gt;admin.brokers.delete&lt;/b&gt;)
      * @param id broker ID
      * @param imageId image ID
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -348,7 +348,7 @@ export class BrokerImagesService {
 
     /**
      * Update a broker image
-     * Update a broker image.
+     * Update a broker image. (Permission: &lt;b&gt;admin.brokers.update&lt;/b&gt;)
      * @param id broker ID
      * @param imageId image ID
      * @param file image file

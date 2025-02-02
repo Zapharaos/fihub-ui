@@ -1,0 +1,11 @@
+<app-dashboard-content-layout
+  title="admin.roles.add.title"
+  subTitle="admin.roles.add.sub-title"
+  backRoute="/dashboard/admin/roles"
+  backTitle="admin.roles.add.back"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
+<ng-template #contentTemplate>
+  <app-admin-roles-form-layout></app-admin-roles-form-layout>
+</ng-template>

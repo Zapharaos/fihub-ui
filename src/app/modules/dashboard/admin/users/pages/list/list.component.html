@@ -1,0 +1,79 @@
+<app-dashboard-content-layout
+  title="admin.users.title"
+  subTitle="admin.users.sub-title"
+  [actionsTemplate]="actionsTemplate"
+  [contentTemplate]="contentTemplate"
+></app-dashboard-content-layout>
+
+<ng-template #actionsTemplate>
+  <p-iconfield>
+    <p-inputicon styleClass="pi pi-search" />
+    <input pInputText type="text"
+           (input)="applyFilterGlobal($event, dt, 'contains')"
+           placeholder="{{'actions.search-placeholder' | translate}}"
+    />
+  </p-iconfield>
+</ng-template>
+
+<ng-template #contentTemplate>
+  <p-table
+    #dt
+    dataKey="id"
+    [value]="users"
+    [globalFilterFields]="tablePropertiesFilter"
+    [loading]="loading"
+    [showLoader]="false"
+    [rowHover]="true"
+    [size]="'large'"
+    sortField="updated_at" [sortOrder]="-1"
+    selectionMode="single" [(selection)]="user" (onRowSelect)="onRowSelect()">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="email">{{ 'admin.users.table-column.email' | translate }} <p-sortIcon field="email" /></th>
+        <th pSortableColumn="roleValues">{{ 'admin.users.table-column.roles' | translate }} <p-sortIcon field="roleValues" /></th>
+        <th pSortableColumn="created_at">{{ 'admin.users.table-column.created' | translate }} <p-sortIcon field="created_at" /></th>
+        <th pSortableColumn="updated_at">{{ 'admin.users.table-column.updated' | translate }} <p-sortIcon field="updated_at" /></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="loadingbody">
+      <tr *ngFor="let i of [1, 2, 3, 4, 5]">
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+        <td><p-skeleton width="100%"></p-skeleton></td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user>
+      <ng-container *appPermission="'admin.users.update'; else noPermission">
+        <tr [pSelectableRow]="user">
+          <ng-container *ngTemplateOutlet="row; context: {$implicit: user}"></ng-container>
+        </tr>
+      </ng-container>
+      <ng-template #noPermission>
+        <tr>
+          <ng-container *ngTemplateOutlet="row; context: {$implicit: user}"></ng-container>
+        </tr>
+      </ng-template>
+    </ng-template>
+
+    <ng-template #row let-user>
+      <td>
+        {{user.email}}
+      </td>
+      <td>
+        <p-tag *ngIf="user.roles && user.roles.length === 1" [value]="user.roles[0].name" />
+        <p *ngIf="user.roles && user.roles.length > 1">
+          {{ user.roles.length }}
+        </p>
+      </td>
+      <td>
+        {{user.created_at}}
+      </td>
+      <td>
+        {{user.updated_at}}
+      </td>
+    </ng-template>
+  </p-table>
+</ng-template>

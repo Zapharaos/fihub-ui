@@ -13,22 +13,22 @@
            placeholder="{{'actions.search-placeholder' | translate}}"
     />
   </p-iconfield>
-  <p-button (click)="openDialog(DialogMode.CREATE)"
+  <p-button *appPermission="'admin.brokers.create'"
+            (click)="openDialog(DialogMode.CREATE)"
             [disabled]="loading"
             label="{{'brokers.add-button' | translate}}"
             icon="pi pi-plus" />
 </ng-template>
 
-
 <ng-template #contentTemplate>
   <p-table
     #dt
     dataKey="id"
+    [size]="'large'"
     [value]="brokers"
     [globalFilterFields]="tablePropertiesFilter"
     [loading]="loading"
     [showLoader]="false"
-    [styleClass]="'p-datatable-lg'"
     (onRowSelect)="onRowSelect()"
     sortField="name" [sortOrder]="1"
     selectionMode="single"
@@ -52,35 +52,48 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-broker>
-      <tr [pSelectableRow]="broker">
-        <td>
-          {{broker.name}}
-        </td>
-        <td>
-          <img *ngIf="broker.imageUrl"
-               [src]="broker.imageUrl"
-               [alt]="broker.name"
-               class="rounded-full w-7 h-7"
-          />
-        </td>
-        <td>
-          <p-tag [value]="getStatusValue(broker.disabled)"
-                 [severity]="getStatusSeverity(broker.disabled)" />
-        </td>
-        <td>
-          <div class="flex items-center justify-center gap-2">
-            <p-button (click)="openDialog(DialogMode.UPDATE, broker)"
-                      icon="pi pi-pencil"
-                      severity="secondary"
-                      [rounded]="true"/>
-            <p-button (click)="onRowDelete($event, broker)"
-                      icon="pi pi-trash"
-                      severity="danger"
-                      [rounded]="true"
-                      [outlined]="true"/>
-          </div>
-        </td>
-      </tr>
+      <ng-container *appPermission="'admin.brokers.update'; else noPermission">
+        <tr [pSelectableRow]="broker">
+          <ng-container *ngTemplateOutlet="row; context: {$implicit: broker}"></ng-container>
+        </tr>
+      </ng-container>
+      <ng-template #noPermission>
+        <tr>
+          <ng-container *ngTemplateOutlet="row; context: {$implicit: broker}"></ng-container>
+        </tr>
+      </ng-template>
+    </ng-template>
+
+    <ng-template #row let-broker>
+      <td>
+        {{broker.name}}
+      </td>
+      <td>
+        <img *ngIf="broker.imageUrl"
+             [src]="broker.imageUrl"
+             [alt]="broker.name"
+             class="rounded-full w-7 h-7"
+        />
+      </td>
+      <td>
+        <p-tag [value]="getStatusValue(broker.disabled)"
+               [severity]="getStatusSeverity(broker.disabled)" />
+      </td>
+      <td>
+        <div class="flex items-center justify-center gap-2">
+          <p-button *appPermission="'admin.brokers.update'"
+                    (click)="openDialog(DialogMode.UPDATE, broker)"
+                    icon="pi pi-pencil"
+                    severity="secondary"
+                    [rounded]="true"/>
+          <p-button *appPermission="'admin.brokers.delete'"
+                    (click)="onRowDelete($event, broker)"
+                    icon="pi pi-trash"
+                    severity="danger"
+                    [rounded]="true"
+                    [outlined]="true"/>
+        </div>
+      </td>
     </ng-template>
   </p-table>
 </ng-template>
