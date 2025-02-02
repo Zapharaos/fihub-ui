@@ -53,7 +53,7 @@
         <td>
           <p-tag *ngIf="user.roles && user.roles.length === 1" [value]="user.roles[0].name" />
           <p *ngIf="user.roles && user.roles.length > 1">
-            {{ 'admin.users.table-column.roles-multiple' | translate: { count: user.roles.length } }}
+            {{ user.roles.length }}
           </p>
         </td>
         <td>

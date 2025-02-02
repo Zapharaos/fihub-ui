@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {FormService} from "@shared/services/form.service";
-import {RolesRole, RolesRoleWithPermissions, RolesService, UsersService, UsersUserWithRoles} from "@core/api";
+import {RolesRoleWithPermissions, RolesService, UsersService, UsersUserWithRoles} from "@core/api";
 import {notEmptyValidator} from "@shared/validators/array";
 import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
 import {handleErrors} from "@shared/utils/errors";
@@ -22,7 +22,6 @@ import {InputText} from "primeng/inputtext";
 import {NgForOf, NgIf} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {RoleService} from "@modules/dashboard/admin/roles/services/roles.service";
 
 @Component({
   selector: 'app-update',
@@ -49,7 +48,7 @@ export class UpdateComponent implements OnInit {
     protected readonly tablePropertiesFilter = ['name', 'permissions'];
 
     loading = true;
-    roles: RolesRole[] = [];
+    roles: RolesRoleWithPermissions[] = [];
     user: UsersUserWithRoles = {};
     showSelectedRolesOnly = false;
 
@@ -61,14 +60,14 @@ export class UpdateComponent implements OnInit {
         protected formService: FormService,
         private userStore: UserStore,
         private userService: UsersService,
-        private roleService: RoleService,
+        private rolesService: RolesService,
     ) {
-       this.loadUser();
-
-        // Init form
+       // Init form
         this.formService.init(this.fb.group({
             roles: [this.user.roles, notEmptyValidator()]
         }));
+
+        this.loadUser();
     }
 
     ngOnInit(): void {
@@ -88,19 +87,10 @@ export class UpdateComponent implements OnInit {
 
         // If the user is not loaded, then retrieve it from the API
         const userID = this.route.snapshot.paramMap.get('id');
-        this.userService.getUserRoles(userID!).subscribe({
-            next: (roles: RolesRoleWithPermissions[]) => {
-                const userWithRoles: UsersUserWithRoles = {
-                    id: userID!,
-                    roles: roles.map(role => {
-                        return {
-                            id: role.id!,
-                            permissions: role.permissions!,
-                        }
-                    })
-                }
-                this.userStore.user = userWithRoles;
-                this.user = userWithRoles;
+        this.userService.getUser(userID!).subscribe({
+            next: (user: UsersUserWithRoles) => {
+                this.userStore.user = user;
+                this.user = user;
                 this.patchForm();
             },
             error: (error: Error) => {
@@ -113,10 +103,10 @@ export class UpdateComponent implements OnInit {
 
     loadRoles() {
         this.loading = true;
-        this.roleService.getRolesWithPermissions().pipe(finalize(() => {
+        this.rolesService.getRoles().pipe(finalize(() => {
             this.loading = false;
         })).subscribe({
-            next: (roles: RolesRole[]) => {
+            next: (roles: RolesRoleWithPermissions[]) => {
                 this.roles = roles;
             },
             error: (error: Error) => {
@@ -129,7 +119,7 @@ export class UpdateComponent implements OnInit {
 
     setRoles(user: UsersUserWithRoles) {
         this.loading = true;
-        this.userService.setUserRoles(user.id!, user).pipe(finalize(() => {
+        this.userService.setUser(user.id!, user).pipe(finalize(() => {
             this.loading = false;
         })).subscribe({
             next: () => {
@@ -174,6 +164,11 @@ export class UpdateComponent implements OnInit {
         if (!this.user.roles?.some(p => p.id === event.data.id)) {
             this.user.roles?.push(event.data);
         }
+        this.formService.setControlValue('roles', this.user.roles, true);
+    }
+
+    onRowUnselect(event: TableRowSelectEvent) {
+        this.user.roles = this.user.roles?.filter(p => p.id !== event.data.id);
         this.formService.setControlValue('roles', this.user.roles, true);
     }
 
