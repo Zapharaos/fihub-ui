@@ -13,7 +13,8 @@
            placeholder="{{'actions.search-placeholder' | translate}}"
     />
   </p-iconfield>
-  <p-button [routerLink]="'/dashboard/admin/roles/add'"
+  <p-button *appPermission="'admin.roles.create'"
+            [routerLink]="'/dashboard/admin/roles/add'"
             [disabled]="loading"
             label="{{'admin.roles.actions.add' | translate}}"
             icon="pi pi-plus" />
@@ -49,27 +50,40 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-role>
-      <tr [pSelectableRow]="role">
-        <td>
-          {{role.name}}
-        </td>
-        <td>
-          {{ role.permissions ? role.permissions.length : 0 }}
-        </td>
-        <td>
-          <div class="flex items-center justify-center gap-2">
-            <p-button (click)="onRowSelect(role)"
-                      icon="pi pi-pencil"
-                      severity="secondary"
-                      [rounded]="true"/>
-            <p-button (click)="onRowDelete($event, role)"
-                      icon="pi pi-trash"
-                      severity="danger"
-                      [rounded]="true"
-                      [outlined]="true"/>
-          </div>
-        </td>
-      </tr>
+      <ng-container *appPermission="'admin.roles.update'; else noPermission">
+        <tr [pSelectableRow]="role">
+          <ng-container *ngTemplateOutlet="row; context: {$implicit: role}"></ng-container>
+        </tr>
+      </ng-container>
+      <ng-template #noPermission>
+        <tr>
+          <ng-container *ngTemplateOutlet="row; context: {$implicit: role}"></ng-container>
+        </tr>
+      </ng-template>
+    </ng-template>
+
+    <ng-template #row let-role>
+      <td>
+        {{role.name}}
+      </td>
+      <td>
+        {{ role.permissions ? role.permissions.length : 0 }}
+      </td>
+      <td>
+        <div class="flex items-center justify-center gap-2">
+          <p-button *appPermission="'admin.roles.update'"
+                    (click)="onRowSelect(role)"
+                    icon="pi pi-pencil"
+                    severity="secondary"
+                    [rounded]="true"/>
+          <p-button *appPermission="'admin.roles.delete'"
+                    (click)="onRowDelete($event, role)"
+                    icon="pi pi-trash"
+                    severity="danger"
+                    [rounded]="true"
+                    [outlined]="true"/>
+        </div>
+      </td>
     </ng-template>
   </p-table>
 </ng-template>

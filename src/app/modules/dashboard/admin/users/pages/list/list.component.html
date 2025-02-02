@@ -46,23 +46,34 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-user>
-      <tr [pSelectableRow]="user">
-        <td>
-          {{user.email}}
-        </td>
-        <td>
-          <p-tag *ngIf="user.roles && user.roles.length === 1" [value]="user.roles[0].name" />
-          <p *ngIf="user.roles && user.roles.length > 1">
-            {{ user.roles.length }}
-          </p>
-        </td>
-        <td>
-          {{user.created_at}}
-        </td>
-        <td>
-          {{user.updated_at}}
-        </td>
-      </tr>
+      <ng-container *appPermission="'admin.users.update'; else noPermission">
+        <tr [pSelectableRow]="user">
+          <ng-container *ngTemplateOutlet="row; context: {$implicit: user}"></ng-container>
+        </tr>
+      </ng-container>
+      <ng-template #noPermission>
+        <tr>
+          <ng-container *ngTemplateOutlet="row; context: {$implicit: user}"></ng-container>
+        </tr>
+      </ng-template>
+    </ng-template>
+
+    <ng-template #row let-user>
+      <td>
+        {{user.email}}
+      </td>
+      <td>
+        <p-tag *ngIf="user.roles && user.roles.length === 1" [value]="user.roles[0].name" />
+        <p *ngIf="user.roles && user.roles.length > 1">
+          {{ user.roles.length }}
+        </p>
+      </td>
+      <td>
+        {{user.created_at}}
+      </td>
+      <td>
+        {{user.updated_at}}
+      </td>
     </ng-template>
   </p-table>
 </ng-template>
