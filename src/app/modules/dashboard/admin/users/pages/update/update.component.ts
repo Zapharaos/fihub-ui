@@ -10,7 +10,7 @@ import {RolesRoleWithPermissions, RolesService, UsersService, UsersUserWithRoles
 import {notEmptyValidator} from "@shared/validators/array";
 import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
 import {handleErrors} from "@shared/utils/errors";
-import {finalize} from "rxjs";
+import {finalize, firstValueFrom} from "rxjs";
 import {TableModule, TableRowSelectEvent} from "primeng/table";
 import {Button} from "primeng/button";
 import {Ripple} from "primeng/ripple";
@@ -22,6 +22,7 @@ import {InputText} from "primeng/inputtext";
 import {NgForOf, NgIf} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
+import {AuthService} from "@core/services/auth.service";
 
 @Component({
   selector: 'app-update',
@@ -61,6 +62,7 @@ export class UpdateComponent implements OnInit {
         private userStore: UserStore,
         private userService: UsersService,
         private rolesService: RolesService,
+        private authService: AuthService
     ) {
        // Init form
         this.formService.init(this.fb.group({
@@ -124,12 +126,15 @@ export class UpdateComponent implements OnInit {
         })).subscribe({
             next: () => {
                 // Success : navigate back to the users page
-                this.router.navigate(['/dashboard/admin/users']).then(() => {
+                firstValueFrom(this.userService.getUserSelf()).then((user) => {
+                  this.authService.setCurrentUser(user);
+                  this.authService.setLoaded(true);
+                  this.router.navigate(['/dashboard/admin/users']).then(() => {
                     this.notificationService.showToastSuccess('admin.users.messages.update-success')
-                })
+                  })
+                });
             },
             error: (error: Error) => {
-                // TODO : handle errors
                 handleErrors(error, this.notificationService);
             }
         })

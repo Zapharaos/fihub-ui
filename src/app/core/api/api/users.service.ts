@@ -402,7 +402,7 @@ export class UsersService {
 
     /**
      * Get a user by ID
-     * Get a user by ID.
+     * Get a user by ID. (Permission: &lt;b&gt;admin.users.read&lt;/b&gt;)
      * @param id user ID
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

@@ -1,13 +1,15 @@
 import {Injectable} from '@angular/core';
-import {UsersUser} from "@core/api";
+import {UsersUserWithRoles} from "@core/api";
+import {hasPermissions} from "@shared/utils/permissions";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  currentUser: UsersUser | undefined;
-  private loaded = false;
+  currentUser: UsersUserWithRoles | undefined;
   redirectUrl?: string;
+  private loaded = false;
+  private permissions = new Set<string>();
 
   /**
    * Returns whether the authentication service has been loaded
@@ -37,8 +39,23 @@ export class AuthService {
     return !!this.currentUser;
   }
 
-  setCurrentUser(user?: UsersUser) {
+  setCurrentUser(user?: UsersUserWithRoles) {
     this.currentUser = user;
+
+    // Load permissions from the user roles
+    this.permissions.clear();
+    if (user && user.roles) {
+      for (const role of user.roles) {
+        if (role.permissions) {
+          for (const permission of role.permissions) {
+            if (permission.value && permission.value !== '*') {
+              this.permissions.add(permission.value);
+            }
+          }
+        }
+      }
+    }
+    console.log(this.permissions);
   }
 
   logout() {
@@ -48,6 +65,24 @@ export class AuthService {
 
   setRedirectUrl(url?: string) {
     this.redirectUrl = url;
+  }
+
+  currentUserHasRole(role: string): boolean {
+    if (!this.currentUser || !this.currentUser.roles) {
+      return false;
+    }
+
+    for (const roleKey in this.currentUser.roles) {
+      if (this.currentUser.roles[roleKey].name === role) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  currentUserHasPermission(permission: string | string[]): boolean {
+    return !this.currentUser ? false : hasPermissions(permission, this.permissions);
   }
 
 }

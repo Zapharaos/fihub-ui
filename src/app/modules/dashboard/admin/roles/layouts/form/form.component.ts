@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Ripple} from "primeng/ripple";
@@ -10,7 +10,7 @@ import {
   PermissionsPermission,
   PermissionsService,
   RolesRoleWithPermissions,
-  RolesService,
+  RolesService, UsersService,
 } from "@core/api";
 import {Message} from "primeng/message";
 import {NgForOf, NgIf} from "@angular/common";
@@ -18,13 +18,14 @@ import {InputText} from "primeng/inputtext";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
 import {TableModule, TableRowSelectEvent} from "primeng/table";
-import {finalize} from "rxjs";
+import {finalize, firstValueFrom} from "rxjs";
 import {handleErrors, ResponseError} from "@shared/utils/errors";
 import {applyFilterGlobal} from "@shared/utils/table";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {RoleStore} from "@modules/dashboard/admin/roles/stores/role.service";
 import {notEmptyValidator} from "@shared/validators/array";
+import {AuthService} from "@core/services/auth.service";
 
 @Component({
   selector: 'app-admin-roles-form-layout',
@@ -68,6 +69,8 @@ export class FormComponent implements OnInit {
     private permissionsService: PermissionsService,
     private rolesService: RolesService,
     private roleStore: RoleStore,
+    private authService: AuthService,
+    private usersService: UsersService,
   ) {
 
     // Retrieve role ID
@@ -163,9 +166,13 @@ export class FormComponent implements OnInit {
     })).subscribe({
       next: (r: RolesRoleWithPermissions) => {
         // Success : navigate back to the roles page
-        this.router.navigate(['/dashboard/admin/roles']).then(() => {
-          this.notificationService.showToastSuccess('admin.roles.messages.update-success', {name: r.name});
-        })
+        firstValueFrom(this.usersService.getUserSelf()).then((user) => {
+          this.authService.setCurrentUser(user);
+          this.authService.setLoaded(true);
+          this.router.navigate(['/dashboard/admin/roles']).then(() => {
+            this.notificationService.showToastSuccess('admin.roles.messages.update-success', {name: r.name});
+          })
+        });
       },
       error: (error: Error) => {
         handleErrors(error, this.notificationService, this.handleErrors400.bind(this));
@@ -204,12 +211,14 @@ export class FormComponent implements OnInit {
 
   // Errors
 
-  // TODO : check errors
   handleErrors400(error: ResponseError) {
     switch (error.message) {
       case 'name-required':
       case 'name-invalid':
         this.formService.setFieldErrors('name', ['submit-invalid']);
+        break;
+      case 'permissions-limit-exceeded':
+        this.notificationService.showToastError('admin.roles.form.error.permissions-limit', {limit: 250});
         break;
       default:
         this.notificationService.showToastError('http.400.detail', undefined, 'http.400.summary')
