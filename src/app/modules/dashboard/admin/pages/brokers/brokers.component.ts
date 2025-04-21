@@ -21,7 +21,7 @@ import {Dialog} from "primeng/dialog";
 import {NgForOf, NgIf} from "@angular/common";
 import {ToggleSwitch} from "primeng/toggleswitch";
 import {ButtonProps} from "primeng/button/button.interface";
-import {ConfirmService} from "@shared/services/confirm.service";
+import {ConfirmService, DeleteConfirmationProps} from "@shared/services/confirm.service";
 import {FormService} from "@shared/services/form.service";
 import {Message} from "primeng/message";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
@@ -157,7 +157,11 @@ export class BrokersComponent implements OnInit {
   }
 
   onRowDelete(event: Event, broker:  ModelsBroker) {
-    this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
+    this.confirmService.showDeleteConfirmation({
+      event: event,
+      message: 'brokers.messages.delete-confirmation',
+      accept: () => this.deleteBroker(broker),
+    })
   }
 
   // Dialog

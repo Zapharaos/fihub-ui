@@ -107,7 +107,11 @@ export class ListComponent implements OnInit {
   }
 
   onRowDelete(event: Event, broker: ModelsBrokerUser) {
-    this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
+    this.confirmService.showDeleteConfirmation({
+      event: event,
+      message: 'brokers.messages.delete-confirmation',
+      accept: () => this.deleteBroker(broker),
+    })
   }
 
   // Utils - Table
