@@ -9,10 +9,9 @@
  */
 
 
-export type TransactionsTransactionType = 'BUY' | 'SELL';
-
-export const TransactionsTransactionType = {
-    BUY: 'BUY' as TransactionsTransactionType,
-    SELL: 'SELL' as TransactionsTransactionType
-};
+export interface ModelsPasswordResponseRequest { 
+    error?: string;
+    expires_at?: string;
+    user_id?: string;
+}
 

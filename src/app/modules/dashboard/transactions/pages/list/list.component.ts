@@ -67,7 +67,7 @@ export class ListComponent implements OnInit {
   }
 
   // Transactions
-
+  // TODO : improve modal message for admin brokers removal & broker user removal
   loadTransactions() {
     this.loading = true;
     this.brokerImageService.cacheImagesAndGetTransactionsWithImages().pipe(finalize(() => {

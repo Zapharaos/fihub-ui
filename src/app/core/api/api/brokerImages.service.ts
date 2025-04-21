@@ -17,7 +17,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { BrokersBrokerImage } from '../model/brokersBrokerImage';
+import { ModelsBrokerImage } from '../model/modelsBrokerImage';
 // @ts-ignore
 import { RenderErrorResponse } from '../model/renderErrorResponse';
 
@@ -107,15 +107,15 @@ export class BrokerImagesService {
 
     /**
      * Create a new broker image
-     * Create a new broker image.
+     * Create a new broker image. (Permission: &lt;b&gt;admin.brokers.create&lt;/b&gt;)
      * @param id broker ID
      * @param file image file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createBrokerImage(id: string, file: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<BrokersBrokerImage>;
-    public createBrokerImage(id: string, file: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<BrokersBrokerImage>>;
-    public createBrokerImage(id: string, file: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<BrokersBrokerImage>>;
+    public createBrokerImage(id: string, file: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsBrokerImage>;
+    public createBrokerImage(id: string, file: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsBrokerImage>>;
+    public createBrokerImage(id: string, file: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsBrokerImage>>;
     public createBrokerImage(id: string, file: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling createBrokerImage.');
@@ -190,7 +190,7 @@ export class BrokerImagesService {
         }
 
         let localVarPath = `/api/v1/brokers/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/image`;
-        return this.httpClient.request<BrokersBrokerImage>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsBrokerImage>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
@@ -206,7 +206,7 @@ export class BrokerImagesService {
 
     /**
      * Delete a broker image
-     * Delete a broker image.
+     * Delete a broker image. (Permission: &lt;b&gt;admin.brokers.delete&lt;/b&gt;)
      * @param id broker ID
      * @param imageId image ID
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -348,16 +348,16 @@ export class BrokerImagesService {
 
     /**
      * Update a broker image
-     * Update a broker image.
+     * Update a broker image. (Permission: &lt;b&gt;admin.brokers.update&lt;/b&gt;)
      * @param id broker ID
      * @param imageId image ID
      * @param file image file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateBrokerImage(id: string, imageId: string, file: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<BrokersBrokerImage>;
-    public updateBrokerImage(id: string, imageId: string, file: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<BrokersBrokerImage>>;
-    public updateBrokerImage(id: string, imageId: string, file: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<BrokersBrokerImage>>;
+    public updateBrokerImage(id: string, imageId: string, file: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsBrokerImage>;
+    public updateBrokerImage(id: string, imageId: string, file: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsBrokerImage>>;
+    public updateBrokerImage(id: string, imageId: string, file: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsBrokerImage>>;
     public updateBrokerImage(id: string, imageId: string, file: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateBrokerImage.');
@@ -435,7 +435,7 @@ export class BrokerImagesService {
         }
 
         let localVarPath = `/api/v1/brokers/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/image/${this.configuration.encodeParam({name: "imageId", value: imageId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<BrokersBrokerImage>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsBrokerImage>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,

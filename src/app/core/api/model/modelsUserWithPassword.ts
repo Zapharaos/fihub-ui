@@ -9,10 +9,11 @@
  */
 
 
-export interface BrokersBroker { 
-    disabled?: boolean;
-    id?: string;
-    image_id?: string;
-    name?: string;
+export interface ModelsUserWithPassword { 
+    ID?: string;
+    created_at?: string;
+    email?: string;
+    password?: string;
+    updated_at?: string;
 }
 

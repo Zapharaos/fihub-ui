@@ -11,7 +11,7 @@ import {applyFilterGlobal} from "@shared/utils/table";
 import {Table, TableModule} from "primeng/table";
 import {NotificationService} from "@shared/services/notification.service";
 import {PrimeTemplate} from "primeng/api";
-import {BrokerImagesService, BrokersBroker, BrokersService} from "@core/api";
+import {BrokerImagesService, ModelsBroker, BrokersService} from "@core/api";
 import {finalize} from "rxjs";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Tag} from "primeng/tag";
@@ -131,7 +131,7 @@ export class BrokersComponent implements OnInit {
     this.brokerImageService.getBrokersWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (brokers: BrokersBroker[]) => {
+      next: (brokers: ModelsBroker[]) => {
         this.brokers = brokers;
       },
       error: (error: Error) => {
@@ -156,13 +156,13 @@ export class BrokersComponent implements OnInit {
     this.openDialog(DialogMode.UPDATE, this.broker);
   }
 
-  onRowDelete(event: Event, broker:  BrokersBroker) {
+  onRowDelete(event: Event, broker:  ModelsBroker) {
     this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
   }
 
   // Dialog
 
-  openDialog(dialogMode: DialogMode, broker?: BrokersBroker) {
+  openDialog(dialogMode: DialogMode, broker?: ModelsBroker) {
     this.dialogService.open(dialogMode);
 
     switch (dialogMode) {
@@ -185,7 +185,7 @@ export class BrokersComponent implements OnInit {
 
   // Brokers
 
-  deleteBroker(broker: BrokersBroker) {
+  deleteBroker(broker: ModelsBroker) {
     this.loading = true;
     this.brokersService.deleteBroker(broker.id ?? '').pipe(finalize(() => {
       this.loading = false;
@@ -208,7 +208,7 @@ export class BrokersComponent implements OnInit {
     this.brokersService.createBroker(this.formService.getFormValue()).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (broker: BrokersBroker) => {
+      next: (broker: ModelsBroker) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.create-success', {name: broker.name});
         this.dialogService.open(DialogMode.IMAGE);
@@ -228,7 +228,7 @@ export class BrokersComponent implements OnInit {
     this.brokersService.updateBroker(this.broker.id!, this.formService.getFormValue()).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (broker: BrokersBroker) => {
+      next: (broker: ModelsBroker) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: broker.name});
         this.dialogService.close();

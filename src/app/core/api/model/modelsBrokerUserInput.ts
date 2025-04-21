@@ -9,12 +9,8 @@
  */
 
 
-export interface UsersUserInputPassword { 
-    confirmation?: string;
-    created_at?: string;
-    email?: string;
-    id?: string;
-    password?: string;
-    updated_at?: string;
+export interface ModelsBrokerUserInput { 
+    broker_id?: string;
+    user_id?: string;
 }
 

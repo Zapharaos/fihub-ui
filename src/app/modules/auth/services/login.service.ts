@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AuthJwtToken, UsersService, UsersUser, UsersUserWithPassword} from "@core/api";
+import {AuthJwtToken, UsersService, ModelsUser,ModelsUserWithPassword} from "@core/api";
 import {firstValueFrom, from, Observable} from "rxjs";
 import {AuthService as JwtAuthService} from "@core/api/api/auth.service";
 import {AuthService} from "@core/services/auth.service";
@@ -16,14 +16,14 @@ export class LoginService {
   ) {
   }
 
-  login(user: UsersUserWithPassword): Observable<UsersUser> {
+  login(user: ModelsUserWithPassword): Observable<ModelsUser> {
     return from((async () => {
       const jwt = await firstValueFrom(this.JwtAuthService.getToken(user));
       return await firstValueFrom(this.setToken(jwt));
     })());
   }
 
-  private setToken(jwt: AuthJwtToken): Observable<UsersUser> {
+  private setToken(jwt: AuthJwtToken): Observable<ModelsUser> {
     return from((async () => {
 
       if (!jwt.token) {

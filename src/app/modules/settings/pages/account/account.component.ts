@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "@core/services/auth.service";
 import {NotificationService} from "@shared/services/notification.service";
 import {TranslatePipe} from "@ngx-translate/core";
-import {UsersService, UsersUser, UsersUserInputPassword} from "@core/api";
+import {UsersService, ModelsUser, ModelsUserInputPassword} from "@core/api";
 import {handleErrors} from "@shared/utils/errors";
 import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {ConfirmService} from "@shared/services/confirm.service";
@@ -142,7 +142,7 @@ export class AccountComponent {
       // Call is over
       this.authFormComponent.setLoading(false)
     })).subscribe({
-      next: (user: UsersUser) => {
+      next: (user: ModelsUser) => {
         // Update local user
         this.user = user;
         this.authService.currentUser = user;
@@ -160,7 +160,7 @@ export class AccountComponent {
     this.authFormComponent.setLoading(true);
 
     // Retrieving user through Form
-    const user : UsersUserInputPassword = {
+    const user : ModelsUserInputPassword = {
       password: userForm.get('password-feedback')?.value,
       confirmation: userForm.get('confirmation')?.value,
     }

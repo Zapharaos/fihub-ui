@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
 import {Router} from "@angular/router";
-import {AuthService, PasswordResponseRequest, UsersUserInputPassword} from "@core/api";
+import {AuthService, ModelsPasswordResponseRequest, ModelsUserInputPassword} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormGroup} from "@angular/forms";
 import {finalize} from "rxjs";
@@ -78,7 +78,7 @@ export class PasswordComponent implements OnInit {
     ).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
-      next: (request: PasswordResponseRequest) => {
+      next: (request: ModelsPasswordResponseRequest) => {
 
         // Success : store request into next step
         this.passwordStore.request = {
@@ -127,7 +127,7 @@ export class PasswordComponent implements OnInit {
     this.authFormComponent.setLoading(true);
 
     // Retrieving inputPassword through Form
-    const inputPassword: UsersUserInputPassword = {
+    const inputPassword: ModelsUserInputPassword = {
       password: userForm.get('password-feedback')?.value,
       confirmation: userForm.get('confirmation')?.value,
     }

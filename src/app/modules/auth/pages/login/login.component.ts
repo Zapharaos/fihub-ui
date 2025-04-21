@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import {UsersUserWithPassword} from "@core/api";
+import {ModelsUserWithPassword} from "@core/api";
 import {finalize} from "rxjs";
 import {FormGroup} from "@angular/forms";
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
@@ -40,7 +40,7 @@ export class LoginComponent {
     this.authFormComponent.setLoading(true);
 
     // Retrieving user through Form
-    const user: UsersUserWithPassword = userForm.value;
+    const user: ModelsUserWithPassword = userForm.value;
 
     // Calling service to log the user in
     this.loginService.login(user).pipe(finalize(() => {

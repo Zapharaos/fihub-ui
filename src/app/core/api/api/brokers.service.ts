@@ -17,7 +17,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { BrokersBroker } from '../model/brokersBroker';
+import { ModelsBroker } from '../model/modelsBroker';
 // @ts-ignore
 import { RenderErrorResponse } from '../model/renderErrorResponse';
 
@@ -94,15 +94,15 @@ export class BrokersService {
 
     /**
      * Create a new broker
-     * Create a new broker.
+     * Create a new broker. (Permission: &lt;b&gt;admin.brokers.create&lt;/b&gt;)
      * @param broker broker (json)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createBroker(broker: BrokersBroker, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<BrokersBroker>;
-    public createBroker(broker: BrokersBroker, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<BrokersBroker>>;
-    public createBroker(broker: BrokersBroker, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<BrokersBroker>>;
-    public createBroker(broker: BrokersBroker, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createBroker(broker: ModelsBroker, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsBroker>;
+    public createBroker(broker: ModelsBroker, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsBroker>>;
+    public createBroker(broker: ModelsBroker, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsBroker>>;
+    public createBroker(broker: ModelsBroker, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (broker === null || broker === undefined) {
             throw new Error('Required parameter broker was null or undefined when calling createBroker.');
         }
@@ -160,7 +160,7 @@ export class BrokersService {
         }
 
         let localVarPath = `/api/v1/brokers`;
-        return this.httpClient.request<BrokersBroker>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsBroker>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: broker,
@@ -176,7 +176,7 @@ export class BrokersService {
 
     /**
      * Delete a broker
-     * Deletes a broker.
+     * Deletes a broker. (Permission: &lt;b&gt;admin.brokers.delete&lt;/b&gt;)
      * @param id broker ID
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -253,9 +253,9 @@ export class BrokersService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBroker(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<BrokersBroker>;
-    public getBroker(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<BrokersBroker>>;
-    public getBroker(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<BrokersBroker>>;
+    public getBroker(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsBroker>;
+    public getBroker(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsBroker>>;
+    public getBroker(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsBroker>>;
     public getBroker(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getBroker.');
@@ -305,7 +305,7 @@ export class BrokersService {
         }
 
         let localVarPath = `/api/v1/brokers/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<BrokersBroker>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsBroker>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -325,10 +325,10 @@ export class BrokersService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBrokers(enabled?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<BrokersBroker>>;
-    public getBrokers(enabled?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<BrokersBroker>>>;
-    public getBrokers(enabled?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<BrokersBroker>>>;
-    public getBrokers(enabled?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public listBrokers(enabled?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ModelsBroker>>;
+    public listBrokers(enabled?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ModelsBroker>>>;
+    public listBrokers(enabled?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ModelsBroker>>>;
+    public listBrokers(enabled?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (enabled !== undefined && enabled !== null) {
@@ -380,7 +380,7 @@ export class BrokersService {
         }
 
         let localVarPath = `/api/v1/brokers`;
-        return this.httpClient.request<Array<BrokersBroker>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<ModelsBroker>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -396,16 +396,16 @@ export class BrokersService {
 
     /**
      * Update a broker
-     * Updates a broker.
+     * Updates a broker. (Permission: &lt;b&gt;admin.brokers.update&lt;/b&gt;)
      * @param id broker ID
      * @param broker broker (json)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateBroker(id: string, broker: BrokersBroker, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<BrokersBroker>;
-    public updateBroker(id: string, broker: BrokersBroker, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<BrokersBroker>>;
-    public updateBroker(id: string, broker: BrokersBroker, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<BrokersBroker>>;
-    public updateBroker(id: string, broker: BrokersBroker, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateBroker(id: string, broker: ModelsBroker, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsBroker>;
+    public updateBroker(id: string, broker: ModelsBroker, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsBroker>>;
+    public updateBroker(id: string, broker: ModelsBroker, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsBroker>>;
+    public updateBroker(id: string, broker: ModelsBroker, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateBroker.');
         }
@@ -466,7 +466,7 @@ export class BrokersService {
         }
 
         let localVarPath = `/api/v1/brokers/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<BrokersBroker>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsBroker>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: broker,

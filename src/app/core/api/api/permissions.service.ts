@@ -17,9 +17,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ModelsTransaction } from '../model/modelsTransaction';
-// @ts-ignore
-import { ModelsTransactionInput } from '../model/modelsTransactionInput';
+import { ModelsPermission } from '../model/modelsPermission';
 // @ts-ignore
 import { RenderErrorResponse } from '../model/renderErrorResponse';
 
@@ -32,7 +30,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class TransactionsService {
+export class PermissionsService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -95,18 +93,18 @@ export class TransactionsService {
     }
 
     /**
-     * Create a new transaction
-     * Create a new transaction.
-     * @param transaction transaction (json)
+     * Create a new permission
+     * Create a new permission. (Permission: &lt;b&gt;admin.permissions.create&lt;/b&gt;)
+     * @param permission permission (json)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createTransaction(transaction: ModelsTransactionInput, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsTransaction>;
-    public createTransaction(transaction: ModelsTransactionInput, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsTransaction>>;
-    public createTransaction(transaction: ModelsTransactionInput, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsTransaction>>;
-    public createTransaction(transaction: ModelsTransactionInput, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (transaction === null || transaction === undefined) {
-            throw new Error('Required parameter transaction was null or undefined when calling createTransaction.');
+    public createPermission(permission: ModelsPermission, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsPermission>;
+    public createPermission(permission: ModelsPermission, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsPermission>>;
+    public createPermission(permission: ModelsPermission, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsPermission>>;
+    public createPermission(permission: ModelsPermission, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (permission === null || permission === undefined) {
+            throw new Error('Required parameter permission was null or undefined when calling createPermission.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -161,11 +159,11 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions`;
-        return this.httpClient.request<ModelsTransaction>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions`;
+        return this.httpClient.request<ModelsPermission>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: transaction,
+                body: permission,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -177,18 +175,18 @@ export class TransactionsService {
     }
 
     /**
-     * Delete a transaction
-     * Delete a transaction.
-     * @param id transaction ID
+     * Delete permission
+     * Deletes a permission. (Permission: &lt;b&gt;admin.permissions.delete&lt;/b&gt;)
+     * @param id permission ID
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteTransaction(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<string>>;
-    public deleteTransaction(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<string>>>;
-    public deleteTransaction(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<string>>>;
-    public deleteTransaction(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public deletePermission(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
+    public deletePermission(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
+    public deletePermission(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
+    public deletePermission(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteTransaction.');
+            throw new Error('Required parameter id was null or undefined when calling deletePermission.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -234,8 +232,8 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<Array<string>>('delete', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request<string>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -249,18 +247,18 @@ export class TransactionsService {
     }
 
     /**
-     * Get a transaction
-     * Get a transaction.
-     * @param id transaction id
+     * Get a permission
+     * Get a permission by id. (Permission: &lt;b&gt;permissions.read&lt;/b&gt;)
+     * @param id permission id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTransaction(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsTransaction>;
-    public getTransaction(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsTransaction>>;
-    public getTransaction(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsTransaction>>;
-    public getTransaction(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getPermission(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsPermission>;
+    public getPermission(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsPermission>>;
+    public getPermission(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsPermission>>;
+    public getPermission(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getTransaction.');
+            throw new Error('Required parameter id was null or undefined when calling getPermission.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -306,8 +304,8 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<ModelsTransaction>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request<ModelsPermission>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -321,15 +319,15 @@ export class TransactionsService {
     }
 
     /**
-     * List all transactions
-     * Gets a list of all transactions.
+     * Get all permissions
+     * Gets a list of all permissions. (Permission: &lt;b&gt;admin.permissions.list&lt;/b&gt;)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTransactions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ModelsTransaction>>;
-    public getTransactions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ModelsTransaction>>>;
-    public getTransactions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ModelsTransaction>>>;
-    public getTransactions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getPermissions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ModelsPermission>>;
+    public getPermissions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ModelsPermission>>>;
+    public getPermissions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ModelsPermission>>>;
+    public getPermissions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -374,8 +372,8 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions`;
-        return this.httpClient.request<Array<ModelsTransaction>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions`;
+        return this.httpClient.request<Array<ModelsPermission>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -389,22 +387,22 @@ export class TransactionsService {
     }
 
     /**
-     * Update a transaction
-     * Update a transaction.
-     * @param id transaction ID
-     * @param transaction transaction (json)
+     * Update permission
+     * Updates the permission. (Permission: &lt;b&gt;admin.permissions.update&lt;/b&gt;)
+     * @param id permission ID
+     * @param permission permission (json)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateTransaction(id: string, transaction: ModelsTransaction, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsTransaction>;
-    public updateTransaction(id: string, transaction: ModelsTransaction, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsTransaction>>;
-    public updateTransaction(id: string, transaction: ModelsTransaction, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsTransaction>>;
-    public updateTransaction(id: string, transaction: ModelsTransaction, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updatePermission(id: string, permission: ModelsPermission, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsPermission>;
+    public updatePermission(id: string, permission: ModelsPermission, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsPermission>>;
+    public updatePermission(id: string, permission: ModelsPermission, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsPermission>>;
+    public updatePermission(id: string, permission: ModelsPermission, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateTransaction.');
+            throw new Error('Required parameter id was null or undefined when calling updatePermission.');
         }
-        if (transaction === null || transaction === undefined) {
-            throw new Error('Required parameter transaction was null or undefined when calling updateTransaction.');
+        if (permission === null || permission === undefined) {
+            throw new Error('Required parameter permission was null or undefined when calling updatePermission.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -459,11 +457,11 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<ModelsTransaction>('put', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/permissions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request<ModelsPermission>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: transaction,
+                body: permission,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

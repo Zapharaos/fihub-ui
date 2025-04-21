@@ -9,7 +9,10 @@
  */
 
 
-export interface PasswordInputRequest { 
+export interface ModelsUser { 
+    ID?: string;
+    created_at?: string;
     email?: string;
+    updated_at?: string;
 }
 

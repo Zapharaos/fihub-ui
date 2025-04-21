@@ -7,9 +7,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ModelsBroker } from './modelsBroker';
 
 
-export interface PasswordInputToken { 
-    token?: string;
+export interface ModelsBrokerUser { 
+    broker?: ModelsBroker;
 }
 

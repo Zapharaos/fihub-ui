@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BrokersBroker, BrokersUserBrokerInput, UserBrokerService} from "@core/api";
+import {ModelsBroker, ModelsBrokerUserInput} from "@core/api";
+import {BrokerUserService} from "@core/api";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
@@ -60,7 +61,7 @@ export class AddComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private userBrokerService: UserBrokerService,
+    private userBrokerService: BrokerUserService,
     private fb: FormBuilder,
     protected formService: FormService,
     private brokerImageService: BrokerImageService,
@@ -98,7 +99,7 @@ export class AddComponent implements OnInit {
     this.brokerImageService.getBrokersWithImages(true).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (brokers: BrokersBroker[]) => {
+      next: (brokers: ModelsBroker[]) => {
         this.brokers = brokers;
       },
       error: (error: Error) => {
@@ -115,7 +116,7 @@ export class AddComponent implements OnInit {
 
     // Prepare
     this.loading = true;
-    const userBroker : BrokersUserBrokerInput = {
+    const userBroker : ModelsBrokerUserInput = {
       broker_id: this.formService.getFormValue().broker.id,
     }
 

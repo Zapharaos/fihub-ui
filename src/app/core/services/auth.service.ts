@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {UsersUser} from "@core/api";
+import {ModelsUser} from "@core/api";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  currentUser: UsersUser | undefined;
+  currentUser: ModelsUser | undefined;
   private loaded = false;
   redirectUrl?: string;
 
@@ -37,7 +37,7 @@ export class AuthService {
     return !!this.currentUser;
   }
 
-  setCurrentUser(user?: UsersUser) {
+  setCurrentUser(user?: ModelsUser) {
     this.currentUser = user;
   }
 

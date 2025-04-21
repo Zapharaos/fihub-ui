@@ -9,9 +9,12 @@
  */
 
 
-export interface BrokersBrokerImage { 
-    broker_id?: string;
-    id?: string;
-    name?: string;
+export interface ModelsUserInputPassword { 
+    ID?: string;
+    confirmation?: string;
+    created_at?: string;
+    email?: string;
+    password?: string;
+    updated_at?: string;
 }
 
