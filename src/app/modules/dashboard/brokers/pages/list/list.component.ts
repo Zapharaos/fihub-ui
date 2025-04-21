@@ -8,7 +8,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {finalize} from "rxjs";
-import {UserBrokerService, BrokersUserBroker} from "@core/api";
+import {BrokerUserService, ModelsBrokerUser} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {RouterLink} from "@angular/router";
 import {
@@ -21,7 +21,7 @@ import {handleErrors} from "@shared/utils/errors";
 import {Skeleton} from "primeng/skeleton";
 
 // TODO : temp fields
-export interface TableBroker extends BrokersUserBroker {
+export interface TableBroker extends ModelsBrokerUser {
   apiKey?: string;
   apiSecret?: string;
 }
@@ -49,14 +49,14 @@ export class ListComponent implements OnInit {
 
   loading = true;
   userBrokers!: UserBrokerWithImage[];
-  clonedUserBrokers: Record<string, BrokersUserBroker> = {};
+  clonedUserBrokers: Record<string, ModelsBrokerUser> = {};
   protected readonly tablePropertiesFilter = ['broker.name']
   @ViewChild('dt') dt: Table | undefined;
 
   constructor(
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
-    private userBrokerService: UserBrokerService,
+    private userBrokerService: BrokerUserService,
     private brokerImageService: BrokerImageService,
   ) { }
 
@@ -80,7 +80,7 @@ export class ListComponent implements OnInit {
     })
   }
 
-  deleteBroker(broker: BrokersUserBroker) {
+  deleteBroker(broker: ModelsBrokerUser) {
     this.loading = true;
     if (broker.broker?.id) {
       this.userBrokerService.deleteUserBroker(broker.broker.id).pipe(finalize(() => {
@@ -99,14 +99,14 @@ export class ListComponent implements OnInit {
 
   // Table
 
-  onWrapperRowEditSave(broker: BrokersUserBroker) {
+  onWrapperRowEditSave(broker: ModelsBrokerUser) {
     // TODO : PUT
     this.notificationService.showToastSuccess('brokers.messages.edit-success', {name: broker.broker?.name})
 
     onRowEditSave(this.clonedUserBrokers, broker)
   }
 
-  onRowDelete(event: Event, broker: BrokersUserBroker) {
+  onRowDelete(event: Event, broker: ModelsBrokerUser) {
     this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
   }
 

@@ -9,8 +9,7 @@
  */
 
 
-export interface BrokersUserBrokerInput { 
-    broker_id?: string;
-    user_id?: string;
+export interface ModelsPasswordInputRequest { 
+    email?: string;
 }
 
