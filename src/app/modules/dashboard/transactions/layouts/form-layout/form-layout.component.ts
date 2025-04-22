@@ -53,7 +53,6 @@ export class FormLayoutComponent implements OnInit {
   brokers!: BrokerWithImage[];
   transaction: TransactionWithImage | undefined;
   submitLabel = '';
-  submitIcon = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -73,11 +72,9 @@ export class FormLayoutComponent implements OnInit {
     // Set form submit label
     if (this.isCreateForm) {
       this.submitLabel = 'transactions.form.label.submit-add';
-      this.submitIcon = 'pi-plus';
     }
     else {
       this.submitLabel = 'transactions.form.label.submit-update';
-      this.submitIcon = 'pi-check';
     }
 
     // Init form
@@ -202,6 +199,7 @@ export class FormLayoutComponent implements OnInit {
       this.loading = false;
     })).subscribe({
       next: () => {
+        this.formService.rollbackToDefault();
         this.notificationService.showToastSuccess('transactions.messages.add-success');
       },
       error: (error) => {
