@@ -26,7 +26,6 @@ import {InputText} from "primeng/inputtext";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 import {handleErrors, ResponseError} from "@shared/utils/errors";
-import {Ripple} from "primeng/ripple";
 
 @Component({
     selector: 'app-transactions-form-layout',
@@ -40,7 +39,6 @@ import {Ripple} from "primeng/ripple";
     InputNumber,
     InputText,
     Button,
-    Ripple
   ],
     templateUrl: './form-layout.component.html',
     styleUrl: './form-layout.component.scss'
