@@ -6,10 +6,10 @@ import {FormLayoutComponent} from "@modules/dashboard/transactions/layouts/form-
 
 @Component({
     selector: 'app-transactions-add',
-    imports: [
-        DashboardContentLayoutComponent,
-        FormLayoutComponent
-    ],
+  imports: [
+    DashboardContentLayoutComponent,
+    FormLayoutComponent,
+  ],
     templateUrl: './add.component.html',
     styleUrl: './add.component.scss'
 })
