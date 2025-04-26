@@ -17,7 +17,7 @@ import {NgClass, NgIf} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {CheckboxModule} from "primeng/checkbox";
 import {MessagesModule} from 'primeng/messages';
-import {UsersUserInputCreate} from "@core/api";
+import {ModelsUserInputCreate} from "@core/api";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {passwordMatchValidator} from "@shared/validators/password-match";
@@ -76,7 +76,7 @@ export class AuthFormComponent implements OnInit {
   @Output() formSubmit = new EventEmitter<FormGroup>();
 
   protected readonly logoPath = "assets/svg/logo-initial.svg";
-  user: UsersUserInputCreate = {};
+  user: ModelsUserInputCreate = {};
   loading = false;
   messageError = "";
   otp = "";
@@ -220,7 +220,7 @@ export class AuthFormComponent implements OnInit {
     }
   }
 
-  patchUserFormServiceValue(user: UsersUserInputCreate) {
+  patchUserFormServiceValue(user: ModelsUserInputCreate) {
     this.user = {...user};
     this.formService.patchValue(user);
   }

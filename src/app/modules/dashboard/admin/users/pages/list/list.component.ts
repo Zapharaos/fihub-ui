@@ -12,7 +12,7 @@ import {Table, TableModule} from "primeng/table";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {UsersService, UsersUserWithRoles} from "@core/api";
+import {UsersService, ModelsUserWithRoles} from "@core/api";
 import {finalize} from "rxjs";
 import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
@@ -47,8 +47,8 @@ export class ListComponent implements OnInit {
   loading = true;
 
   // Table
-  user!: UsersUserWithRoles;
-  users: UsersUserWithRoles[] = []
+  user!: ModelsUserWithRoles;
+  users: ModelsUserWithRoles[] = []
   @ViewChild('dt') dt: Table | undefined;
 
   protected readonly tablePropertiesFilter = ['email', 'roleValues', 'created_at', 'updated_at'];
@@ -71,7 +71,7 @@ export class ListComponent implements OnInit {
     this.usersService.getAllUsersWithRoles().pipe(finalize(() => {
       this.loading = false
     })).subscribe({
-      next: (users: UsersUserWithRoles[]) => {
+      next: (users: ModelsUserWithRoles[]) => {
         this.users = users;
       },
       error: (error) => {
@@ -84,7 +84,7 @@ export class ListComponent implements OnInit {
 
   onRowSelect() {
     this.usersStore.user = this.user;
-    this.router.navigate([`/dashboard/admin/users/${this.user.id}/update`]);
+    this.router.navigate([`/dashboard/admin/users/${this.user.ID}/update`]);
   }
 
   protected readonly applyFilterGlobal = applyFilterGlobal;

@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {FormService} from "@shared/services/form.service";
-import {RolesRoleWithPermissions, RolesService, UsersService, UsersUserWithRoles} from "@core/api";
+import {ModelsRoleWithPermissions, RolesService, UsersService, ModelsUserWithRoles} from "@core/api";
 import {notEmptyValidator} from "@shared/validators/array";
 import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
 import {handleErrors} from "@shared/utils/errors";
@@ -49,8 +49,8 @@ export class UpdateComponent implements OnInit {
     protected readonly tablePropertiesFilter = ['name', 'permissions'];
 
     loading = true;
-    roles: RolesRoleWithPermissions[] = [];
-    user: UsersUserWithRoles = {};
+    roles: ModelsRoleWithPermissions[] = [];
+    user: ModelsUserWithRoles = {};
     showSelectedRolesOnly = false;
 
     constructor(
@@ -90,7 +90,7 @@ export class UpdateComponent implements OnInit {
         // If the user is not loaded, then retrieve it from the API
         const userID = this.route.snapshot.paramMap.get('id');
         this.userService.getUser(userID!).subscribe({
-            next: (user: UsersUserWithRoles) => {
+            next: (user: ModelsUserWithRoles) => {
                 this.userStore.user = user;
                 this.user = user;
                 this.patchForm();
@@ -108,7 +108,7 @@ export class UpdateComponent implements OnInit {
         this.rolesService.getRoles().pipe(finalize(() => {
             this.loading = false;
         })).subscribe({
-            next: (roles: RolesRoleWithPermissions[]) => {
+            next: (roles: ModelsRoleWithPermissions[]) => {
                 this.roles = roles;
             },
             error: (error: Error) => {
@@ -119,9 +119,9 @@ export class UpdateComponent implements OnInit {
 
     // User
 
-    setRoles(user: UsersUserWithRoles) {
+    setRoles(user: ModelsUserWithRoles) {
         this.loading = true;
-        this.userService.setUser(user.id!, user).pipe(finalize(() => {
+        this.userService.setUser(user.ID!, user).pipe(finalize(() => {
             this.loading = false;
         })).subscribe({
             next: () => {
@@ -148,8 +148,8 @@ export class UpdateComponent implements OnInit {
             return;
         }
 
-        const user: UsersUserWithRoles = {
-            id: this.user.id,
+        const user: ModelsUserWithRoles = {
+            ID: this.user.ID,
             roles: this.formService.getFormValue().roles,
         }
 

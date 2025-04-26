@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {UsersUserWithRoles} from "@core/api";
+import {ModelsUserWithRoles} from "@core/api";
 import {hasPermissions} from "@shared/utils/permissions";
 import {BehaviorSubject} from "rxjs";
 
@@ -7,7 +7,7 @@ import {BehaviorSubject} from "rxjs";
   providedIn: 'root'
 })
 export class AuthService {
-  currentUser: UsersUserWithRoles | undefined;
+  currentUser: ModelsUserWithRoles | undefined;
   redirectUrl?: string;
   private loaded = false;
   private _permissions = new BehaviorSubject<Set<string>>(new Set<string>());
@@ -41,7 +41,7 @@ export class AuthService {
     return !!this.currentUser;
   }
 
-  setCurrentUser(user?: UsersUserWithRoles) {
+  setCurrentUser(user?: ModelsUserWithRoles) {
     this.currentUser = user;
 
     // Load permissions from the user roles
