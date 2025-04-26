@@ -2,6 +2,13 @@ import {Injectable} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {ConfirmationService} from "primeng/api";
 
+export type DeleteConfirmationProps = {
+  event: Event;
+  message?: string;
+  accept?: () => void;
+  reject?: () => void;
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,11 +19,12 @@ export class ConfirmService {
     private translateService: TranslateService
   ) { }
 
-  showDeleteConfirmation(event: Event, accept?: () => void, reject?: () => void) {
+  showDeleteConfirmation(props: DeleteConfirmationProps) {
+    const message = props.message ? props.message : 'confirmation.delete.message';
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
+      target: props.event.target as EventTarget,
       header: this.translateService.instant('confirmation.delete.header'),
-      message: this.translateService.instant('confirmation.delete.message'),
+      message: this.translateService.instant(message),
       rejectButtonProps: {
         label: this.translateService.instant('confirmation.cancel'),
         severity: 'secondary',
@@ -26,8 +34,8 @@ export class ConfirmService {
         label: this.translateService.instant('confirmation.delete.button'),
         severity: 'danger',
       },
-      accept: accept,
-      reject: reject
+      accept: props.accept,
+      reject: props.reject
     });
   }
 }

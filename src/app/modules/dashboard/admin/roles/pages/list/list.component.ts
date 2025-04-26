@@ -102,7 +102,10 @@ export class ListComponent implements OnInit {
   }
 
   onRowDelete(event: Event, role: ModelsRoleWithPermissions) {
-    this.confirmService.showDeleteConfirmation(event, () => this.deleteRole(role))
+    this.confirmService.showDeleteConfirmation({
+      event: event,
+      accept: () => this.deleteRole(role),
+    });
   }
 
   // Roles

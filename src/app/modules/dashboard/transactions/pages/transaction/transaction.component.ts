@@ -78,20 +78,23 @@ export class TransactionComponent implements OnInit {
   }
 
   deleteTransaction(event: Event) {
-    this.confirmService.showDeleteConfirmation(event, () => {
-      this.transactionsService.deleteTransaction(this.transaction!.id!).pipe(finalize(() => {
-        this.loading = false;
-      })).subscribe({
-        next: () => {
-          // Success : navigate back to transactions page
-          this.router.navigate(['/dashboard/transactions']).then(() => {
-            this.notificationService.showToastSuccess('transactions.messages.delete-success');
-          });
-        },
-        error: (error) => {
-          handleErrors(error, this.notificationService);
-        }
-      })
+    this.confirmService.showDeleteConfirmation({
+      event: event,
+      accept: () => {
+        this.transactionsService.deleteTransaction(this.transaction!.id!).pipe(finalize(() => {
+          this.loading = false;
+        })).subscribe({
+          next: () => {
+            // Success : navigate back to transactions page
+            this.router.navigate(['/dashboard/transactions']).then(() => {
+              this.notificationService.showToastSuccess('transactions.messages.delete-success');
+            });
+          },
+          error: (error) => {
+            handleErrors(error, this.notificationService);
+          }
+        })
+      },
     })
   }
 }
