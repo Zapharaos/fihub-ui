@@ -109,7 +109,8 @@
       },
       "messages": {
         "create-success": "Broker {{name}} has been created.",
-        "update-success": "Broker {{name}} has been updated."
+        "update-success": "Broker {{name}} has been updated.",
+        "delete-confirmation": "Deleting this broker will remove all associated transactions.\nYou cannot undo this action. Are you sure?"
       }
     },
     "roles": {
@@ -310,7 +311,8 @@
     "messages": {
       "add-success": "Broker has been added.",
       "edit-success": "Broker {{name}} has been edited.",
-      "delete-success": "Broker {{name}} was removed."
+      "delete-success": "Broker {{name}} was removed.",
+      "delete-confirmation": "Deleting this broker will remove all associated transactions.\nYou cannot undo this action. Are you sure?"
     }
   },
   "dashboard": {

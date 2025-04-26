@@ -122,7 +122,10 @@ export class AccountComponent {
   }
 
   onDelete(event: Event) {
-    this.confirmService.showDeleteConfirmation(event, () => this.deleteAccount());
+    this.confirmService.showDeleteConfirmation({
+      event: event,
+      accept: () => this.deleteAccount(),
+    });
   }
 
   // User

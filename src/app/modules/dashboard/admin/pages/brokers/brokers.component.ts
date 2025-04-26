@@ -160,7 +160,11 @@ export class BrokersComponent implements OnInit {
   }
 
   onRowDelete(event: Event, broker:  ModelsBroker) {
-    this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
+    this.confirmService.showDeleteConfirmation({
+      event: event,
+      message: 'brokers.messages.delete-confirmation',
+      accept: () => this.deleteBroker(broker),
+    })
   }
 
   // Dialog
