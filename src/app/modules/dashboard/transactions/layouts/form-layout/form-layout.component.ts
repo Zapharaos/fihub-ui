@@ -26,7 +26,6 @@ import {InputText} from "primeng/inputtext";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 import {handleErrors, ResponseError} from "@shared/utils/errors";
-import {Ripple} from "primeng/ripple";
 
 @Component({
     selector: 'app-transactions-form-layout',
@@ -40,7 +39,6 @@ import {Ripple} from "primeng/ripple";
     InputNumber,
     InputText,
     Button,
-    Ripple
   ],
     templateUrl: './form-layout.component.html',
     styleUrl: './form-layout.component.scss'
@@ -55,7 +53,6 @@ export class FormLayoutComponent implements OnInit {
   brokers!: BrokerWithImage[];
   transaction: TransactionWithImage | undefined;
   submitLabel = '';
-  submitIcon = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -75,11 +72,9 @@ export class FormLayoutComponent implements OnInit {
     // Set form submit label
     if (this.isCreateForm) {
       this.submitLabel = 'transactions.form.label.submit-add';
-      this.submitIcon = 'pi-plus';
     }
     else {
       this.submitLabel = 'transactions.form.label.submit-update';
-      this.submitIcon = 'pi-check';
     }
 
     // Init form
@@ -204,6 +199,7 @@ export class FormLayoutComponent implements OnInit {
       this.loading = false;
     })).subscribe({
       next: () => {
+        this.formService.rollbackToDefault();
         this.notificationService.showToastSuccess('transactions.messages.add-success');
       },
       error: (error) => {
