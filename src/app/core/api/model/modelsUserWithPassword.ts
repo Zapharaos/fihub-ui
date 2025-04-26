@@ -9,10 +9,11 @@
  */
 
 
-export interface UsersUser { 
+export interface ModelsUserWithPassword { 
+    ID?: string;
     created_at?: string;
     email?: string;
-    id?: string;
+    password?: string;
     updated_at?: string;
 }
 

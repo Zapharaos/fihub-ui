@@ -17,11 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { ModelsTransaction } from '../model/modelsTransaction';
+// @ts-ignore
+import { ModelsTransactionInput } from '../model/modelsTransactionInput';
+// @ts-ignore
 import { RenderErrorResponse } from '../model/renderErrorResponse';
-// @ts-ignore
-import { TransactionsTransaction } from '../model/transactionsTransaction';
-// @ts-ignore
-import { TransactionsTransactionInput } from '../model/transactionsTransactionInput';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -101,10 +101,10 @@ export class TransactionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createTransaction(transaction: TransactionsTransactionInput, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TransactionsTransaction>;
-    public createTransaction(transaction: TransactionsTransactionInput, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TransactionsTransaction>>;
-    public createTransaction(transaction: TransactionsTransactionInput, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TransactionsTransaction>>;
-    public createTransaction(transaction: TransactionsTransactionInput, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createTransaction(transaction: ModelsTransactionInput, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsTransaction>;
+    public createTransaction(transaction: ModelsTransactionInput, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsTransaction>>;
+    public createTransaction(transaction: ModelsTransactionInput, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsTransaction>>;
+    public createTransaction(transaction: ModelsTransactionInput, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (transaction === null || transaction === undefined) {
             throw new Error('Required parameter transaction was null or undefined when calling createTransaction.');
         }
@@ -162,7 +162,7 @@ export class TransactionsService {
         }
 
         let localVarPath = `/api/v1/transactions`;
-        return this.httpClient.request<TransactionsTransaction>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsTransaction>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: transaction,
@@ -255,9 +255,9 @@ export class TransactionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTransaction(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TransactionsTransaction>;
-    public getTransaction(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TransactionsTransaction>>;
-    public getTransaction(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TransactionsTransaction>>;
+    public getTransaction(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsTransaction>;
+    public getTransaction(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsTransaction>>;
+    public getTransaction(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsTransaction>>;
     public getTransaction(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getTransaction.');
@@ -307,7 +307,7 @@ export class TransactionsService {
         }
 
         let localVarPath = `/api/v1/transactions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<TransactionsTransaction>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsTransaction>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -321,14 +321,14 @@ export class TransactionsService {
     }
 
     /**
-     * Get all transactions
+     * List all transactions
      * Gets a list of all transactions.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTransactions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<TransactionsTransaction>>;
-    public getTransactions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<TransactionsTransaction>>>;
-    public getTransactions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<TransactionsTransaction>>>;
+    public getTransactions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ModelsTransaction>>;
+    public getTransactions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ModelsTransaction>>>;
+    public getTransactions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ModelsTransaction>>>;
     public getTransactions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -375,7 +375,7 @@ export class TransactionsService {
         }
 
         let localVarPath = `/api/v1/transactions`;
-        return this.httpClient.request<Array<TransactionsTransaction>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<ModelsTransaction>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -396,10 +396,10 @@ export class TransactionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateTransaction(id: string, transaction: TransactionsTransaction, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TransactionsTransaction>;
-    public updateTransaction(id: string, transaction: TransactionsTransaction, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TransactionsTransaction>>;
-    public updateTransaction(id: string, transaction: TransactionsTransaction, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TransactionsTransaction>>;
-    public updateTransaction(id: string, transaction: TransactionsTransaction, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateTransaction(id: string, transaction: ModelsTransaction, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsTransaction>;
+    public updateTransaction(id: string, transaction: ModelsTransaction, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsTransaction>>;
+    public updateTransaction(id: string, transaction: ModelsTransaction, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsTransaction>>;
+    public updateTransaction(id: string, transaction: ModelsTransaction, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateTransaction.');
         }
@@ -460,7 +460,7 @@ export class TransactionsService {
         }
 
         let localVarPath = `/api/v1/transactions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<TransactionsTransaction>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsTransaction>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: transaction,

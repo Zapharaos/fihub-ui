@@ -19,15 +19,15 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { AuthJwtToken } from '../model/authJwtToken';
 // @ts-ignore
-import { PasswordInputRequest } from '../model/passwordInputRequest';
+import { ModelsPasswordInputRequest } from '../model/modelsPasswordInputRequest';
 // @ts-ignore
-import { PasswordResponseRequest } from '../model/passwordResponseRequest';
+import { ModelsPasswordResponseRequest } from '../model/modelsPasswordResponseRequest';
+// @ts-ignore
+import { ModelsUserInputPassword } from '../model/modelsUserInputPassword';
+// @ts-ignore
+import { ModelsUserWithPassword } from '../model/modelsUserWithPassword';
 // @ts-ignore
 import { RenderErrorResponse } from '../model/renderErrorResponse';
-// @ts-ignore
-import { UsersUserInputPassword } from '../model/usersUserInputPassword';
-// @ts-ignore
-import { UsersUserWithPassword } from '../model/usersUserWithPassword';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -101,17 +101,17 @@ export class AuthService {
     }
 
     /**
-     * Request a password reset
+     * PasswordRequest a password reset
      * Requests a password reset for the user with the provided email.
      * @param request request (json)
      * @param lang Language code
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createPasswordResetRequest(request: PasswordInputRequest, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PasswordResponseRequest>;
-    public createPasswordResetRequest(request: PasswordInputRequest, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PasswordResponseRequest>>;
-    public createPasswordResetRequest(request: PasswordInputRequest, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PasswordResponseRequest>>;
-    public createPasswordResetRequest(request: PasswordInputRequest, lang?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createPasswordResetRequest(request: ModelsPasswordInputRequest, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsPasswordResponseRequest>;
+    public createPasswordResetRequest(request: ModelsPasswordInputRequest, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsPasswordResponseRequest>>;
+    public createPasswordResetRequest(request: ModelsPasswordInputRequest, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsPasswordResponseRequest>>;
+    public createPasswordResetRequest(request: ModelsPasswordInputRequest, lang?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling createPasswordResetRequest.');
         }
@@ -168,7 +168,7 @@ export class AuthService {
         }
 
         let localVarPath = `/api/v1/auth/password`;
-        return this.httpClient.request<PasswordResponseRequest>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsPasswordResponseRequest>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: request,
@@ -259,10 +259,10 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getToken(user: UsersUserWithPassword, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<AuthJwtToken>;
-    public getToken(user: UsersUserWithPassword, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AuthJwtToken>>;
-    public getToken(user: UsersUserWithPassword, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AuthJwtToken>>;
-    public getToken(user: UsersUserWithPassword, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getToken(user: ModelsUserWithPassword, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<AuthJwtToken>;
+    public getToken(user: ModelsUserWithPassword, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AuthJwtToken>>;
+    public getToken(user: ModelsUserWithPassword, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AuthJwtToken>>;
+    public getToken(user: ModelsUserWithPassword, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (user === null || user === undefined) {
             throw new Error('Required parameter user was null or undefined when calling getToken.');
         }
@@ -343,10 +343,10 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public resetPassword(id: string, requestId: string, password: UsersUserInputPassword, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
-    public resetPassword(id: string, requestId: string, password: UsersUserInputPassword, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
-    public resetPassword(id: string, requestId: string, password: UsersUserInputPassword, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
-    public resetPassword(id: string, requestId: string, password: UsersUserInputPassword, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public resetPassword(id: string, requestId: string, password: ModelsUserInputPassword, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
+    public resetPassword(id: string, requestId: string, password: ModelsUserInputPassword, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
+    public resetPassword(id: string, requestId: string, password: ModelsUserInputPassword, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
+    public resetPassword(id: string, requestId: string, password: ModelsUserInputPassword, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling resetPassword.');
         }

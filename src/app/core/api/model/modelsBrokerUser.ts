@@ -7,12 +7,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ModelsBroker } from './modelsBroker';
 
 
-export interface BrokersBroker { 
-    disabled?: boolean;
-    id?: string;
-    image_id?: string;
-    name?: string;
+export interface ModelsBrokerUser { 
+    broker?: ModelsBroker;
 }
 

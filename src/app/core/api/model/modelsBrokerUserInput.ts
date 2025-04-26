@@ -7,12 +7,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PermissionsPermission } from './permissionsPermission';
 
 
-export interface RolesRoleWithPermissions { 
-    id?: string;
-    name?: string;
-    permissions?: Array<PermissionsPermission>;
+export interface ModelsBrokerUserInput { 
+    broker_id?: string;
+    user_id?: string;
 }
 

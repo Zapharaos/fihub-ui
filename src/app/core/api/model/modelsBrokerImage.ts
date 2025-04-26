@@ -9,10 +9,9 @@
  */
 
 
-export interface PermissionsPermission { 
-    description?: string;
+export interface ModelsBrokerImage { 
+    broker_id?: string;
     id?: string;
-    scope?: string;
-    value?: string;
+    name?: string;
 }
 
