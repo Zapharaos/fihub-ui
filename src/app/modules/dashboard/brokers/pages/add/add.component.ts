@@ -12,7 +12,6 @@ import {
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {InputText} from "primeng/inputtext";
 import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards/radio-cards.component";
-import {Ripple} from "primeng/ripple";
 import {Message} from "primeng/message";
 import {FormService} from "@shared/services/form.service";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
@@ -30,7 +29,6 @@ import {handleErrors, ResponseError} from "@shared/utils/errors";
         DashboardContentLayoutComponent,
         InputText,
         RadioCardsComponent,
-        Ripple,
         Message
     ],
     templateUrl: './add.component.html',
