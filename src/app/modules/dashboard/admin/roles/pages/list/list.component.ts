@@ -12,7 +12,7 @@ import {Table, TableModule} from "primeng/table";
 import {NotificationService} from "@shared/services/notification.service";
 import {PrimeTemplate} from "primeng/api";
 import {
-  RolesRoleWithPermissions,
+  ModelsRoleWithPermissions,
   RolesService
 } from "@core/api";
 import {finalize} from "rxjs";
@@ -56,8 +56,8 @@ export class ListComponent implements OnInit {
   loading = true;
 
   // Table
-  role!: RolesRoleWithPermissions
-  roles: RolesRoleWithPermissions[] = []
+  role!: ModelsRoleWithPermissions
+  roles: ModelsRoleWithPermissions[] = []
   @ViewChild('dt') dt: Table | undefined;
 
   protected readonly tablePropertiesFilter = ['name', 'permissionValues'];
@@ -82,7 +82,7 @@ export class ListComponent implements OnInit {
     this.rolesService.getRoles().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (roles: RolesRoleWithPermissions[]) => {
+      next: (roles: ModelsRoleWithPermissions[]) => {
         this.roles = roles;
       },
       error: (error: Error) => {
@@ -93,7 +93,7 @@ export class ListComponent implements OnInit {
 
   // Table
 
-  onRowSelect(role: RolesRoleWithPermissions) {
+  onRowSelect(role: ModelsRoleWithPermissions) {
     // Store role
     this.roleStore.role = role;
 
@@ -101,13 +101,13 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/dashboard/admin/roles', role?.id, 'update']);
   }
 
-  onRowDelete(event: Event, role: RolesRoleWithPermissions) {
+  onRowDelete(event: Event, role: ModelsRoleWithPermissions) {
     this.confirmService.showDeleteConfirmation(event, () => this.deleteRole(role))
   }
 
   // Roles
 
-  deleteRole(role: RolesRoleWithPermissions) {
+  deleteRole(role: ModelsRoleWithPermissions) {
     this.loading = true;
     this.rolesService.deleteRole(role.id!).pipe(finalize(() => {
       this.loading = false;

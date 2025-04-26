@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {finalize} from "rxjs";
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
-import {UsersService, UsersUserInputCreate} from "@core/api";
+import {UsersService, ModelsUserInputCreate} from "@core/api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "@shared/services/notification.service";
 
@@ -39,7 +39,7 @@ export class RegisterComponent {
     this.authFormComponent.setLoading(true);
 
     // Retrieving user through Form
-    const user : UsersUserInputCreate = {
+    const user : ModelsUserInputCreate = {
       email: userForm.get('email')?.value,
       password: userForm.get('password-feedback')?.value,
       confirmation: userForm.get('confirmation')?.value,

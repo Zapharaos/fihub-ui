@@ -7,9 +7,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormService} from "@shared/services/form.service";
 import {
-  PermissionsPermission,
+  ModelsPermission,
   PermissionsService,
-  RolesRoleWithPermissions,
+  ModelsRoleWithPermissions,
   RolesService, UsersService,
 } from "@core/api";
 import {Message} from "primeng/message";
@@ -54,8 +54,8 @@ export class FormComponent implements OnInit {
 
   isCreateForm = true;
   loading = true;
-  permissions: PermissionsPermission[] = [];
-  role: RolesRoleWithPermissions = {};
+  permissions: ModelsPermission[] = [];
+  role: ModelsRoleWithPermissions = {};
   submitLabel = '';
   submitIcon = '';
   showSelectedPermissionsOnly = false;
@@ -101,10 +101,10 @@ export class FormComponent implements OnInit {
 
   loadPermissions() {
     this.loading = true;
-    this.permissionsService.getPermissions().pipe(finalize(() => {
+    this.permissionsService.listPermissions().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (permissions: PermissionsPermission[]) => {
+      next: (permissions: ModelsPermission[]) => {
         this.permissions = permissions;
       },
       error: (error: Error) => {
@@ -127,7 +127,7 @@ export class FormComponent implements OnInit {
     // If the role is not loaded, then retrieve it from the API
     const roleID = this.route.snapshot.paramMap.get('id');
     this.rolesService.getRole(roleID!).subscribe({
-      next: (role: RolesRoleWithPermissions) => {
+      next: (role: ModelsRoleWithPermissions) => {
         this.roleStore.role = role;
         this.role = role;
         this.patchForm();
@@ -142,12 +142,12 @@ export class FormComponent implements OnInit {
 
   // Roles
 
-  createRole(role: RolesRoleWithPermissions) {
+  createRole(role: ModelsRoleWithPermissions) {
     this.loading = true;
     this.rolesService.createRole(role).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (r: RolesRoleWithPermissions) => {
+      next: (r: ModelsRoleWithPermissions) => {
         // Success : navigate back to the roles page
         this.router.navigate(['/dashboard/admin/roles']).then(() => {
           this.notificationService.showToastSuccess('admin.roles.messages.create-success', {name: r.name});
@@ -159,12 +159,12 @@ export class FormComponent implements OnInit {
     })
   }
 
-  updateRole(role: RolesRoleWithPermissions) {
+  updateRole(role: ModelsRoleWithPermissions) {
     this.loading = true;
     this.rolesService.updateRole(role.id!, role).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (r: RolesRoleWithPermissions) => {
+      next: (r: ModelsRoleWithPermissions) => {
         // Success : navigate back to the roles page
         firstValueFrom(this.usersService.getUserSelf()).then((user) => {
           this.authService.setCurrentUser(user);
@@ -188,7 +188,7 @@ export class FormComponent implements OnInit {
       return;
     }
 
-    const role: RolesRoleWithPermissions = {
+    const role: ModelsRoleWithPermissions = {
       id: this.role.id,
       name: this.formService.getFormValue().name,
       permissions: this.formService.getFormValue().permissions,

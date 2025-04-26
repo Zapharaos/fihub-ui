@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {
   TransactionsService,
-  TransactionsTransactionInput,
-  TransactionsTransactionType
+  ModelsTransactionInput,
+  ModelsTransactionType
 } from "@core/api";
 import {
   BrokerImageService,
@@ -47,7 +47,7 @@ import {Ripple} from "primeng/ripple";
 })
 export class FormLayoutComponent implements OnInit {
 
-  protected readonly transactionTypes = Object.values(TransactionsTransactionType)
+  protected readonly transactionTypes = Object.values(ModelsTransactionType)
     .map(type => ({ label: type, value: type }));
 
   isCreateForm = true;
@@ -178,7 +178,7 @@ export class FormLayoutComponent implements OnInit {
     }
 
     // Prepare input data
-    const transaction: TransactionsTransactionInput = {
+    const transaction: ModelsTransactionInput = {
       asset: this.formService.getFormValue().asset,
       broker_id: this.formService.getFormValue().broker.id,
       date: this.formService.getFormValue().date,
@@ -198,7 +198,7 @@ export class FormLayoutComponent implements OnInit {
 
   // Transaction
 
-  createTransaction(transaction: TransactionsTransactionInput) {
+  createTransaction(transaction: ModelsTransactionInput) {
     this.loading = true;
     this.transactionsService.createTransaction(transaction).pipe(finalize(() => {
       this.loading = false;
@@ -212,7 +212,7 @@ export class FormLayoutComponent implements OnInit {
     })
   }
 
-  updateTransaction(transaction: TransactionsTransactionInput) {
+  updateTransaction(transaction: ModelsTransactionInput) {
     this.loading = true;
     if (this.transaction?.id) {
       this.transactionsService.updateTransaction(this.transaction.id, transaction).pipe(finalize(() => {
