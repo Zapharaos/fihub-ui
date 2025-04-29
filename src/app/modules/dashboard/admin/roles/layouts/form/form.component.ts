@@ -8,9 +8,9 @@ import {NotificationService} from "@shared/services/notification.service";
 import {FormService} from "@shared/services/form.service";
 import {
   ModelsPermission,
-  PermissionsService,
+  SecurityService,
   ModelsRoleWithPermissions,
-  RolesService, UsersService,
+  UserService,
 } from "@core/api";
 import {Message} from "primeng/message";
 import {NgForOf, NgIf} from "@angular/common";
@@ -66,11 +66,10 @@ export class FormComponent implements OnInit {
     private notificationService: NotificationService,
     private fb: FormBuilder,
     protected formService: FormService,
-    private permissionsService: PermissionsService,
-    private rolesService: RolesService,
+    private securityService: SecurityService,
+    private userService: UserService,
     private roleStore: RoleStore,
     private authService: AuthService,
-    private usersService: UsersService,
   ) {
 
     // Retrieve role ID
@@ -101,7 +100,7 @@ export class FormComponent implements OnInit {
 
   loadPermissions() {
     this.loading = true;
-    this.permissionsService.listPermissions().pipe(finalize(() => {
+    this.securityService.listPermissions().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (permissions: ModelsPermission[]) => {
@@ -126,7 +125,7 @@ export class FormComponent implements OnInit {
 
     // If the role is not loaded, then retrieve it from the API
     const roleID = this.route.snapshot.paramMap.get('id');
-    this.rolesService.getRole(roleID!).subscribe({
+    this.securityService.getRole(roleID!).subscribe({
       next: (role: ModelsRoleWithPermissions) => {
         this.roleStore.role = role;
         this.role = role;
@@ -144,7 +143,7 @@ export class FormComponent implements OnInit {
 
   createRole(role: ModelsRoleWithPermissions) {
     this.loading = true;
-    this.rolesService.createRole(role).pipe(finalize(() => {
+    this.securityService.createRole(role).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (r: ModelsRoleWithPermissions) => {
@@ -161,13 +160,13 @@ export class FormComponent implements OnInit {
 
   updateRole(role: ModelsRoleWithPermissions) {
     this.loading = true;
-    this.rolesService.updateRole(role.id!, role).pipe(finalize(() => {
+    this.securityService.updateRole(role.id!, role).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (r: ModelsRoleWithPermissions) => {
         // Success : navigate back to the roles page
-        firstValueFrom(this.usersService.getUserSelf()).then((user) => {
-          this.authService.setCurrentUser(user);
+        firstValueFrom(this.userService.listRolesWithPermissionsForUser(this.authService.currentUser?.ID!)).then((roles) => {
+          this.authService.setCurrentUserRoles(roles);
           this.authService.setLoaded(true);
           this.router.navigate(['/dashboard/admin/roles']).then(() => {
             this.notificationService.showToastSuccess('admin.roles.messages.update-success', {name: r.name});

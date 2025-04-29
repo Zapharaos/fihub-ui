@@ -19,9 +19,9 @@
           #dt
           id="roles"
           dataKey="id"
-          [value]="showSelectedRolesOnly ? user.roles ?? [] : roles"
+          [value]="showSelectedRolesOnly ? userRoles : roles"
           [globalFilterFields]="tablePropertiesFilter"
-          selectionMode="multiple" [(selection)]="user.roles"
+          selectionMode="multiple" [(selection)]="userRoles"
           (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
           (onHeaderCheckboxToggle)="onHeaderCheckboxToggle($event)"
           [loading]="loading" [showLoader]="false"

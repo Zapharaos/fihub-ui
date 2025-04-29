@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "@core/services/auth.service";
 import {NotificationService} from "@shared/services/notification.service";
 import {TranslatePipe} from "@ngx-translate/core";
-import {UsersService, ModelsUser, ModelsUserInputPassword} from "@core/api";
+import {UserService, ModelsUser, ModelsUserInputPassword} from "@core/api";
 import {handleErrors} from "@shared/utils/errors";
 import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {ConfirmService} from "@shared/services/confirm.service";
@@ -64,7 +64,7 @@ export class AccountComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private usersService: UsersService,
+    private userService: UserService,
     private confirmService: ConfirmService,
     private notificationService: NotificationService,
     protected dialogService: DialogService,
@@ -141,7 +141,7 @@ export class AccountComponent {
     this.authFormComponent.setLoading(true);
 
     // Calling service to update the user details
-    this.usersService.updateUserSelf(userForm.value).pipe(finalize(() => {
+    this.userService.updateUserSelf(userForm.value).pipe(finalize(() => {
       // Call is over
       this.authFormComponent.setLoading(false)
     })).subscribe({
@@ -169,7 +169,7 @@ export class AccountComponent {
     }
 
     // Calling service to update the user details
-    this.usersService.changeUserPassword(user).pipe(finalize(() => {
+    this.userService.updateUserPassword(user).pipe(finalize(() => {
       // Call is over
       this.authFormComponent.setLoading(false)
     })).subscribe({
@@ -185,7 +185,7 @@ export class AccountComponent {
   }
 
   deleteAccount() {
-    this.usersService.deleteUserSelf().subscribe({
+    this.userService.deleteUserSelf().subscribe({
       next: () => {
         this.authService.logout();
         this.router.navigate(['/']).then(() => {

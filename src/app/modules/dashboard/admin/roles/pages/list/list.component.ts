@@ -13,7 +13,7 @@ import {NotificationService} from "@shared/services/notification.service";
 import {PrimeTemplate} from "primeng/api";
 import {
   ModelsRoleWithPermissions,
-  RolesService
+  SecurityService
 } from "@core/api";
 import {finalize} from "rxjs";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -66,7 +66,7 @@ export class ListComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     protected formService: FormService,
-    private rolesService: RolesService,
+    private securityService: SecurityService,
     private roleStore: RoleStore,
     private confirmService: ConfirmService,
   ) { }
@@ -79,7 +79,7 @@ export class ListComponent implements OnInit {
 
   loadRoles() {
     this.loading = true;
-    this.rolesService.getRoles().pipe(finalize(() => {
+    this.securityService.listRoles().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (roles: ModelsRoleWithPermissions[]) => {
@@ -112,7 +112,7 @@ export class ListComponent implements OnInit {
 
   deleteRole(role: ModelsRoleWithPermissions) {
     this.loading = true;
-    this.rolesService.deleteRole(role.id!).pipe(finalize(() => {
+    this.securityService.deleteRole(role.id!).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {

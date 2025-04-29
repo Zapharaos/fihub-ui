@@ -2,7 +2,7 @@ import {CanActivateFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
 import {finalize, Observable} from "rxjs";
 import {AuthService} from "@core/services/auth.service";
-import {UsersService} from "@core/api";
+import {UserService} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {ResponseError} from "@shared/utils/errors";
 
@@ -23,7 +23,7 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
 
 export const authGuard: CanActivateFn = (_route, state) => {
   const authService = inject(AuthService);
-  const userService = inject(UsersService);
+  const userService = inject(UserService);
   const notificationService = inject(NotificationService);
   const router = inject(Router);
 
@@ -40,9 +40,23 @@ export const authGuard: CanActivateFn = (_route, state) => {
         })
       ).subscribe({
         next: user => {
-          authService.setCurrentUser(user);
-          subscriber.next(true);
-          subscriber.complete();
+          userService.listRolesWithPermissionsForUser(user.ID!).subscribe({
+            next: roles => {
+              authService.setCurrentUser(user, roles);
+              subscriber.next(true);
+              subscriber.complete();
+            },
+            error: (error: ResponseError) => {
+              if (error.status === 401) {
+                authService.logout();
+                router.navigate(['/auth']).then(() => {
+                  notificationService.showToastWarn('auth.messages.session-expired');
+                })
+              }
+              subscriber.next(false);
+              subscriber.complete();
+            }
+          });
         },
         error: (error: ResponseError) => {
           if (error.status === 401) {

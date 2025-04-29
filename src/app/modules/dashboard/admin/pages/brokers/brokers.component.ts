@@ -11,7 +11,7 @@ import {applyFilterGlobal} from "@shared/utils/table";
 import {Table, TableModule} from "primeng/table";
 import {NotificationService} from "@shared/services/notification.service";
 import {PrimeTemplate} from "primeng/api";
-import {BrokerImagesService, ModelsBroker, BrokersService} from "@core/api";
+import {ModelsBroker, BrokerService} from "@core/api";
 import {finalize} from "rxjs";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Tag} from "primeng/tag";
@@ -86,8 +86,7 @@ export class BrokersComponent implements OnInit {
     private translateService: TranslateService,
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
-    private brokersService: BrokersService,
-    private brokerImagesService: BrokerImagesService,
+    private brokerService: BrokerService,
     private brokerImageService: BrokerImageService,
     private fb: FormBuilder,
     protected dialogService: DialogService,
@@ -194,7 +193,7 @@ export class BrokersComponent implements OnInit {
 
   deleteBroker(broker: ModelsBroker) {
     this.loading = true;
-    this.brokersService.deleteBroker(broker.id ?? '').pipe(finalize(() => {
+    this.brokerService.deleteBroker(broker.id ?? '').pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {
@@ -212,7 +211,7 @@ export class BrokersComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.brokersService.createBroker(this.formService.getFormValue()).pipe(finalize(() => {
+    this.brokerService.createBroker(this.formService.getFormValue()).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (broker: ModelsBroker) => {
@@ -232,7 +231,7 @@ export class BrokersComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.brokersService.updateBroker(this.broker.id!, this.formService.getFormValue()).pipe(finalize(() => {
+    this.brokerService.updateBroker(this.broker.id!, this.formService.getFormValue()).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: (broker: ModelsBroker) => {
@@ -273,7 +272,7 @@ export class BrokersComponent implements OnInit {
   }
 
   createBrokerImage(event: FileUploadHandlerEvent) {
-    this.brokerImagesService.createBrokerImage(this.broker.id!, event.files[0]).pipe(finalize(() => {
+    this.brokerService.createBrokerImage(this.broker.id!, event.files[0]).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {
@@ -290,7 +289,7 @@ export class BrokersComponent implements OnInit {
   }
 
   updateBrokerImage(event: FileUploadHandlerEvent) {
-    this.brokerImagesService.updateBrokerImage(this.broker.id!, this.broker.image_id!, event.files[0]).pipe(finalize(() => {
+    this.brokerService.updateBrokerImage(this.broker.id!, this.broker.image_id!, event.files[0]).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {

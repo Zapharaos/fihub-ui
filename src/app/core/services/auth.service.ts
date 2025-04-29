@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ModelsUserWithRoles} from "@core/api";
+import {ModelsUser, ModelsRoleWithPermissions} from "@core/api";
 import {hasPermissions} from "@shared/utils/permissions";
 import {BehaviorSubject} from "rxjs";
 
@@ -7,7 +7,8 @@ import {BehaviorSubject} from "rxjs";
   providedIn: 'root'
 })
 export class AuthService {
-  currentUser: ModelsUserWithRoles | undefined;
+  currentUser: ModelsUser | undefined;
+  currentUserRoles: ModelsRoleWithPermissions[] = [];
   redirectUrl?: string;
   private loaded = false;
   private _permissions = new BehaviorSubject<Set<string>>(new Set<string>());
@@ -41,13 +42,17 @@ export class AuthService {
     return !!this.currentUser;
   }
 
-  setCurrentUser(user?: ModelsUserWithRoles) {
+  setCurrentUser(user?: ModelsUser, roles?: ModelsRoleWithPermissions[]): void {
     this.currentUser = user;
+    this.setCurrentUserRoles(roles ?? []);
+  }
 
+  setCurrentUserRoles(roles: ModelsRoleWithPermissions[]): void {
+    this.currentUserRoles = roles;
     // Load permissions from the user roles
     this.permissions.clear();
-    if (user && user.roles) {
-      for (const role of user.roles) {
+    if (roles) {
+      for (const role of roles) {
         if (role.permissions) {
           for (const permission of role.permissions) {
             if (permission.value) {
@@ -70,12 +75,12 @@ export class AuthService {
   }
 
   currentUserHasRole(role: string): boolean {
-    if (!this.currentUser || !this.currentUser.roles) {
+    if (!this.currentUser || !this.currentUserRoles) {
       return false;
     }
 
-    for (const roleKey in this.currentUser.roles) {
-      if (this.currentUser.roles[roleKey].name === role) {
+    for (const roleKey in this.currentUserRoles) {
+      if (this.currentUserRoles[roleKey].name === role) {
         return true;
       }
     }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ModelsBroker, ModelsBrokerUserInput, BrokerUserService} from "@core/api";
+import {ModelsBroker, ModelsBrokerUserInput, BrokerService} from "@core/api";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
@@ -58,7 +58,7 @@ export class AddComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private brokerUserService: BrokerUserService,
+    private brokerService: BrokerService,
     private fb: FormBuilder,
     protected formService: FormService,
     private brokerImageService: BrokerImageService,
@@ -118,7 +118,7 @@ export class AddComponent implements OnInit {
     }
 
     // Call API
-    this.brokerUserService.createUserBroker(brokerUser).pipe(finalize(() => {
+    this.brokerService.createUserBroker(brokerUser).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {

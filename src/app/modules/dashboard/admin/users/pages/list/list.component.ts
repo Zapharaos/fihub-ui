@@ -12,7 +12,7 @@ import {Table, TableModule} from "primeng/table";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {UsersService, ModelsUserWithRoles} from "@core/api";
+import {UserService, ModelsUser, SecurityService} from "@core/api";
 import {finalize} from "rxjs";
 import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
@@ -47,15 +47,16 @@ export class ListComponent implements OnInit {
   loading = true;
 
   // Table
-  user!: ModelsUserWithRoles;
-  users: ModelsUserWithRoles[] = []
+  user!: ModelsUser;
+  users: ModelsUser[] = []
   @ViewChild('dt') dt: Table | undefined;
 
   protected readonly tablePropertiesFilter = ['email', 'roleValues', 'created_at', 'updated_at'];
 
   constructor(
     private router: Router,
-    private usersService: UsersService,
+    private securityService: SecurityService,
+    private userService: UserService,
     private notificationService: NotificationService,
     private usersStore: UserStore
   ) { }
@@ -67,11 +68,12 @@ export class ListComponent implements OnInit {
   // Load
 
   loadUsers() {
+    // TODO : bind security result to user
     this.loading = true;
-    this.usersService.getAllUsersWithRoles().pipe(finalize(() => {
+    this.securityService.listUsersWithRoles().pipe(finalize(() => {
       this.loading = false
     })).subscribe({
-      next: (users: ModelsUserWithRoles[]) => {
+      next: (users: ModelsUser[]) => {
         this.users = users;
       },
       error: (error) => {
