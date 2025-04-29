@@ -12,7 +12,7 @@ import {Table, TableModule} from "primeng/table";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {UserService, ModelsUser, SecurityService} from "@core/api";
+import {UserService, ModelsUser, SecurityService, ModelsUserWithRoles} from "@core/api";
 import {finalize} from "rxjs";
 import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
@@ -68,12 +68,11 @@ export class ListComponent implements OnInit {
   // Load
 
   loadUsers() {
-    // TODO : bind security result to user
     this.loading = true;
     this.securityService.listUsersWithRoles().pipe(finalize(() => {
       this.loading = false
     })).subscribe({
-      next: (users: ModelsUser[]) => {
+      next: (users: ModelsUserWithRoles[]) => {
         this.users = users;
       },
       error: (error) => {

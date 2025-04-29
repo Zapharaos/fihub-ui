@@ -20,12 +20,12 @@ export class UserStore {
     this._user.next(val ?? null);
   }
 
-  get roles(): ModelsRoleWithPermissions[] {
-    return this._roles.getValue() ?? [];
+  get roles(): ModelsRoleWithPermissions[] | undefined {
+    return this._roles.getValue() ?? undefined;
   }
 
-  set roles(val: ModelsRoleWithPermissions[]) {
-    this._roles.next(val ?? []);
+  set roles(val: ModelsRoleWithPermissions[] | undefined) {
+    this._roles.next(val ?? null);
   }
 
   updateUser(update: ModelsUser) {

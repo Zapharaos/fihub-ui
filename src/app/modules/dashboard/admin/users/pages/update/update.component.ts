@@ -94,10 +94,11 @@ export class UpdateComponent implements OnInit {
 
         // If the user is not loaded, then retrieve it from the API
         const userID = this.route.snapshot.paramMap.get('id');
+        this.userID = userID;
         this.securityService.listRolesWithPermissionsForUser(userID!).subscribe({
             next: (roles: ModelsRoleWithPermissions[]) => {
                 this.userStore.roles = roles;
-                this.roles = roles;
+                this.userRoles = roles;
                 this.patchForm();
             },
             error: (error: Error) => {
@@ -131,9 +132,9 @@ export class UpdateComponent implements OnInit {
         })).subscribe({
             next: () => {
                 // Success : navigate back to the users page
-                firstValueFrom(this.userService.getUserSelf()).then((user) => {
-                  // TODO : check if still works
-                  this.authService.setCurrentUser(user);
+                firstValueFrom(this.userService.listRolesWithPermissionsForUser(userID)).then((roles) => {
+                  this.authService.setCurrentUserRoles(roles);
+                  this.userStore.roles = roles;
                   this.authService.setLoaded(true);
                   this.router.navigate(['/dashboard/admin/users']).then(() => {
                     this.notificationService.showToastSuccess('admin.users.messages.update-success')
