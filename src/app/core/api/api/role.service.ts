@@ -21,7 +21,7 @@ import { ModelsPermission } from '../model/modelsPermission';
 // @ts-ignore
 import { ModelsRoleWithPermissions } from '../model/modelsRoleWithPermissions';
 // @ts-ignore
-import { ModelsUser } from '../model/modelsUser';
+import { ModelsUserWithRoles } from '../model/modelsUserWithRoles';
 // @ts-ignore
 import { RenderErrorResponse } from '../model/renderErrorResponse';
 
@@ -698,9 +698,9 @@ export class RoleService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public listUsersWithRoles(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ModelsUser>>;
-    public listUsersWithRoles(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ModelsUser>>>;
-    public listUsersWithRoles(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ModelsUser>>>;
+    public listUsersWithRoles(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ModelsUserWithRoles>>;
+    public listUsersWithRoles(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ModelsUserWithRoles>>>;
+    public listUsersWithRoles(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ModelsUserWithRoles>>>;
     public listUsersWithRoles(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -747,7 +747,7 @@ export class RoleService {
         }
 
         let localVarPath = `/api/v1/security/role/user`;
-        return this.httpClient.request<Array<ModelsUser>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<ModelsUserWithRoles>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

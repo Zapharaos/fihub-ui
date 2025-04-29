@@ -1,6 +1,7 @@
 .gitignore
 .openapi-generator-ignore
 README.md
+api.base.service.ts
 api.module.ts
 api/api.ts
 api/auth.service.ts
@@ -24,6 +25,7 @@ model/modelsBrokerUserInput.ts
 model/modelsPasswordInputRequest.ts
 model/modelsPasswordResponseRequest.ts
 model/modelsPermission.ts
+model/modelsRole.ts
 model/modelsRoleWithPermissions.ts
 model/modelsTransaction.ts
 model/modelsTransactionInput.ts
@@ -32,6 +34,7 @@ model/modelsUser.ts
 model/modelsUserInputCreate.ts
 model/modelsUserInputPassword.ts
 model/modelsUserWithPassword.ts
+model/modelsUserWithRoles.ts
 model/renderErrorResponse.ts
 param.ts
 variables.ts
