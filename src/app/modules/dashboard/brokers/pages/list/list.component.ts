@@ -8,7 +8,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {finalize} from "rxjs";
-import {BrokerUserService, ModelsBrokerUser} from "@core/api";
+import {BrokerService, ModelsBrokerUser} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {RouterLink} from "@angular/router";
 import {
@@ -56,7 +56,7 @@ export class ListComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
-    private brokerUserService: BrokerUserService,
+    private brokerService: BrokerService,
     private brokerImageService: BrokerImageService,
   ) { }
 
@@ -83,7 +83,7 @@ export class ListComponent implements OnInit {
   deleteBroker(broker: ModelsBrokerUser) {
     this.loading = true;
     if (broker.broker?.id) {
-      this.brokerUserService.deleteUserBroker(broker.broker.id).pipe(finalize(() => {
+      this.brokerService.deleteUserBroker(broker.broker.id).pipe(finalize(() => {
         this.loading = false;
       })).subscribe({
         next: () => {

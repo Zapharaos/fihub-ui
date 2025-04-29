@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AuthJwtToken, UsersService, ModelsUser, ModelsUserWithPassword} from "@core/api";
+import {AuthJwtToken, UserService, ModelsUser, ModelsUserWithPassword, ModelsRoleWithPermissions} from "@core/api";
 import {firstValueFrom, from, Observable} from "rxjs";
 import {AuthService as JwtAuthService} from "@core/api/api/auth.service";
 import {AuthService} from "@core/services/auth.service";
@@ -11,7 +11,7 @@ export class LoginService {
 
   constructor(
     private authService: AuthService,
-    private usersService: UsersService,
+    private userService: UserService,
     private JwtAuthService: JwtAuthService
   ) {
   }
@@ -33,9 +33,10 @@ export class LoginService {
       // Set token
       this.authService.setToken(jwt.token);
 
-      // Get current user
-      const user = await firstValueFrom(this.usersService.getUserSelf());
-      this.authService.setCurrentUser(user);
+      // Get current user and his roles
+      const user = await firstValueFrom(this.userService.getUserSelf());
+      const userRoles = await firstValueFrom(this.userService.listRolesWithPermissionsForUser(user.ID!))
+      this.authService.setCurrentUser(user, userRoles);
       this.authService.setLoaded(true);
 
       return user;

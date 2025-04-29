@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {FormService} from "@shared/services/form.service";
-import {ModelsRoleWithPermissions, RolesService, UsersService, ModelsUserWithRoles} from "@core/api";
+import {ModelsRoleWithPermissions, SecurityService, UserService} from "@core/api";
 import {notEmptyValidator} from "@shared/validators/array";
 import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
 import {handleErrors} from "@shared/utils/errors";
@@ -50,7 +50,8 @@ export class UpdateComponent implements OnInit {
 
     loading = true;
     roles: ModelsRoleWithPermissions[] = [];
-    user: ModelsUserWithRoles = {};
+    userID: string | null = null;
+    userRoles: ModelsRoleWithPermissions[] = [];
     showSelectedRolesOnly = false;
 
     constructor(
@@ -60,13 +61,13 @@ export class UpdateComponent implements OnInit {
         private fb: FormBuilder,
         protected formService: FormService,
         private userStore: UserStore,
-        private userService: UsersService,
-        private rolesService: RolesService,
+        private securityService: SecurityService,
+        private userService: UserService,
         private authService: AuthService
     ) {
        // Init form
         this.formService.init(this.fb.group({
-            roles: [this.user.roles, notEmptyValidator()]
+            roles: [this.userRoles, notEmptyValidator()]
         }));
 
         this.loadUser();
@@ -79,20 +80,24 @@ export class UpdateComponent implements OnInit {
     loadUser() {
         // Retrieve user data
         const user = this.userStore.user;
+        const roles = this.userStore.roles;
 
         // If the user is already loaded
         if (user) {
-            this.user = user;
+            this.userID = user.ID ?? null;
+        }
+        if (roles) {
+            this.userRoles = roles;
             this.patchForm();
             return;
         }
 
         // If the user is not loaded, then retrieve it from the API
         const userID = this.route.snapshot.paramMap.get('id');
-        this.userService.getUser(userID!).subscribe({
-            next: (user: ModelsUserWithRoles) => {
-                this.userStore.user = user;
-                this.user = user;
+        this.securityService.listRolesWithPermissionsForUser(userID!).subscribe({
+            next: (roles: ModelsRoleWithPermissions[]) => {
+                this.userStore.roles = roles;
+                this.roles = roles;
                 this.patchForm();
             },
             error: (error: Error) => {
@@ -105,7 +110,7 @@ export class UpdateComponent implements OnInit {
 
     loadRoles() {
         this.loading = true;
-        this.rolesService.getRoles().pipe(finalize(() => {
+        this.securityService.listRoles().pipe(finalize(() => {
             this.loading = false;
         })).subscribe({
             next: (roles: ModelsRoleWithPermissions[]) => {
@@ -119,14 +124,15 @@ export class UpdateComponent implements OnInit {
 
     // User
 
-    setRoles(user: ModelsUserWithRoles) {
+    setRoles(userID: string, roleIDs: string[]) {
         this.loading = true;
-        this.userService.setUser(user.ID!, user).pipe(finalize(() => {
+        this.securityService.setRolesForUser(userID, roleIDs).pipe(finalize(() => {
             this.loading = false;
         })).subscribe({
             next: () => {
                 // Success : navigate back to the users page
                 firstValueFrom(this.userService.getUserSelf()).then((user) => {
+                  // TODO : check if still works
                   this.authService.setCurrentUser(user);
                   this.authService.setLoaded(true);
                   this.router.navigate(['/dashboard/admin/users']).then(() => {
@@ -148,42 +154,39 @@ export class UpdateComponent implements OnInit {
             return;
         }
 
-        const user: ModelsUserWithRoles = {
-            ID: this.user.ID,
-            roles: this.formService.getFormValue().roles,
-        }
+        const roleIDs = this.formService.getFormValue().roles.map((role: ModelsRoleWithPermissions) => role.id);
 
         // Call API
-        this.setRoles(user)
+        this.setRoles(this.userID!, roleIDs)
     }
 
     patchForm() {
         this.formService.patchValue({
-            roles: this.user.roles
+            roles: this.userRoles
         });
     }
 
     // Table
 
     onRowSelect(event: TableRowSelectEvent) {
-        if (!this.user.roles?.some(p => p.id === event.data.id)) {
-            this.user.roles?.push(event.data);
+        if (!this.userRoles?.some(p => p.id === event.data.id)) {
+            this.userRoles?.push(event.data);
         }
-        this.formService.setControlValue('roles', this.user.roles, true);
+        this.formService.setControlValue('roles', this.userRoles, true);
     }
 
     onRowUnselect(event: TableRowSelectEvent) {
-        this.user.roles = this.user.roles?.filter(p => p.id !== event.data.id);
-        this.formService.setControlValue('roles', this.user.roles, true);
+        this.userRoles = this.userRoles?.filter(p => p.id !== event.data.id);
+        this.formService.setControlValue('roles', this.userRoles, true);
     }
 
     onHeaderCheckboxToggle(event: { checked: boolean }) {
         if (event.checked) {
-            this.user.roles = this.roles;
+            this.userRoles = this.roles;
         } else {
-            this.user.roles = [];
+            this.userRoles = [];
         }
-        this.formService.setControlValue('roles', this.user.roles);
+        this.formService.setControlValue('roles', this.userRoles);
     }
 
     toggleSelectedRolesOnly() {

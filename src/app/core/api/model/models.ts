@@ -14,5 +14,4 @@ export * from './modelsUser';
 export * from './modelsUserInputCreate';
 export * from './modelsUserInputPassword';
 export * from './modelsUserWithPassword';
-export * from './modelsUserWithRoles';
 export * from './renderErrorResponse';

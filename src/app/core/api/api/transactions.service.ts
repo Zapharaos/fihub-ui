@@ -161,7 +161,7 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions`;
+        let localVarPath = `/api/v1/transaction`;
         return this.httpClient.request<ModelsTransaction>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -234,7 +234,7 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/v1/transaction/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<Array<string>>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -306,7 +306,7 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/v1/transaction/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<ModelsTransaction>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -374,7 +374,7 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions`;
+        let localVarPath = `/api/v1/transaction`;
         return this.httpClient.request<Array<ModelsTransaction>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -459,7 +459,7 @@ export class TransactionsService {
             }
         }
 
-        let localVarPath = `/api/v1/transactions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/v1/transaction/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<ModelsTransaction>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

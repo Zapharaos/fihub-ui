@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {ModelsUserWithRoles} from "@core/api";
+import {ModelsUser, ModelsRoleWithPermissions} from "@core/api";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserStore {
 
-  private readonly _user = new BehaviorSubject<ModelsUserWithRoles | null>(null);
+  private readonly _user = new BehaviorSubject<ModelsUser | null>(null);
   readonly user$ = this._user.asObservable();
+  private readonly _roles = new BehaviorSubject<ModelsRoleWithPermissions[] | null>(null);
+  readonly roles$ = this._roles.asObservable();
 
-  get user(): ModelsUserWithRoles | undefined {
+  get user(): ModelsUser | undefined {
     return this._user.getValue() ?? undefined;
   }
 
-  set user(val: ModelsUserWithRoles | undefined) {
+  set user(val: ModelsUser | undefined) {
     this._user.next(val ?? null);
   }
 
-  updateUser(update: ModelsUserWithRoles) {
+  get roles(): ModelsRoleWithPermissions[] {
+    return this._roles.getValue() ?? [];
+  }
+
+  set roles(val: ModelsRoleWithPermissions[]) {
+    this._roles.next(val ?? []);
+  }
+
+  updateUser(update: ModelsUser) {
     if (this.user && this.user.ID === update.ID) {
       this.user = update;
     }
