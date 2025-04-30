@@ -17,7 +17,6 @@ import {finalize} from "rxjs";
 import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
 import {Tag} from "primeng/tag";
-import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
 import {DialogMode} from "@shared/services/dialog.service";
 import {PermissionDirective} from "@shared/directives/permission.directive";
 
@@ -56,9 +55,7 @@ export class ListComponent implements OnInit {
   constructor(
     private router: Router,
     private securityService: SecurityService,
-    private userService: UserService,
     private notificationService: NotificationService,
-    private usersStore: UserStore
   ) { }
 
   ngOnInit() {
@@ -84,7 +81,6 @@ export class ListComponent implements OnInit {
   // Table
 
   onRowSelect() {
-    this.usersStore.user = this.user;
     this.router.navigate([`/dashboard/admin/users/${this.user.ID}/update`]);
   }
 

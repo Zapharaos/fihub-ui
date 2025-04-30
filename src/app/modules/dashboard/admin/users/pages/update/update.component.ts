@@ -8,7 +8,6 @@ import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {FormService} from "@shared/services/form.service";
 import {ModelsRoleWithPermissions, SecurityService, UserService} from "@core/api";
 import {notEmptyValidator} from "@shared/validators/array";
-import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
 import {handleErrors} from "@shared/utils/errors";
 import {finalize, firstValueFrom} from "rxjs";
 import {TableModule, TableRowSelectEvent} from "primeng/table";
@@ -60,7 +59,6 @@ export class UpdateComponent implements OnInit {
         private notificationService: NotificationService,
         private fb: FormBuilder,
         protected formService: FormService,
-        private userStore: UserStore,
         private securityService: SecurityService,
         private userService: UserService,
         private authService: AuthService
@@ -78,26 +76,20 @@ export class UpdateComponent implements OnInit {
     }
 
     loadUser() {
-        // Retrieve user data
-        const user = this.userStore.user;
-        const roles = this.userStore.roles;
 
-        // If the user is already loaded
-        if (user) {
-            this.userID = user.ID ?? null;
-        }
-        if (roles) {
-            this.userRoles = roles;
-            this.patchForm();
-            return;
+       this.userID = this.route.snapshot.paramMap.get('id');
+
+        // If requested user is the current user, then we do not need to load it
+        if (this.userID === this.authService.currentUser?.ID) {
+          // Retrieve user data
+          this.userRoles = this.authService.currentUserRoles;
+          this.patchForm();
+          return;
         }
 
         // If the user is not loaded, then retrieve it from the API
-        const userID = this.route.snapshot.paramMap.get('id');
-        this.userID = userID;
-        this.securityService.listRolesWithPermissionsForUser(userID!).subscribe({
+        this.securityService.listRolesWithPermissionsForUser(this.userID!).subscribe({
             next: (roles: ModelsRoleWithPermissions[]) => {
-                this.userStore.roles = roles;
                 this.userRoles = roles;
                 this.patchForm();
             },
@@ -133,9 +125,9 @@ export class UpdateComponent implements OnInit {
             next: () => {
                 // Success : navigate back to the users page
                 firstValueFrom(this.userService.listRolesWithPermissionsForUser(userID)).then((roles) => {
-                  this.authService.setCurrentUserRoles(roles);
-                  this.userStore.roles = roles;
-                  this.authService.setLoaded(true);
+                  if (this.userID === this.authService.currentUser?.ID) {
+                    this.authService.setCurrentUserRoles(roles);
+                  }
                   this.router.navigate(['/dashboard/admin/users']).then(() => {
                     this.notificationService.showToastSuccess('admin.users.messages.update-success')
                   })
