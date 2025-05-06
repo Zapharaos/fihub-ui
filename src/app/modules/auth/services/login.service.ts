@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AuthJwtToken, UserService, ModelsUser, ModelsUserWithPassword, ModelsRoleWithPermissions} from "@core/api";
+import {UserService, ModelsUser, ModelsUserWithPassword} from "@core/api";
 import {firstValueFrom, from, Observable} from "rxjs";
 import {AuthService as JwtAuthService} from "@core/api/api/auth.service";
 import {AuthService} from "@core/services/auth.service";
@@ -23,15 +23,15 @@ export class LoginService {
     })());
   }
 
-  private setToken(jwt: AuthJwtToken): Observable<ModelsUser> {
+  private setToken(jwt: string): Observable<ModelsUser> {
     return from((async () => {
 
-      if (!jwt.token) {
+      if (!jwt) {
         throw new Error('Token is missing');
       }
 
       // Set token
-      this.authService.setToken(jwt.token);
+      this.authService.setToken(jwt);
 
       // Get current user and his roles
       const user = await firstValueFrom(this.userService.getUserSelf());

@@ -17,8 +17,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { AuthJwtToken } from '../model/authJwtToken';
-// @ts-ignore
 import { ModelsPasswordInputRequest } from '../model/modelsPasswordInputRequest';
 // @ts-ignore
 import { ModelsPasswordResponseRequest } from '../model/modelsPasswordResponseRequest';
@@ -259,9 +257,9 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getToken(user: ModelsUserWithPassword, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<AuthJwtToken>;
-    public getToken(user: ModelsUserWithPassword, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AuthJwtToken>>;
-    public getToken(user: ModelsUserWithPassword, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AuthJwtToken>>;
+    public getToken(user: ModelsUserWithPassword, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
+    public getToken(user: ModelsUserWithPassword, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
+    public getToken(user: ModelsUserWithPassword, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
     public getToken(user: ModelsUserWithPassword, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (user === null || user === undefined) {
             throw new Error('Required parameter user was null or undefined when calling getToken.');
@@ -320,7 +318,7 @@ export class AuthService {
         }
 
         let localVarPath = `/api/v1/auth/token`;
-        return this.httpClient.request<AuthJwtToken>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: user,
