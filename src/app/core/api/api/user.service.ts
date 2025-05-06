@@ -257,7 +257,7 @@ export class UserService {
             }
         }
 
-        let localVarPath = `/api/v1/user`;
+        let localVarPath = `/api/v1/auth/register`;
         return this.httpClient.request<ModelsUser>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
