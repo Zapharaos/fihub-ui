@@ -12,7 +12,7 @@ import {Table, TableModule} from "primeng/table";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {UserService, ModelsUser, SecurityService, ModelsUserWithRoles} from "@core/api";
+import {ModelsUser, SecurityService, ModelsUserWithRoles} from "@core/api";
 import {finalize} from "rxjs";
 import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
