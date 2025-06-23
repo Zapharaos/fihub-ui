@@ -11,7 +11,7 @@ import {applyFilterGlobal} from "@shared/utils/table";
 import {Table, TableModule} from "primeng/table";
 import {NotificationService} from "@shared/services/notification.service";
 import {PrimeTemplate} from "primeng/api";
-import {BrokerImagesService, BrokersBroker, BrokersService} from "@core/api";
+import {ModelsBroker, BrokerService} from "@core/api";
 import {finalize} from "rxjs";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Tag} from "primeng/tag";
@@ -86,8 +86,7 @@ export class BrokersComponent implements OnInit {
     private translateService: TranslateService,
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
-    private brokersService: BrokersService,
-    private brokerImagesService: BrokerImagesService,
+    private brokerService: BrokerService,
     private brokerImageService: BrokerImageService,
     private fb: FormBuilder,
     protected dialogService: DialogService,
@@ -134,7 +133,7 @@ export class BrokersComponent implements OnInit {
     this.brokerImageService.getBrokersWithImages().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (brokers: BrokersBroker[]) => {
+      next: (brokers: ModelsBroker[]) => {
         this.brokers = brokers;
       },
       error: (error: Error) => {
@@ -159,13 +158,17 @@ export class BrokersComponent implements OnInit {
     this.openDialog(DialogMode.UPDATE, this.broker);
   }
 
-  onRowDelete(event: Event, broker:  BrokersBroker) {
-    this.confirmService.showDeleteConfirmation(event, () => this.deleteBroker(broker))
+  onRowDelete(event: Event, broker:  ModelsBroker) {
+    this.confirmService.showDeleteConfirmation({
+      event: event,
+      message: 'brokers.messages.delete-confirmation',
+      accept: () => this.deleteBroker(broker),
+    })
   }
 
   // Dialog
 
-  openDialog(dialogMode: DialogMode, broker?: BrokersBroker) {
+  openDialog(dialogMode: DialogMode, broker?: ModelsBroker) {
     this.dialogService.open(dialogMode);
 
     switch (dialogMode) {
@@ -188,9 +191,9 @@ export class BrokersComponent implements OnInit {
 
   // Brokers
 
-  deleteBroker(broker: BrokersBroker) {
+  deleteBroker(broker: ModelsBroker) {
     this.loading = true;
-    this.brokersService.deleteBroker(broker.id ?? '').pipe(finalize(() => {
+    this.brokerService.deleteBroker(broker.id ?? '').pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {
@@ -208,10 +211,10 @@ export class BrokersComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.brokersService.createBroker(this.formService.getFormValue()).pipe(finalize(() => {
+    this.brokerService.createBroker(this.formService.getFormValue()).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (broker: BrokersBroker) => {
+      next: (broker: ModelsBroker) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.create-success', {name: broker.name});
         this.dialogService.open(DialogMode.IMAGE);
@@ -228,10 +231,10 @@ export class BrokersComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.brokersService.updateBroker(this.broker.id!, this.formService.getFormValue()).pipe(finalize(() => {
+    this.brokerService.updateBroker(this.broker.id!, this.formService.getFormValue()).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (broker: BrokersBroker) => {
+      next: (broker: ModelsBroker) => {
         this.loadBrokers();
         this.notificationService.showToastSuccess('admin.brokers.messages.update-success', {name: broker.name});
         this.dialogService.close();
@@ -269,7 +272,7 @@ export class BrokersComponent implements OnInit {
   }
 
   createBrokerImage(event: FileUploadHandlerEvent) {
-    this.brokerImagesService.createBrokerImage(this.broker.id!, event.files[0]).pipe(finalize(() => {
+    this.brokerService.createBrokerImage(this.broker.id!, event.files[0]).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {
@@ -286,7 +289,7 @@ export class BrokersComponent implements OnInit {
   }
 
   updateBrokerImage(event: FileUploadHandlerEvent) {
-    this.brokerImagesService.updateBrokerImage(this.broker.id!, this.broker.image_id!, event.files[0]).pipe(finalize(() => {
+    this.brokerService.updateBrokerImage(this.broker.id!, this.broker.image_id!, event.files[0]).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {

@@ -7,14 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RolesRoleWithPermissions } from './rolesRoleWithPermissions';
 
 
-export interface UsersUserWithRoles { 
-    created_at?: string;
-    email?: string;
+export interface ModelsBroker { 
+    disabled?: boolean;
     id?: string;
-    roles?: Array<RolesRoleWithPermissions>;
-    updated_at?: string;
+    image_id?: string;
+    name?: string;
 }
 

@@ -27,6 +27,7 @@ export class DashboardLayoutComponent {
         label: 'admin.title',
         icon: 'pi-users',
         subItemsInvisible: true,
+        permission: 'front.admin.overview',
         items: [
           {
             label: 'admin.overview.title',

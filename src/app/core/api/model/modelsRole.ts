@@ -9,13 +9,8 @@
  */
 
 
-export interface UsersUserInput { 
-    checkbox?: boolean;
-    confirmation?: string;
-    created_at?: string;
-    email?: string;
+export interface ModelsRole { 
     id?: string;
-    password?: string;
-    updated_at?: string;
+    name?: string;
 }
 
