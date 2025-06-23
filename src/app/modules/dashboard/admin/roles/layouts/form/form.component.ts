@@ -165,7 +165,7 @@ export class FormComponent implements OnInit {
     })).subscribe({
       next: (r: ModelsRoleWithPermissions) => {
         // Success : navigate back to the roles page
-        firstValueFrom(this.userService.listRolesWithPermissionsForUser(this.authService.currentUser?.ID!)).then((roles) => {
+        firstValueFrom(this.userService.listRolesWithPermissionsForUser(this.authService.currentUser?.ID ?? '')).then((roles) => {
           this.authService.setCurrentUserRoles(roles);
           this.authService.setLoaded(true);
           this.router.navigate(['/dashboard/admin/roles']).then(() => {
