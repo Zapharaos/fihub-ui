@@ -19,13 +19,13 @@
           #dt
           id="roles"
           dataKey="id"
-          [value]="showSelectedRolesOnly ? user.roles ?? [] : roles"
+          [value]="showSelectedRolesOnly ? userRoles : roles"
           [globalFilterFields]="tablePropertiesFilter"
-          selectionMode="multiple" [(selection)]="user.roles"
+          selectionMode="multiple" [(selection)]="userRoles"
           (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
           (onHeaderCheckboxToggle)="onHeaderCheckboxToggle($event)"
           [loading]="loading" [showLoader]="false"
-          [rowHover]="true" [styleClass]="'checkable-override-selectable'" [size]="'large'"
+          [rowHover]="true" [styleClass]="'checkable-override-selectable p-datatable-lg'"
           [sortMode]="'multiple'" [multiSortMeta]="[{field: 'value', order: 1}]"
           [paginator]="true" [rows]="25" [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true"
         >

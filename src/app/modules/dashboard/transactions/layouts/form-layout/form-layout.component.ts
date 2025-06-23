@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {
   TransactionsService,
-  TransactionsTransactionInput,
-  TransactionsTransactionType
+  ModelsTransactionInput,
+  ModelsTransactionType
 } from "@core/api";
 import {
   BrokerImageService,
@@ -26,7 +26,6 @@ import {InputText} from "primeng/inputtext";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionStore} from "@modules/dashboard/transactions/stores/transaction.service";
 import {handleErrors, ResponseError} from "@shared/utils/errors";
-import {Ripple} from "primeng/ripple";
 
 @Component({
     selector: 'app-transactions-form-layout',
@@ -40,14 +39,13 @@ import {Ripple} from "primeng/ripple";
     InputNumber,
     InputText,
     Button,
-    Ripple
   ],
     templateUrl: './form-layout.component.html',
     styleUrl: './form-layout.component.scss'
 })
 export class FormLayoutComponent implements OnInit {
 
-  protected readonly transactionTypes = Object.values(TransactionsTransactionType)
+  protected readonly transactionTypes = Object.values(ModelsTransactionType)
     .map(type => ({ label: type, value: type }));
 
   isCreateForm = true;
@@ -55,7 +53,6 @@ export class FormLayoutComponent implements OnInit {
   brokers!: BrokerWithImage[];
   transaction: TransactionWithImage | undefined;
   submitLabel = '';
-  submitIcon = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -75,11 +72,9 @@ export class FormLayoutComponent implements OnInit {
     // Set form submit label
     if (this.isCreateForm) {
       this.submitLabel = 'transactions.form.label.submit-add';
-      this.submitIcon = 'pi-plus';
     }
     else {
       this.submitLabel = 'transactions.form.label.submit-update';
-      this.submitIcon = 'pi-check';
     }
 
     // Init form
@@ -178,7 +173,7 @@ export class FormLayoutComponent implements OnInit {
     }
 
     // Prepare input data
-    const transaction: TransactionsTransactionInput = {
+    const transaction: ModelsTransactionInput = {
       asset: this.formService.getFormValue().asset,
       broker_id: this.formService.getFormValue().broker.id,
       date: this.formService.getFormValue().date,
@@ -198,12 +193,13 @@ export class FormLayoutComponent implements OnInit {
 
   // Transaction
 
-  createTransaction(transaction: TransactionsTransactionInput) {
+  createTransaction(transaction: ModelsTransactionInput) {
     this.loading = true;
     this.transactionsService.createTransaction(transaction).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {
+        this.formService.rollbackToDefault();
         this.notificationService.showToastSuccess('transactions.messages.add-success');
       },
       error: (error) => {
@@ -212,7 +208,7 @@ export class FormLayoutComponent implements OnInit {
     })
   }
 
-  updateTransaction(transaction: TransactionsTransactionInput) {
+  updateTransaction(transaction: ModelsTransactionInput) {
     this.loading = true;
     if (this.transaction?.id) {
       this.transactionsService.updateTransaction(this.transaction.id, transaction).pipe(finalize(() => {

@@ -7,23 +7,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BrokersBroker } from './brokersBroker';
-import { TransactionsTransactionType } from './transactionsTransactionType';
+import { ModelsTransactionType } from './modelsTransactionType';
 
 
-export interface TransactionsTransaction { 
+export interface ModelsTransactionInput { 
     asset?: string;
-    broker?: BrokersBroker;
+    broker_id?: string;
     date?: string;
     fee?: number;
     id?: string;
     price?: number;
     price_unit?: number;
     quantity?: number;
-    transaction_type?: TransactionsTransactionType;
+    transaction_type?: ModelsTransactionType;
     user_id?: string;
 }
-export namespace TransactionsTransaction {
+export namespace ModelsTransactionInput {
 }
 
 

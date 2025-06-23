@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BrokersBroker, BrokersUserBrokerInput, UserBrokerService} from "@core/api";
+import {ModelsBroker, ModelsBrokerUserInput, BrokerService} from "@core/api";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {finalize} from "rxjs";
 import {NotificationService} from "@shared/services/notification.service";
@@ -12,7 +12,6 @@ import {
 } from "@modules/dashboard/layouts/dashboard-content-layout/dashboard-content-layout.component";
 import {InputText} from "primeng/inputtext";
 import {RadioCardItem, RadioCardsComponent} from "@shared/components/radio-cards/radio-cards.component";
-import {Ripple} from "primeng/ripple";
 import {Message} from "primeng/message";
 import {FormService} from "@shared/services/form.service";
 import {BrokerImageService, BrokerWithImage} from "@shared/services/broker-image.service";
@@ -30,7 +29,6 @@ import {handleErrors, ResponseError} from "@shared/utils/errors";
         DashboardContentLayoutComponent,
         InputText,
         RadioCardsComponent,
-        Ripple,
         Message
     ],
     templateUrl: './add.component.html',
@@ -60,7 +58,7 @@ export class AddComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private userBrokerService: UserBrokerService,
+    private brokerService: BrokerService,
     private fb: FormBuilder,
     protected formService: FormService,
     private brokerImageService: BrokerImageService,
@@ -98,7 +96,7 @@ export class AddComponent implements OnInit {
     this.brokerImageService.getBrokersWithImages(true).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (brokers: BrokersBroker[]) => {
+      next: (brokers: ModelsBroker[]) => {
         this.brokers = brokers;
       },
       error: (error: Error) => {
@@ -115,12 +113,12 @@ export class AddComponent implements OnInit {
 
     // Prepare
     this.loading = true;
-    const userBroker : BrokersUserBrokerInput = {
+    const brokerUser : ModelsBrokerUserInput = {
       broker_id: this.formService.getFormValue().broker.id,
     }
 
     // Call API
-    this.userBrokerService.createUserBroker(userBroker).pipe(finalize(() => {
+    this.brokerService.createUserBroker(brokerUser).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {

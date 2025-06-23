@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
-  BrokerImagesService,
-  BrokersBroker,
-  BrokersService,
-  BrokersUserBroker, TransactionsService,
-  TransactionsTransaction,
-  UserBrokerService
+  BrokerService,
+  ModelsBroker,
+  ModelsBrokerUser,
+  TransactionsService,
+  ModelsTransaction,
 } from "@core/api";
 import {forkJoin, map, Observable, of, switchMap, tap} from "rxjs";
 import {BrokerImageStore} from "@shared/stores/broker-image.service";
 
 // Export a type that extends BrokersBroker and adds an imageUrl property
-export type BrokerWithImage = BrokersBroker & { imageUrl?: string };
-export type UserBrokerWithImage = Omit<BrokersUserBroker, 'broker'> & { broker: BrokerWithImage };
-export type TransactionWithImage = Omit<TransactionsTransaction, 'broker'> & { broker: BrokerWithImage };
+export type BrokerWithImage = ModelsBroker & { imageUrl?: string };
+export type UserBrokerWithImage = Omit<ModelsBrokerUser, 'broker'> & { broker: BrokerWithImage };
+export type TransactionWithImage = Omit<ModelsTransaction, 'broker'> & { broker: BrokerWithImage };
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +21,14 @@ export class BrokerImageService {
 
   constructor(
     private brokerImageStore: BrokerImageStore,
-    private brokersService: BrokersService,
-    private brokerImagesService: BrokerImagesService,
-    private userBrokerService: UserBrokerService,
+    private brokerService: BrokerService,
     private transactionService: TransactionsService
   ) {}
 
   getBrokersWithImages(enabledOnly?: boolean): Observable<BrokerWithImage[]> {
     // Fetch brokers from the service
-    return this.brokersService.getBrokers(enabledOnly ? 'true' : undefined).pipe(
-      switchMap((brokers: BrokersBroker[]) => {
+    return this.brokerService.listBrokers(enabledOnly ? 'true' : 'false').pipe(
+      switchMap((brokers: ModelsBroker[]) => {
         // For each broker, fetch the corresponding image
         const brokerImageRequests = brokers.map(broker => {
           // If the broker does not have an image, return the broker as is
@@ -49,7 +46,7 @@ export class BrokerImageService {
           }
 
           // Fetch the broker image and map it to the broker
-          return this.brokerImagesService.getBrokerImage(broker.id!, broker.image_id).pipe(
+          return this.brokerService.getBrokerImage(broker.id!, broker.image_id).pipe(
             map(image => {
               const imageUrl = URL.createObjectURL(image);
               // Cache the image for future use
@@ -75,9 +72,9 @@ export class BrokerImageService {
 
   getUsersBrokersWithImages(): Observable<UserBrokerWithImage[]> {
     // Fetch brokers from the service
-    return this.userBrokerService.getUserBrokers().pipe(
+    return this.brokerService.listUserBrokers().pipe(
 
-      switchMap((userBrokers: BrokersUserBroker[]) => {
+      switchMap((userBrokers: ModelsBrokerUser[]) => {
         // For each userBroker, fetch the corresponding image
         const userBrokerImageRequests = userBrokers.map(userBroker => {
           // If the broker does not have an image, return the broker as is
@@ -104,7 +101,7 @@ export class BrokerImageService {
           }
 
           // Fetch the broker image and map it to the broker
-          return this.brokerImagesService.getBrokerImage(userBroker.broker.id!, userBroker.broker.image_id).pipe(
+          return this.brokerService.getBrokerImage(userBroker.broker.id!, userBroker.broker.image_id).pipe(
             map(image => {
               const imageUrl = URL.createObjectURL(image);
               if (userBroker.broker?.image_id) {
@@ -148,7 +145,7 @@ export class BrokerImageService {
 
     // Fetch transactions from the service
     return this.transactionService.getTransactions().pipe(
-      switchMap((transactions: TransactionsTransaction[]) => {
+      switchMap((transactions: ModelsTransaction[]) => {
 
         // For each transaction, fetch the corresponding image
         const transactionImageRequests = transactions.map(transaction =>
@@ -172,7 +169,7 @@ export class BrokerImageService {
     );
   }
 
-  private mapTransactionWithImage(transaction: TransactionsTransaction): Observable<TransactionWithImage> {
+  private mapTransactionWithImage(transaction: ModelsTransaction): Observable<TransactionWithImage> {
     // If the broker does not have an image, return the broker as is
     if (!transaction.broker?.image_id) {
       return of({
@@ -197,7 +194,7 @@ export class BrokerImageService {
     }
 
     // Fetch the broker image and map it to the broker
-    return this.brokerImagesService.getBrokerImage(transaction.broker.id!, transaction.broker.image_id).pipe(
+    return this.brokerService.getBrokerImage(transaction.broker.id!, transaction.broker.image_id).pipe(
       map(image => {
         const imageUrl = URL.createObjectURL(image);
         if (transaction.broker?.image_id) {

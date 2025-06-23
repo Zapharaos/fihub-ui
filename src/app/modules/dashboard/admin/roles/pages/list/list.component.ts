@@ -12,8 +12,8 @@ import {Table, TableModule} from "primeng/table";
 import {NotificationService} from "@shared/services/notification.service";
 import {PrimeTemplate} from "primeng/api";
 import {
-  RolesRoleWithPermissions,
-  RolesService
+  ModelsRoleWithPermissions,
+  SecurityService
 } from "@core/api";
 import {finalize} from "rxjs";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -56,8 +56,8 @@ export class ListComponent implements OnInit {
   loading = true;
 
   // Table
-  role!: RolesRoleWithPermissions
-  roles: RolesRoleWithPermissions[] = []
+  role!: ModelsRoleWithPermissions
+  roles: ModelsRoleWithPermissions[] = []
   @ViewChild('dt') dt: Table | undefined;
 
   protected readonly tablePropertiesFilter = ['name', 'permissionValues'];
@@ -66,7 +66,7 @@ export class ListComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     protected formService: FormService,
-    private rolesService: RolesService,
+    private securityService: SecurityService,
     private roleStore: RoleStore,
     private confirmService: ConfirmService,
   ) { }
@@ -79,10 +79,10 @@ export class ListComponent implements OnInit {
 
   loadRoles() {
     this.loading = true;
-    this.rolesService.getRoles().pipe(finalize(() => {
+    this.securityService.listRoles().pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
-      next: (roles: RolesRoleWithPermissions[]) => {
+      next: (roles: ModelsRoleWithPermissions[]) => {
         this.roles = roles;
       },
       error: (error: Error) => {
@@ -93,7 +93,7 @@ export class ListComponent implements OnInit {
 
   // Table
 
-  onRowSelect(role: RolesRoleWithPermissions) {
+  onRowSelect(role: ModelsRoleWithPermissions) {
     // Store role
     this.roleStore.role = role;
 
@@ -101,15 +101,18 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/dashboard/admin/roles', role?.id, 'update']);
   }
 
-  onRowDelete(event: Event, role: RolesRoleWithPermissions) {
-    this.confirmService.showDeleteConfirmation(event, () => this.deleteRole(role))
+  onRowDelete(event: Event, role: ModelsRoleWithPermissions) {
+    this.confirmService.showDeleteConfirmation({
+      event: event,
+      accept: () => this.deleteRole(role),
+    });
   }
 
   // Roles
 
-  deleteRole(role: RolesRoleWithPermissions) {
+  deleteRole(role: ModelsRoleWithPermissions) {
     this.loading = true;
-    this.rolesService.deleteRole(role.id!).pipe(finalize(() => {
+    this.securityService.deleteRole(role.id!).pipe(finalize(() => {
       this.loading = false;
     })).subscribe({
       next: () => {

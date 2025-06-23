@@ -7,9 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ModelsPermission } from './modelsPermission';
 
 
-export interface PasswordInputToken { 
-    token?: string;
+export interface ModelsRoleWithPermissions { 
+    id?: string;
+    name?: string;
+    permissions?: Array<ModelsPermission>;
 }
 

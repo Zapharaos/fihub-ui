@@ -9,7 +9,10 @@
  */
 
 
-export interface AuthJwtToken { 
-    token?: string;
+export interface ModelsPermission { 
+    description?: string;
+    id?: string;
+    scope?: string;
+    value?: string;
 }
 

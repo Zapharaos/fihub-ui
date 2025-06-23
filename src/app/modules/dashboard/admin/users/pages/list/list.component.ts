@@ -12,12 +12,11 @@ import {Table, TableModule} from "primeng/table";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {Skeleton} from "primeng/skeleton";
-import {UsersService, UsersUserWithRoles} from "@core/api";
+import {ModelsUser, SecurityService, ModelsUserWithRoles} from "@core/api";
 import {finalize} from "rxjs";
 import {handleErrors} from "@shared/utils/errors";
 import {NotificationService} from "@shared/services/notification.service";
 import {Tag} from "primeng/tag";
-import {UserStore} from "@modules/dashboard/admin/users/stores/user.service";
 import {DialogMode} from "@shared/services/dialog.service";
 import {PermissionDirective} from "@shared/directives/permission.directive";
 
@@ -47,17 +46,16 @@ export class ListComponent implements OnInit {
   loading = true;
 
   // Table
-  user!: UsersUserWithRoles;
-  users: UsersUserWithRoles[] = []
+  user!: ModelsUser;
+  users: ModelsUser[] = []
   @ViewChild('dt') dt: Table | undefined;
 
   protected readonly tablePropertiesFilter = ['email', 'roleValues', 'created_at', 'updated_at'];
 
   constructor(
     private router: Router,
-    private usersService: UsersService,
+    private securityService: SecurityService,
     private notificationService: NotificationService,
-    private usersStore: UserStore
   ) { }
 
   ngOnInit() {
@@ -68,10 +66,10 @@ export class ListComponent implements OnInit {
 
   loadUsers() {
     this.loading = true;
-    this.usersService.getAllUsersWithRoles().pipe(finalize(() => {
+    this.securityService.listUsersWithRoles().pipe(finalize(() => {
       this.loading = false
     })).subscribe({
-      next: (users: UsersUserWithRoles[]) => {
+      next: (users: ModelsUserWithRoles[]) => {
         this.users = users;
       },
       error: (error) => {
@@ -83,8 +81,7 @@ export class ListComponent implements OnInit {
   // Table
 
   onRowSelect() {
-    this.usersStore.user = this.user;
-    this.router.navigate([`/dashboard/admin/users/${this.user.id}/update`]);
+    this.router.navigate([`/dashboard/admin/users/${this.user.ID}/update`]);
   }
 
   protected readonly applyFilterGlobal = applyFilterGlobal;

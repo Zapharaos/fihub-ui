@@ -9,11 +9,10 @@
  */
 
 
-export interface UsersUserWithPassword { 
-    created_at?: string;
-    email?: string;
-    id?: string;
-    password?: string;
-    updated_at?: string;
-}
+export type ModelsTransactionType = 'BUY' | 'SELL';
+
+export const ModelsTransactionType = {
+    BUY: 'BUY' as ModelsTransactionType,
+    SELL: 'SELL' as ModelsTransactionType
+};
 

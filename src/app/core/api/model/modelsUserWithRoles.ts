@@ -7,14 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ModelsRole } from './modelsRole';
 
 
-export interface UsersUserInputPassword { 
-    confirmation?: string;
+export interface ModelsUserWithRoles { 
+    ID?: string;
     created_at?: string;
     email?: string;
-    id?: string;
-    password?: string;
+    roles?: Array<ModelsRole>;
     updated_at?: string;
 }
 

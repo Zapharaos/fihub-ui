@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {RolesRoleWithPermissions} from "@core/api";
+import {ModelsRoleWithPermissions} from "@core/api";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleStore {
 
-  private readonly _role = new BehaviorSubject<RolesRoleWithPermissions | null>(null);
+  private readonly _role = new BehaviorSubject<ModelsRoleWithPermissions | null>(null);
   readonly role$ = this._role.asObservable();
 
-  get role(): RolesRoleWithPermissions | undefined {
+  get role(): ModelsRoleWithPermissions | undefined {
     return this._role.getValue() ?? undefined;
   }
 
-  set role(val: RolesRoleWithPermissions | undefined) {
+  set role(val: ModelsRoleWithPermissions | undefined) {
     this._role.next(val ?? null);
   }
 
-  updateRole(update: RolesRoleWithPermissions) {
+  updateRole(update: ModelsRoleWithPermissions) {
     if (this.role && this.role.id === update.id) {
       this.role = update;
     }

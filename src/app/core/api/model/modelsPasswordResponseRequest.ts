@@ -9,8 +9,9 @@
  */
 
 
-export interface RolesRole { 
-    id?: string;
-    name?: string;
+export interface ModelsPasswordResponseRequest { 
+    error?: string;
+    expires_at?: string;
+    user_id?: string;
 }
 

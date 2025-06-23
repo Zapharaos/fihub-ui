@@ -9,9 +9,13 @@
  */
 
 
-export interface PasswordResponseRequest { 
-    error?: string;
-    expires_at?: string;
-    user_id?: string;
+export interface ModelsUserInputCreate { 
+    ID?: string;
+    checkbox?: boolean;
+    confirmation?: string;
+    created_at?: string;
+    email?: string;
+    password?: string;
+    updated_at?: string;
 }
 
