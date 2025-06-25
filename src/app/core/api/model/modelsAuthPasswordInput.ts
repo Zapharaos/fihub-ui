@@ -9,7 +9,9 @@
  */
 
 
-export interface ModelsPasswordInputRequest { 
-    email?: string;
+export interface ModelsAuthPasswordInput { 
+    confirmation?: string;
+    password?: string;
+    user_id?: string;
 }
 
