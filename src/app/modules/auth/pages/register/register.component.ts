@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {finalize} from "rxjs";
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
-import {UserService, ModelsUserInputCreate} from "@core/api";
+import {ModelsUserInputCreate, AuthService} from "@core/api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "@shared/services/notification.service";
 
@@ -30,7 +30,7 @@ export class RegisterComponent {
 
   constructor(
     private router: Router,
-    private userService: UserService,
+    private authService: AuthService,
     private notificationService: NotificationService
   ) { }
 
@@ -47,7 +47,7 @@ export class RegisterComponent {
     }
 
     // Calling service to register the user
-    this.userService.createUser(user).pipe(finalize(() => {
+    this.authService.registerUser(user).pipe(finalize(() => {
       // Call is over
       this.authFormComponent.setLoading(false)
     })).subscribe({

@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
 import {Router} from "@angular/router";
-import {AuthService, ModelsPasswordResponseRequest, ModelsUserInputPassword} from "@core/api";
+import {AuthService, ModelsResponseUserOtp, ModelsUserInputPassword} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormGroup} from "@angular/forms";
 import {finalize} from "rxjs";
@@ -70,7 +70,7 @@ export class PasswordComponent implements OnInit {
 
   forgot(userForm: FormGroup) {
     this.authFormComponent.setLoading(true);
-    this.authService.createPasswordResetRequest(
+    this.authService.generateForgottenPasswordOTP(
       {
         email: userForm.value.email,
       },
@@ -78,11 +78,11 @@ export class PasswordComponent implements OnInit {
     ).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
-      next: (request: ModelsPasswordResponseRequest) => {
+      next: (request: ModelsResponseUserOtp) => {
 
         // Success : store request into next step
         this.passwordStore.request = {
-          userID: request.user_id || '',
+          userID: request.identifier || '',
           expiresAt: request.expires_at || '',
           requestID: '',
           step: PasswordStoreStep.Verify,
@@ -104,7 +104,12 @@ export class PasswordComponent implements OnInit {
 
   verify(userForm: FormGroup) {
     this.authFormComponent.setLoading(true);
-    this.authService.getPasswordResetRequestID(this.passwordStore.request?.userID ?? '', userForm.value.otp).pipe(finalize(() => {
+    this.authService.validateForgottenPasswordOTP(
+      {
+        otp: userForm.value.otp,
+        user_id: this.passwordStore.request?.userID,
+      },
+    ).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
       next: (requestID: string) => {
@@ -126,16 +131,18 @@ export class PasswordComponent implements OnInit {
   reset(userForm: FormGroup) {
     this.authFormComponent.setLoading(true);
 
-    // Retrieving inputPassword through Form
-    const inputPassword: ModelsUserInputPassword = {
-      password: userForm.get('password-feedback')?.value,
-      confirmation: userForm.get('confirmation')?.value,
-    }
-
     // Retrieving userID and requestID from the store
     const request = this.passwordStore.request;
 
-    this.authService.resetPassword(request?.userID ?? '', request?.requestID ?? '', inputPassword).pipe(finalize(() => {
+    // Reset the password
+    this.authService.resetForgottenPassword(
+      {
+        otp_request_id: request?.requestID,
+        user_id: request?.userID,
+        password: userForm.get('password-feedback')?.value,
+        confirmation: userForm.get('confirmation')?.value,
+      }
+    ).pipe(finalize(() => {
       this.authFormComponent.setLoading(false)
     })).subscribe({
       next: () => {
