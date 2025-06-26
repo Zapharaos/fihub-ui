@@ -11,7 +11,7 @@ import {ConfirmService} from "@shared/services/confirm.service";
 import {Dialog} from "primeng/dialog";
 import {NgTemplateOutlet} from "@angular/common";
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
+import {AuthFormComponent, AuthFormFieldConfig} from "@shared/components/auth-form/auth-form.component";
 import {FormService} from "@shared/services/form.service";
 import {
   DashboardContentLayoutComponent

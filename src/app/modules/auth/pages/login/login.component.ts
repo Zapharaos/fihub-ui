@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {ModelsUserWithPassword} from "@core/api";
 import {finalize} from "rxjs";
 import {FormGroup} from "@angular/forms";
-import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
+import {AuthFormComponent, AuthFormFieldConfig} from "@shared/components/auth-form/auth-form.component";
 import {LoginService} from "@modules/auth/services/login.service";
 import {AuthService} from "@core/services/auth.service";
 import {NotificationService} from "@shared/services/notification.service";

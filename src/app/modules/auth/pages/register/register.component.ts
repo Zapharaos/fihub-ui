@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {finalize} from "rxjs";
-import {AuthFormComponent, AuthFormFieldConfig} from "@modules/auth/layouts/auth-form/auth-form.component";
+import {AuthFormComponent, AuthFormFieldConfig} from "@shared/components/auth-form/auth-form.component";
 import {ModelsUserInputCreate, AuthService} from "@core/api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "@shared/services/notification.service";
