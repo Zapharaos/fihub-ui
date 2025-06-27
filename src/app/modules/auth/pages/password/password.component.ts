@@ -1,13 +1,12 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthService, ModelsResponseUserOtp} from "@core/api";
+import {AuthService} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormGroup} from "@angular/forms";
-import {PasswordStore} from "@modules/auth/stores/password.service";
+import {AuthOtpStore} from "@shared/stores/auth-otp.service";
 import {LanguageService} from "@shared/services/language.service";
 import {AuthFlowComponent, AuthFlowStep} from "@shared/components/auth-flow/auth-flow.component";
 import {firstValueFrom} from "rxjs";
-import {ResponseError} from "@shared/utils/errors";
 
 @Component({
   selector: 'app-password',
@@ -23,7 +22,7 @@ export class PasswordComponent {
     {
       formConfig: {
         hasEmail: true,
-        submitLabel: "auth.password.forgot.submit",
+        submitLabel: "auth.otp-flow.step.init.submit",
         hasLoginLink: true,
       },
       onSubmit: (form: FormGroup) => this.forgot(form),
@@ -31,7 +30,7 @@ export class PasswordComponent {
     {
       formConfig: {
         hasOtp: true,
-        submitLabel: "auth.password.verification.submit",
+        submitLabel: "auth.otp-flow.step.verification.submit",
       },
       onSubmit: (form: FormGroup) => this.verify(form),
     },
@@ -39,20 +38,17 @@ export class PasswordComponent {
       formConfig: {
         hasPasswordFeedback: true,
         hasConfirmation: true,
-        submitLabel: "auth.password.reset.submit",
+        submitLabel: "auth.otp-flow.password.reset.submit",
       },
       onSubmit: (form: FormGroup) => this.reset(form),
     }
   ];
-  identifier?: string
-  expires_at?: string
-  request_id?: string
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private passwordStore: PasswordStore,
+    private authOtpStore: AuthOtpStore,
     private languageService: LanguageService,
   ) {
   }
@@ -69,25 +65,20 @@ export class PasswordComponent {
         )
       )
 
-      // Success : store request data
-      this.identifier = request.identifier;
-      this.expires_at = request.expires_at;
-
       // Show a notification based on the request status
       if (request.error === 'request-active') {
-        this.notificationService.showToastWarn('auth.password.messages.request-active');
+        this.notificationService.showToastWarn('auth.otp-flow.messages.request-active');
       } else {
-        this.notificationService.showToastSuccess('auth.password.messages.send-success');
+        this.notificationService.showToastSuccess('auth.otp-flow.messages.send-success');
       }
 
-      /*this.passwordStore.request = {
-        userID: request.identifier || '',
-        expiresAt: request.expires_at || '',
-        requestID: '',
-        step: PasswordStoreStep.Verify,
-      }*/
+      // Update the authOtpStore with the request data
+      this.authOtpStore.request = {
+        identifier: request.identifier,
+        expiresAt: request.expires_at,
+      }
     } catch (error) {
-      // Rethrow the error to the caller : authFormComponent.handleError() will handle it
+      // Rethrow the error to the caller
       throw error;
     }
   }
@@ -96,87 +87,53 @@ export class PasswordComponent {
     try {
       // Call the API to validate the forgotten password OTP
       // & store the request ID for the next step
-      this.request_id = await firstValueFrom(
+      const requestID = await firstValueFrom(
         this.authService.validateForgottenPasswordOTP(
           {
             otp: userForm.value.otp,
-            user_id: this.identifier,
-            // user_id: this.passwordStore.request?.userID,
+            // user_id: this.identifier,
+            user_id: this.authOtpStore.request?.identifier,
           },
         )
       );
 
-      /*const copyStore = this.passwordStore.request;
-      if (copyStore) {
-        copyStore.requestID = requestID;
-        copyStore.step = PasswordStoreStep.Reset;
-        this.passwordStore.request = copyStore;
-      }*/
+      // TODO : return new expiresAt for request
+
+      // Success : store request data
+      this.authOtpStore.request = {
+        ...this.authOtpStore.request!,
+        requestID: requestID,
+      };
     } catch (error) {
-      // Rethrow the error to the caller : authFormComponent.handleError() will handle it
+      // Rethrow the error to the caller
       throw error;
     }
   }
 
   async reset(userForm: FormGroup): Promise<void> {
-    // Retrieving userID and requestID from the store
-    // const request = this.passwordStore.request;
+    // Retrieving identifier and requestID from the store
+    const request = this.authOtpStore.request;
 
     try {
       // Call the API to finalize the request and set the new password
       await firstValueFrom(
         this.authService.resetForgottenPassword(
           {
-            otp_request_id: this.request_id,
-            // otp_request_id: request?.requestID,
-            user_id: this.identifier,
-            // user_id: request?.userID,
+            otp_request_id: request?.requestID,
+            user_id: request?.identifier,
             password: userForm.get('password-feedback')?.value,
             confirmation: userForm.get('confirmation')?.value,
           }
         )
       )
 
-      // this.passwordStore.reset();
-
       // Redirect to the auth page and show a success notification
       this.router.navigate(['/auth']).then(() => {
-        this.notificationService.showToastSuccess('auth.password.messages.reset-success')
+        this.notificationService.showToastSuccess('auth.otp-flow.password.messages.reset-success')
       })
     } catch (error) {
-      // Rethrow the error to the caller : authFormComponent.handleError() will handle it
+      // Rethrow the error to the caller
       throw error;
     }
   }
-
-  /*
-  ngOnInit() {
-      this.passwordStore.request$.subscribe((request) => {
-        if (request) {
-          this.updateStep(request.step);
-        }
-      });
-
-      this.passwordStore.init();
-    }
-
-  private updateStep(step: PasswordStoreStep | undefined) {
-    // Apply the step (if any)
-    switch (step) {
-      case PasswordStoreStep.Verify:
-        this.activeConfig = this.formConfigVerification;
-        this.authFormComponent?.setConfig(this.formConfigVerification);
-        break;
-      case PasswordStoreStep.Reset:
-        this.activeConfig = this.formConfigReset;
-        this.authFormComponent?.setConfig(this.formConfigReset);
-        break;
-      case PasswordStoreStep.Forgot:
-      default:
-        this.activeConfig = this.formConfigForgot;
-        this.authFormComponent?.setConfig(this.formConfigForgot);
-        break;
-    }
-  }
-  */
 }

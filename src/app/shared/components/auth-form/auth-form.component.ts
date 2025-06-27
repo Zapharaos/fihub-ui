@@ -165,7 +165,7 @@ export class AuthFormComponent implements OnInit {
 
       // OTP - Default
       case 'request-active':
-        this.notificationService.showToastError('auth.password.messages.request-active');
+        this.notificationService.showToastError('auth.otp-flow.messages.request-active');
         break;
 
       // OTP - Invalid

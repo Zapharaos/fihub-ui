@@ -257,22 +257,29 @@
       "agreement": "I accept the Terms of Use & Privacy Policy.",
       "submit": "Register"
     },
-    "password": {
-      "title": "Forgot password",
+    "otp-flow": {
       "messages": {
         "send-success": "A verification code has been sent to your email address.",
         "request-active": "A verification code was already sent to your email address.",
-        "reset-success": "Your password has been reset."
+        "request-expired": "Your request has expired. Please request a new one."
       },
-      "forgot": {
-        "submit": "Send request"
+      "step": {
+        "init": {
+          "submit": "Send request"
+        },
+        "verification": {
+          "label": "Verification code",
+          "submit": "Verify"
+        }
       },
-      "reset": {
-        "submit": "Reset"
-      },
-      "verification": {
-        "label": "Verification code",
-        "submit": "Verify"
+      "password": {
+        "title": "Forgot password",
+        "messages": {
+          "reset-success": "Your password has been reset."
+        },
+        "reset": {
+          "submit": "Reset"
+        }
       }
     }
   },
