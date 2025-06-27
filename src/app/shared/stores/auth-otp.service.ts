@@ -1,33 +1,27 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 
-export enum PasswordStoreStep {
-  Forgot = 'forgot',
-  Verify = 'verify',
-  Reset = 'reset'
-}
-
-export interface PasswordStoreRequest {
-  userID: string;
+export interface AuthOtpStoreRequest {
+  identifier?: string;
   requestID?: string;
-  expiresAt: string;
-  step: PasswordStoreStep;
+  expiresAt?: string;
+  currentStepIndex?: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class PasswordStore {
+export class AuthOtpStore {
 
   private readonly localStorageKey = 'passwordReset';
-  private readonly _request = new BehaviorSubject<PasswordStoreRequest | null>(null);
+  private readonly _request = new BehaviorSubject<AuthOtpStoreRequest | null>(null);
   readonly request$ = this._request.asObservable();
 
-  get request(): PasswordStoreRequest | undefined {
+  get request(): AuthOtpStoreRequest | undefined {
     return this._request.getValue() ?? undefined;
   }
 
-  set request(request: PasswordStoreRequest | undefined) {
+  set request(request: AuthOtpStoreRequest | undefined) {
     this._request.next(request ?? null);
     this.setLocalStorage(request);
   }
@@ -37,7 +31,7 @@ export class PasswordStore {
     const localRequest = this.getLocalStorage();
 
     // If the request is not expired, set it to the BehaviorSubject
-    if (localRequest && !this.isRequestExpired(localRequest)) {
+    if (localRequest && !AuthOtpStore.isRequestExpired(localRequest)) {
       this._request.next(localRequest);
     }
   }
@@ -46,9 +40,9 @@ export class PasswordStore {
     this.request = undefined;
   }
 
-  private isRequestExpired(request: PasswordStoreRequest): boolean {
-    if (!request) {
-      return true;
+  static isRequestExpired(request: AuthOtpStoreRequest | undefined): boolean {
+    if (!request || !request.expiresAt) {
+      return false;
     }
 
     const now = new Date();
@@ -56,7 +50,7 @@ export class PasswordStore {
     return now > expiresAt;
   }
 
-  private getLocalStorage(): PasswordStoreRequest | undefined{
+  private getLocalStorage(): AuthOtpStoreRequest | undefined{
     const storedData = localStorage.getItem(this.localStorageKey);
     if (!storedData || storedData === "undefined") {
       return undefined;
@@ -69,7 +63,7 @@ export class PasswordStore {
     }
   }
 
-  private setLocalStorage(data: PasswordStoreRequest | undefined): void {
+  private setLocalStorage(data: AuthOtpStoreRequest | undefined): void {
     if (!data) {
       localStorage.removeItem(this.localStorageKey);
     }

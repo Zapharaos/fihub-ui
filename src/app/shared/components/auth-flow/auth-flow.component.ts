@@ -1,6 +1,9 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {AuthFormComponent, AuthFormFieldConfig} from "@shared/components/auth-form/auth-form.component";
 import {FormGroup} from "@angular/forms";
+import {AuthOtpStore} from "@shared/stores/auth-otp.service";
+import {Router} from "@angular/router";
+import {NotificationService} from "@shared/services/notification.service";
 
 export type AuthFlowStep = {
   formConfig: AuthFormFieldConfig;
@@ -15,40 +18,81 @@ export type AuthFlowStep = {
   templateUrl: './auth-flow.component.html',
   styleUrl: './auth-flow.component.scss'
 })
-export class AuthFlowComponent implements OnInit {
+export class AuthFlowComponent implements OnInit, AfterViewInit {
   @Input() title?: string | undefined;
   @Input() steps: AuthFlowStep[] = [];
-  currentStepIndex: number = 0;
   currentStepFormConfig: AuthFormFieldConfig = {};
+  readyForNextStep = true;
 
   @ViewChild(AuthFormComponent) authFormComponent!: AuthFormComponent;
 
-  constructor() {}
+  constructor(
+    private authOtpStore: AuthOtpStore,
+    private router: Router,
+    private notificationService: NotificationService,
+  ) {
+  }
 
   ngOnInit(): void {
-    // Initialize the current step form configuration
-    this.currentStepFormConfig = this.steps[this.currentStepIndex]?.formConfig || {};
+    // Subscribe to the request observable -> watch for changes in the request state
+    this.authOtpStore.request$.subscribe((request) => {
+      // If there is a valid request, apply new step configuration
+      if (request && this.readyForNextStep) {
+        this.readyForNextStep = false;
+        this.applyStep(request.currentStepIndex!);
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize the authOtpStore to set up the initial state
+    this.authOtpStore.init();
+
+    // If the request was not initialized, force it to the first step
+    if (!this.authOtpStore.request) {
+      this.authOtpStore.request = {
+        currentStepIndex: 0,
+      };
+    }
   }
 
   async submit(form: FormGroup) {
-    // If the current step index is out of bounds, do nothing
-    if (this.currentStepIndex >= this.steps.length) return;
+    // Retrieve the current step index from the authOtpStore
+    const index = this.authOtpStore.request?.currentStepIndex;
 
-    // Get the current step and set loading state
-    const currentStep = this.steps[this.currentStepIndex];
+    // Step conditions aren't met, handle the error
+    if (index === undefined || index === null || index >= this.steps.length) {
+      this.router.navigate(['/auth']).then(() => {
+        this.notificationService.showToastError('error.default')
+      })
+      return;
+    }
+
+    // Check if the request is expired
+    if (AuthOtpStore.isRequestExpired(this.authOtpStore.request)) {
+      this.authOtpStore.reset()
+      this.notificationService.showToastError('auth.otp-flow.messages.request-expired');
+      return;
+    }
+
+    // Set the form into loading state
     this.authFormComponent.setLoading(true);
 
     try {
       // Attempt to submit the form using the current step's onSubmit method
-      await currentStep.onSubmit(form)
+      await this.steps[index].onSubmit(form)
 
-      // Check if there is a next step
-      if (this.currentStepIndex < this.steps.length - 1) {
-        // Move to the next step
-        this.currentStepIndex++;
-        const nextStepFormConfig = this.steps[this.currentStepIndex]?.formConfig;
-        this.currentStepFormConfig = nextStepFormConfig;
-        this.authFormComponent.setConfig(nextStepFormConfig);
+      // Check if there is a next step and move to it
+      if (index + 1 < this.steps.length) {
+        this.readyForNextStep = true; // Allow the next step to be applied
+        this.authOtpStore.request = {
+          ...this.authOtpStore.request!,
+          currentStepIndex: index + 1,
+        };
+      }
+      else {
+        // Finalize the request by resetting the authOtpStore
+        this.authOtpStore.reset();
       }
     } catch(error: any) {
       // Handle any errors that occur during form submission
@@ -57,5 +101,13 @@ export class AuthFlowComponent implements OnInit {
       // Reset loading state regardless of success or failure
       this.authFormComponent.setLoading(false);
     }
+  }
+
+  private applyStep(index: number) {
+    const nextStepFormConfig = this.steps[index]?.formConfig;
+    setTimeout(() => {
+      this.authFormComponent.setConfig(nextStepFormConfig);
+      this.currentStepFormConfig = nextStepFormConfig;
+    });
   }
 }
