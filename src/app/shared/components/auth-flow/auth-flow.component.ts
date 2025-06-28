@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {AuthFormComponent, AuthFormFieldConfig} from "@shared/components/auth-form/auth-form.component";
 import {FormGroup} from "@angular/forms";
-import {AuthOtpStore} from "@shared/stores/auth-otp.service";
+import {AuthOtpStore, AuthRequestKey} from "@shared/stores/auth-otp.service";
 import {Router} from "@angular/router";
 import {NotificationService} from "@shared/services/notification.service";
 
@@ -21,6 +21,7 @@ export type AuthFlowStep = {
 export class AuthFlowComponent implements OnInit, AfterViewInit {
   @Input() title?: string | undefined;
   @Input() steps: AuthFlowStep[] = [];
+  @Input() authRequestKey!: AuthRequestKey;
   currentStepFormConfig: AuthFormFieldConfig = {};
   readyForNextStep = true;
 
@@ -35,7 +36,7 @@ export class AuthFlowComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Subscribe to the request observable -> watch for changes in the request state
-    this.authOtpStore.request$.subscribe((request) => {
+    this.authOtpStore.getAsObservable(this.authRequestKey)?.subscribe((request) => {
       // If there is a valid request, apply new step configuration
       if (request && this.readyForNextStep) {
         this.readyForNextStep = false;
@@ -46,19 +47,19 @@ export class AuthFlowComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // Initialize the authOtpStore to set up the initial state
-    this.authOtpStore.init();
+    this.authOtpStore.init(this.authRequestKey);
 
     // If the request was not initialized, force it to the first step
-    if (!this.authOtpStore.request) {
-      this.authOtpStore.request = {
+    if (!this.authOtpStore.get(this.authRequestKey)) {
+      this.authOtpStore.set(this.authRequestKey, {
         currentStepIndex: 0,
-      };
+      });
     }
   }
 
   async submit(form: FormGroup) {
     // Retrieve the current step index from the authOtpStore
-    const index = this.authOtpStore.request?.currentStepIndex;
+    const index = this.authOtpStore.get(this.authRequestKey)?.currentStepIndex;
 
     // Step conditions aren't met, handle the error
     if (index === undefined || index === null || index >= this.steps.length) {
@@ -69,8 +70,8 @@ export class AuthFlowComponent implements OnInit, AfterViewInit {
     }
 
     // Check if the request is expired
-    if (AuthOtpStore.isRequestExpired(this.authOtpStore.request)) {
-      this.authOtpStore.reset()
+    if (AuthOtpStore.isRequestExpired(this.authOtpStore.get(this.authRequestKey))) {
+      this.authOtpStore.reset(this.authRequestKey)
       this.notificationService.showToastError('auth.otp-flow.messages.request-expired');
       return;
     }
@@ -85,14 +86,14 @@ export class AuthFlowComponent implements OnInit, AfterViewInit {
       // Check if there is a next step and move to it
       if (index + 1 < this.steps.length) {
         this.readyForNextStep = true; // Allow the next step to be applied
-        this.authOtpStore.request = {
-          ...this.authOtpStore.request!,
+        this.authOtpStore.set(this.authRequestKey, {
+          ...this.authOtpStore.get(this.authRequestKey)!,
           currentStepIndex: index + 1,
-        };
+        });
       }
       else {
         // Finalize the request by resetting the authOtpStore
-        this.authOtpStore.reset();
+        this.authOtpStore.reset(this.authRequestKey);
       }
     } catch(error: any) {
       // Handle any errors that occur during form submission

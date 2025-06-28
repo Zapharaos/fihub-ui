@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
 import {FormGroup} from "@angular/forms";
-import {AuthOtpStore} from "@shared/stores/auth-otp.service";
+import {AuthOtpStore, AuthRequestKey} from "@shared/stores/auth-otp.service";
 import {LanguageService} from "@shared/services/language.service";
 import {AuthFlowComponent, AuthFlowStep} from "@shared/components/auth-flow/auth-flow.component";
 import {firstValueFrom} from "rxjs";
@@ -18,6 +18,7 @@ import {firstValueFrom} from "rxjs";
 })
 export class PasswordComponent {
 
+  protected readonly authRequestKey: AuthRequestKey = AuthRequestKey.ResetPassword;
   steps: AuthFlowStep[] = [
     {
       formConfig: {
@@ -73,10 +74,10 @@ export class PasswordComponent {
       }
 
       // Update the authOtpStore with the request data
-      this.authOtpStore.request = {
+      this.authOtpStore.set(this.authRequestKey, {
         identifier: request.identifier,
         expiresAt: request.expires_at,
-      }
+      })
     } catch (error) {
       // Rethrow the error to the caller
       throw error;
@@ -87,23 +88,22 @@ export class PasswordComponent {
     try {
       // Call the API to validate the forgotten password OTP
       // & store the request ID for the next step
-      const requestID = await firstValueFrom(
+      const request = await firstValueFrom(
         this.authService.validateForgottenPasswordOTP(
           {
             otp: userForm.value.otp,
             // user_id: this.identifier,
-            user_id: this.authOtpStore.request?.identifier,
+            user_id: this.authOtpStore.get(this.authRequestKey)?.identifier,
           },
         )
       );
 
-      // TODO : return new expiresAt for request
-
       // Success : store request data
-      this.authOtpStore.request = {
-        ...this.authOtpStore.request!,
-        requestID: requestID,
-      };
+      this.authOtpStore.set(this.authRequestKey, {
+        ...this.authOtpStore.get(this.authRequestKey)!,
+        requestID: request.request_id,
+        expiresAt: request.expires_at,
+      });
     } catch (error) {
       // Rethrow the error to the caller
       throw error;
@@ -112,7 +112,7 @@ export class PasswordComponent {
 
   async reset(userForm: FormGroup): Promise<void> {
     // Retrieving identifier and requestID from the store
-    const request = this.authOtpStore.request;
+    const request = this.authOtpStore.get(this.authRequestKey);
 
     try {
       // Call the API to finalize the request and set the new password
@@ -136,4 +136,6 @@ export class PasswordComponent {
       throw error;
     }
   }
+
+  protected readonly AuthRequestKey = AuthRequestKey;
 }
