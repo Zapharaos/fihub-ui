@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ModelsUser, ModelsRoleWithPermissions} from "@core/api";
 import {hasPermissions} from "@shared/utils/permissions";
 import {BehaviorSubject} from "rxjs";
+import {LocalStorageKeys} from "@shared/models/local-storage";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
   private loaded = false;
   private _permissions = new BehaviorSubject<Set<string>>(new Set<string>());
   permissions$ = this._permissions.asObservable();
+  private readonly localStorageKey = LocalStorageKeys.AuthToken;
 
   /**
    * Returns whether the authentication service has been loaded
@@ -31,11 +33,11 @@ export class AuthService {
   }
 
   getToken(): string | undefined {
-    return localStorage.getItem('token') || undefined;
+    return localStorage.getItem(this.localStorageKey) || undefined;
   }
 
   setToken(token: string): void {
-    localStorage.setItem('token', token);
+    localStorage.setItem(this.localStorageKey, token);
   }
 
   isAuthenticated(): boolean {
@@ -67,7 +69,7 @@ export class AuthService {
 
   logout() {
     this.setCurrentUser(undefined);
-    localStorage.removeItem('token');
+    localStorage.removeItem(this.localStorageKey);
   }
 
   setRedirectUrl(url?: string) {

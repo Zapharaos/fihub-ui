@@ -19,7 +19,9 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { ModelsRequestUserOtp } from '../model/modelsRequestUserOtp';
 // @ts-ignore
-import { ModelsResponseUserOtp } from '../model/modelsResponseUserOtp';
+import { ModelsResponseRequestUserOtp } from '../model/modelsResponseRequestUserOtp';
+// @ts-ignore
+import { ModelsResponseValidateUserOtp } from '../model/modelsResponseValidateUserOtp';
 // @ts-ignore
 import { ModelsUserInputChangePassword } from '../model/modelsUserInputChangePassword';
 // @ts-ignore
@@ -112,9 +114,9 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public generateChangePasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseUserOtp>;
-    public generateChangePasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseUserOtp>>;
-    public generateChangePasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseUserOtp>>;
+    public generateChangePasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseRequestUserOtp>;
+    public generateChangePasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseRequestUserOtp>>;
+    public generateChangePasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseRequestUserOtp>>;
     public generateChangePasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling generateChangePasswordOTP.');
@@ -172,7 +174,7 @@ export class AuthService {
         }
 
         let localVarPath = `/api/v1/auth/password/change/otp`;
-        return this.httpClient.request<ModelsResponseUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsResponseRequestUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: request,
@@ -195,9 +197,9 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public generateForgottenPasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseUserOtp>;
-    public generateForgottenPasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseUserOtp>>;
-    public generateForgottenPasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseUserOtp>>;
+    public generateForgottenPasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseRequestUserOtp>;
+    public generateForgottenPasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseRequestUserOtp>>;
+    public generateForgottenPasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseRequestUserOtp>>;
     public generateForgottenPasswordOTP(request: ModelsRequestUserOtp, lang?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling generateForgottenPasswordOTP.');
@@ -255,7 +257,7 @@ export class AuthService {
         }
 
         let localVarPath = `/api/v1/auth/password/reset/otp`;
-        return this.httpClient.request<ModelsResponseUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsResponseRequestUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: request,
@@ -278,9 +280,9 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public generateSignupOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseUserOtp>;
-    public generateSignupOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseUserOtp>>;
-    public generateSignupOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseUserOtp>>;
+    public generateSignupOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseRequestUserOtp>;
+    public generateSignupOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseRequestUserOtp>>;
+    public generateSignupOTP(request: ModelsRequestUserOtp, lang?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseRequestUserOtp>>;
     public generateSignupOTP(request: ModelsRequestUserOtp, lang?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling generateSignupOTP.');
@@ -338,7 +340,7 @@ export class AuthService {
         }
 
         let localVarPath = `/api/v1/auth/verify/otp`;
-        return this.httpClient.request<ModelsResponseUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsResponseRequestUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: request,
@@ -667,9 +669,9 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public validateChangePasswordOTP(request: ModelsValidateUserOtp, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
-    public validateChangePasswordOTP(request: ModelsValidateUserOtp, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
-    public validateChangePasswordOTP(request: ModelsValidateUserOtp, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
+    public validateChangePasswordOTP(request: ModelsValidateUserOtp, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseValidateUserOtp>;
+    public validateChangePasswordOTP(request: ModelsValidateUserOtp, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseValidateUserOtp>>;
+    public validateChangePasswordOTP(request: ModelsValidateUserOtp, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseValidateUserOtp>>;
     public validateChangePasswordOTP(request: ModelsValidateUserOtp, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling validateChangePasswordOTP.');
@@ -721,7 +723,7 @@ export class AuthService {
         }
 
         let localVarPath = `/api/v1/auth/password/change/otp/validate`;
-        return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsResponseValidateUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: request,
@@ -742,9 +744,9 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public validateForgottenPasswordOTP(request: ModelsValidateUserOtp, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
-    public validateForgottenPasswordOTP(request: ModelsValidateUserOtp, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
-    public validateForgottenPasswordOTP(request: ModelsValidateUserOtp, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
+    public validateForgottenPasswordOTP(request: ModelsValidateUserOtp, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseValidateUserOtp>;
+    public validateForgottenPasswordOTP(request: ModelsValidateUserOtp, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseValidateUserOtp>>;
+    public validateForgottenPasswordOTP(request: ModelsValidateUserOtp, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseValidateUserOtp>>;
     public validateForgottenPasswordOTP(request: ModelsValidateUserOtp, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling validateForgottenPasswordOTP.');
@@ -796,7 +798,7 @@ export class AuthService {
         }
 
         let localVarPath = `/api/v1/auth/password/reset/otp/validate`;
-        return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsResponseValidateUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: request,
@@ -817,9 +819,9 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public validateSignupOTP(request: ModelsValidateUserOtp, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
-    public validateSignupOTP(request: ModelsValidateUserOtp, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
-    public validateSignupOTP(request: ModelsValidateUserOtp, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
+    public validateSignupOTP(request: ModelsValidateUserOtp, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ModelsResponseValidateUserOtp>;
+    public validateSignupOTP(request: ModelsValidateUserOtp, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ModelsResponseValidateUserOtp>>;
+    public validateSignupOTP(request: ModelsValidateUserOtp, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ModelsResponseValidateUserOtp>>;
     public validateSignupOTP(request: ModelsValidateUserOtp, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling validateSignupOTP.');
@@ -871,7 +873,7 @@ export class AuthService {
         }
 
         let localVarPath = `/api/v1/auth/verify/otp/validate`;
-        return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ModelsResponseValidateUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: request,
