@@ -2,6 +2,10 @@ import {NotificationService} from "@shared/services/notification.service";
 
 export interface ResponseError extends Error {
   status?: number;
+  error?: {
+    message?: string;
+    title?: string;
+  };
 }
 
 export function handleErrors(error: ResponseError, notificationService: NotificationService, handler400?: (error: ResponseError) => void) {
