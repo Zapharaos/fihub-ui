@@ -1,5 +1,6 @@
-<app-auth-form
+<app-auth-flow
   [title]="'auth.register.title'"
-  [fieldConfig]="authFormFieldConfig"
-  (formSubmit)="register($event)"
-></app-auth-form>
+  [steps]="steps"
+  [authRequestKey]="authRequestKey"
+></app-auth-flow>
+
