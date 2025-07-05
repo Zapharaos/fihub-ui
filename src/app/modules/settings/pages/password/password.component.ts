@@ -1,35 +1,28 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
+import {AuthFlowComponent, AuthFlowStep} from "@shared/components/auth-flow/auth-flow.component";
+import {FormGroup} from "@angular/forms";
+import {AuthOtpStore, AuthRequestKey} from "@shared/stores/auth-otp.service";
+import {firstValueFrom} from "rxjs";
 import {Router} from "@angular/router";
 import {AuthService} from "@core/api";
 import {NotificationService} from "@shared/services/notification.service";
-import {FormGroup} from "@angular/forms";
-import {AuthOtpStore, AuthRequestKey} from "@shared/stores/auth-otp.service";
 import {LanguageService} from "@shared/services/language.service";
-import {AuthFlowComponent, AuthFlowStep} from "@shared/components/auth-flow/auth-flow.component";
-import {firstValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-password',
-  imports: [
-    AuthFlowComponent
-  ],
+    imports: [
+        AuthFlowComponent
+    ],
   templateUrl: './password.component.html',
   styleUrl: './password.component.scss'
 })
 export class PasswordComponent {
 
-  protected readonly authRequestKey: AuthRequestKey = AuthRequestKey.ResetPassword;
+  protected readonly authRequestKey: AuthRequestKey = AuthRequestKey.ChangePassword;
   steps: AuthFlowStep[] = [
     {
       formConfig: {
-        hasEmail: true,
-        submitLabel: "auth.otp-flow.step.init.submit",
-        hasLoginLink: true,
-      },
-      onSubmit: (form: FormGroup) => this.forgot(form),
-    },
-    {
-      formConfig: {
+        hideImage: true,
         hasOtp: true,
         submitLabel: "auth.otp-flow.step.verification.submit",
       },
@@ -39,9 +32,10 @@ export class PasswordComponent {
       formConfig: {
         hasPasswordFeedback: true,
         hasConfirmation: true,
-        submitLabel: "auth.otp-flow.password.reset.submit",
+        hideImage: true,
+        submitLabel: "auth.otp-flow.password.change.submit",
       },
-      onSubmit: (form: FormGroup) => this.reset(form),
+      onSubmit: (form: FormGroup) => this.change(form),
     }
   ];
 
@@ -54,14 +48,12 @@ export class PasswordComponent {
   ) {
   }
 
-  async forgot(userForm: FormGroup): Promise<void> {
+  async generateOtp(): Promise<void> {
     try {
-      // Call the API to generate a forgotten password OTP
+      // Call the API to generate a change password OTP
       const request = await firstValueFrom(
-        this.authService.generateForgottenPasswordOTP(
-          {
-            email: userForm.value.email,
-          },
+        this.authService.generateChangePasswordOTP(
+          {},
           this.languageService.language?.code
         )
       )
@@ -89,10 +81,10 @@ export class PasswordComponent {
       // Call the API to validate the forgotten password OTP
       // & store the request ID for the next step
       const request = await firstValueFrom(
-        this.authService.validateForgottenPasswordOTP(
+        this.authService.validateChangePasswordOTP(
           {
-            otp: userForm.value.otp,
             identifier: this.authOtpStore.get(this.authRequestKey)?.identifier,
+            otp: userForm.value.otp,
           },
         )
       );
@@ -109,14 +101,14 @@ export class PasswordComponent {
     }
   }
 
-  async reset(userForm: FormGroup): Promise<void> {
+  async change(userForm: FormGroup): Promise<void> {
     // Retrieving identifier and requestID from the store
     const request = this.authOtpStore.get(this.authRequestKey);
 
     try {
       // Call the API to finalize the request and set the new password
       await firstValueFrom(
-        this.authService.resetForgottenPassword(
+        this.authService.submitChangePassword(
           {
             otp_request_id: request?.requestID,
             user_id: request?.identifier,
@@ -127,7 +119,7 @@ export class PasswordComponent {
       )
 
       // Redirect to the auth page and show a success notification
-      this.router.navigate(['/auth']).then(() => {
+      this.router.navigate(['/settings/account']).then(() => {
         this.notificationService.showToastSuccess('auth.otp-flow.password.messages.reset-success')
       })
     } catch (error) {
@@ -135,4 +127,5 @@ export class PasswordComponent {
       throw error;
     }
   }
+
 }

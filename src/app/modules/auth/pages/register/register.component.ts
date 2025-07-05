@@ -26,7 +26,7 @@ export class RegisterComponent {
         submitLabel: "auth.otp-flow.step.init.submit",
         hasLoginLink: true,
       },
-      onSubmit: (form: FormGroup) => this.forgot(form),
+      onSubmit: (form: FormGroup) => this.initiate(form),
     },
     {
       formConfig: {
@@ -54,7 +54,7 @@ export class RegisterComponent {
     private languageService: LanguageService,
   ) { }
 
-  async forgot(userForm: FormGroup): Promise<void> {
+  async initiate(userForm: FormGroup): Promise<void> {
     try {
       // Call the API to generate a user signup OTP
       const request = await firstValueFrom(

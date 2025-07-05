@@ -1,10 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 import {Button} from "primeng/button";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "@core/services/auth.service";
 import {NotificationService} from "@shared/services/notification.service";
 import {TranslatePipe} from "@ngx-translate/core";
-import {UserService, ModelsUser, ModelsUserInputPassword} from "@core/api";
+import {UserService, ModelsUser} from "@core/api";
 import {handleErrors} from "@shared/utils/errors";
 import {DialogMode, DialogService} from "@shared/services/dialog.service";
 import {ConfirmService} from "@shared/services/confirm.service";
@@ -30,6 +30,7 @@ import {finalize} from "rxjs";
     NgTemplateOutlet,
     DashboardContentLayoutComponent,
     Divider,
+    RouterLink,
   ],
     templateUrl: './account.component.html',
     styleUrl: './account.component.scss'
@@ -41,15 +42,6 @@ export class AccountComponent {
     cssFormRaw: true,
     hideImage: true,
     hideActions: true,
-  };
-
-  protected readonly formConfigUserPassword: AuthFormFieldConfig = {
-    hasPasswordFeedback: true,
-    hasConfirmation: true,
-    cssFormRaw: true,
-    hideImage: true,
-    hideActions: true,
-    hidePwdSuggestions: true,
   };
 
   @ViewChild(AuthFormComponent) authFormComponent!: AuthFormComponent;
@@ -103,8 +95,6 @@ export class AccountComponent {
   submitForm(userForm: FormGroup) {
     if (this.dialogService.isActive(DialogMode.UPDATE)) {
       this.updateUserDetails(userForm);
-    } else if (this.dialogService.isActive(DialogMode.PASSWORD)) {
-      this.updateUserPassword(userForm);
     }
   }
 
@@ -114,11 +104,6 @@ export class AccountComponent {
     this.dialogService.open(DialogMode.UPDATE);
     this.authFormComponent.setConfig(this.formConfigUserDetails);
     this.authFormComponent.patchUserFormServiceValue(this.user!);
-  }
-
-  onEditUserPassword() {
-    this.dialogService.open(DialogMode.PASSWORD);
-    this.authFormComponent.setConfig(this.formConfigUserPassword);
   }
 
   onDelete(event: Event) {
@@ -149,31 +134,6 @@ export class AccountComponent {
         // Update local user
         this.user = user;
         this.authService.currentUser = user;
-        // Clean up
-        this.notificationService.showToastSuccess('auth.messages.update-success')
-        this.closeDialog();
-      },
-      error: (error: Error) => {
-        this.authFormComponent.handleError(error)
-      },
-    })
-  }
-
-  updateUserPassword(userForm: FormGroup) {
-    this.authFormComponent.setLoading(true);
-
-    // Retrieving user through Form
-    const user : ModelsUserInputPassword = {
-      password: userForm.get('password-feedback')?.value,
-      confirmation: userForm.get('confirmation')?.value,
-    }
-
-    // Calling service to update the user details
-    this.userService.updateUserPassword(user).pipe(finalize(() => {
-      // Call is over
-      this.authFormComponent.setLoading(false)
-    })).subscribe({
-      next: () => {
         // Clean up
         this.notificationService.showToastSuccess('auth.messages.update-success')
         this.closeDialog();

@@ -130,6 +130,13 @@ export class AuthService {
 
         let localVarHeaders = this.defaultHeaders;
 
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -173,7 +180,7 @@ export class AuthService {
             }
         }
 
-        let localVarPath = `/api/v1/auth/password/change/otp`;
+        let localVarPath = `/api/v1/user/me/password/otp`;
         return this.httpClient.request<ModelsResponseRequestUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -604,6 +611,13 @@ export class AuthService {
 
         let localVarHeaders = this.defaultHeaders;
 
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -647,7 +661,7 @@ export class AuthService {
             }
         }
 
-        let localVarPath = `/api/v1/auth/password/change`;
+        let localVarPath = `/api/v1/user/me/password`;
         return this.httpClient.request<string>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -679,6 +693,13 @@ export class AuthService {
 
         let localVarHeaders = this.defaultHeaders;
 
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -722,7 +743,7 @@ export class AuthService {
             }
         }
 
-        let localVarPath = `/api/v1/auth/password/change/otp/validate`;
+        let localVarPath = `/api/v1/user/me/password/otp/validate`;
         return this.httpClient.request<ModelsResponseValidateUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

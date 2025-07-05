@@ -14,7 +14,6 @@ export * from './modelsTransactionType';
 export * from './modelsUser';
 export * from './modelsUserInputChangePassword';
 export * from './modelsUserInputCreate';
-export * from './modelsUserInputPassword';
 export * from './modelsUserInputResetPassword';
 export * from './modelsUserWithPassword';
 export * from './modelsUserWithRoles';
