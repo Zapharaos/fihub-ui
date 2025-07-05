@@ -135,6 +135,4 @@ export class PasswordComponent {
       throw error;
     }
   }
-
-  protected readonly AuthRequestKey = AuthRequestKey;
 }

@@ -19,6 +19,7 @@ export type AuthFlowStep = {
   styleUrl: './auth-flow.component.scss'
 })
 export class AuthFlowComponent implements OnInit, AfterViewInit {
+  @Input() setup?: () => Promise<void>;
   @Input() title?: string | undefined;
   @Input() steps: AuthFlowStep[] = [];
   @Input() authRequestKey!: AuthRequestKey;
@@ -35,17 +36,27 @@ export class AuthFlowComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+    // Not allowed to proceed to the next step until the setup is complete
+    if (this.setup) {
+      this.readyForNextStep = false;
+    }
+
     // Subscribe to the request observable -> watch for changes in the request state
     this.authOtpStore.getAsObservable(this.authRequestKey)?.subscribe((request) => {
       // If there is a valid request, apply new step configuration
       if (request && this.readyForNextStep) {
+        if (!request.currentStepIndex) {
+          // If the current step index is not set, default to the first step
+          request.currentStepIndex = 0;
+        }
         this.readyForNextStep = false;
-        this.applyStep(request.currentStepIndex!);
+        this.applyStep(request.currentStepIndex);
       }
     });
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     // Initialize the authOtpStore to set up the initial state
     this.authOtpStore.init(this.authRequestKey);
 
@@ -54,6 +65,19 @@ export class AuthFlowComponent implements OnInit, AfterViewInit {
       this.authOtpStore.set(this.authRequestKey, {
         currentStepIndex: 0,
       });
+    }
+
+    if (this.setup) {
+      try {
+        // Set to true before calling the setup function so that the observable subscription can react
+        this.readyForNextStep = true;
+        await this.setup();
+      } catch(error: any) {
+        // Reset the state to prevent further steps from being applied
+        this.readyForNextStep = false;
+        // Handle any errors that occur during form submission
+        this.authFormComponent.handleError(error)
+      }
     }
   }
 

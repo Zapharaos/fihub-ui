@@ -18,7 +18,7 @@
   <div class="flex flex-col gap-5">
     <div class="flex flex-row gap-5">
       <h2 class="text-2xl font-medium">
-        {{ 'settings.account.details' | translate }}
+        {{ 'settings.account.details.title' | translate }}
       </h2>
       <p-button (click)="onEditUserDetails()"
                 [outlined]="true"
@@ -40,18 +40,26 @@
 
   <p-divider/>
 
-  <!--  Password -->
-  <div class="flex flex-row gap-5">
-    <h2 class="text-2xl font-medium">
-      {{ 'settings.account.password' | translate }}
-    </h2>
-    <p-button (click)="onEditUserPassword()"
-              [outlined]="true"
-              [rounded]="true"
-              link
-              size="small"
-              label="{{ 'actions.edit' | translate }}"
-              icon="pi pi-pencil"/>
+  <!-- Security -->
+  <div class="flex flex-col gap-5">
+    <div class="flex flex-row gap-5">
+      <h2 class="text-2xl font-medium">
+        {{ 'settings.account.security.title' | translate }}
+      </h2>
+    </div>
+
+    <div class="flex flex-row gap-10 my-5 items-center">
+      <div class="flex flex-col gap-5 text-light">
+        <p>{{ 'auth.form.pwd.password' | translate }}</p>
+      </div>
+      <p-button [routerLink]="'/settings/security/password'"
+                [outlined]="true"
+                [rounded]="true"
+                link
+                size="small"
+                label="{{ 'actions.change' | translate }}"
+                icon="pi pi-pencil"/>
+    </div>
   </div>
 
   <p-divider/>

@@ -10,6 +10,7 @@
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
+    "change": "Change",
     "logout": "Log out",
     "save": "Save",
     "submit": "Submit",
@@ -273,12 +274,17 @@
         }
       },
       "password": {
-        "title": "Forgot password",
         "messages": {
-          "reset-success": "Your password has been reset."
+          "reset-success": "Your password has been reset.",
+          "change-success": "Your password has been changed."
         },
         "reset": {
+          "title": "Forgot password",
           "submit": "Reset"
+        },
+        "change": {
+          "title": "Change password",
+          "submit": "Change"
         }
       }
     }
@@ -331,8 +337,12 @@
     "account": {
       "title": "My account",
       "sub-title": "Manage your account settings.",
-      "details": "User details",
-      "password": "Password",
+      "details": {
+        "title": "User details"
+      },
+      "security": {
+        "title": "Security"
+      },
       "actions": {
         "update-details": "Update your details",
         "change-password": "Change your password",
