@@ -92,8 +92,7 @@ export class PasswordComponent {
         this.authService.validateForgottenPasswordOTP(
           {
             otp: userForm.value.otp,
-            // user_id: this.identifier,
-            user_id: this.authOtpStore.get(this.authRequestKey)?.identifier,
+            identifier: this.authOtpStore.get(this.authRequestKey)?.identifier,
           },
         )
       );

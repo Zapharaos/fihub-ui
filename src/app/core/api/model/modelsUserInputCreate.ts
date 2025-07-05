@@ -15,6 +15,7 @@ export interface ModelsUserInputCreate {
     confirmation?: string;
     created_at?: string;
     email?: string;
+    otp_request_id?: string;
     password?: string;
     updated_at?: string;
 }

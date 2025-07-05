@@ -9,8 +9,8 @@
  */
 
 
-export interface ModelsValidateUserOtp { 
+export interface ModelsValidateUserOtp {
+    identifier?: string;
     otp?: string;
-    user_id?: string;
 }
 

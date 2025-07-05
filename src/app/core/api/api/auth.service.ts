@@ -339,7 +339,7 @@ export class AuthService {
             }
         }
 
-        let localVarPath = `/api/v1/auth/verify/otp`;
+        let localVarPath = `/api/v1/auth/register/otp`;
         return this.httpClient.request<ModelsResponseRequestUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -872,7 +872,7 @@ export class AuthService {
             }
         }
 
-        let localVarPath = `/api/v1/auth/verify/otp/validate`;
+        let localVarPath = `/api/v1/auth/register/otp/validate`;
         return this.httpClient.request<ModelsResponseValidateUserOtp>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
