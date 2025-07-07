@@ -132,7 +132,7 @@
       </div>
 
       <div *ngIf="fieldConfig.hasOtp" class="flex flex-col gap-2">
-        <label for="otp">{{'auth.password.verification.label' | translate}}</label>
+        <label for="otp">{{'auth.otp-flow.step.verification.label' | translate}}</label>
         <p-input-otp formControlName="otp" [integerOnly]="true" [length]="6" class="flex justify-between"/>
         <p-message *ngIf="formService.hasSpecifiedErrors('otp', ['required'], ['submit-invalid'])"
                    severity="error" variant="simple" size="small">

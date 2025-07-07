@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import languages from 'assets/config/languages.json';
+import {LocalStorageKeys} from "@shared/models/local-storage";
 
 interface Language {
   name: string,
@@ -11,6 +12,7 @@ interface Language {
   providedIn: 'root'
 })
 export class LanguageService {
+  private readonly localStorageKey = LocalStorageKeys.Language;
   private defaultLanguage = 'en';
   languages: Language[] = [];
   language: Language | undefined;
@@ -54,7 +56,7 @@ export class LanguageService {
 
     // Save the language
     this.language = language;
-    localStorage.setItem('language', language.code);
+    localStorage.setItem(this.localStorageKey, language.code);
     this.applyLanguage();
   }
 
@@ -63,7 +65,7 @@ export class LanguageService {
   }
 
   private getLanguage(): string | undefined {
-    return localStorage.getItem('language') || undefined;
+    return localStorage.getItem(this.localStorageKey) || undefined;
   }
 
   private applyLanguage() {

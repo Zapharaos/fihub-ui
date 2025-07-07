@@ -10,6 +10,7 @@
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
+    "change": "Change",
     "logout": "Log out",
     "save": "Save",
     "submit": "Submit",
@@ -257,22 +258,34 @@
       "agreement": "I accept the Terms of Use & Privacy Policy.",
       "submit": "Register"
     },
-    "password": {
-      "title": "Forgot password",
+    "otp-flow": {
       "messages": {
         "send-success": "A verification code has been sent to your email address.",
         "request-active": "A verification code was already sent to your email address.",
-        "reset-success": "Your password has been reset."
+        "request-expired": "Your request has expired. Please request a new one."
       },
-      "forgot": {
-        "submit": "Send request"
+      "step": {
+        "init": {
+          "submit": "Send request"
+        },
+        "verification": {
+          "label": "Verification code",
+          "submit": "Verify"
+        }
       },
-      "reset": {
-        "submit": "Reset"
-      },
-      "verification": {
-        "label": "Verification code",
-        "submit": "Verify"
+      "password": {
+        "messages": {
+          "reset-success": "Your password has been reset.",
+          "change-success": "Your password has been changed."
+        },
+        "reset": {
+          "title": "Forgot password",
+          "submit": "Reset"
+        },
+        "change": {
+          "title": "Change password",
+          "submit": "Change"
+        }
       }
     }
   },
@@ -324,8 +337,12 @@
     "account": {
       "title": "My account",
       "sub-title": "Manage your account settings.",
-      "details": "User details",
-      "password": "Password",
+      "details": {
+        "title": "User details"
+      },
+      "security": {
+        "title": "Security"
+      },
       "actions": {
         "update-details": "Update your details",
         "change-password": "Change your password",

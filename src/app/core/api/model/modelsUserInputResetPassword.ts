@@ -9,7 +9,10 @@
  */
 
 
-export interface ModelsPasswordInputRequest { 
-    email?: string;
+export interface ModelsUserInputResetPassword { 
+    confirmation?: string;
+    otp_request_id?: string;
+    password?: string;
+    user_id?: string;
 }
 

@@ -124,7 +124,7 @@ export class AuthFormComponent implements OnInit {
   }
 
   handleError400(error: ResponseError) {
-    switch (error.message) {
+    switch (error.error?.message) {
 
       // Login credentials - Invalid
       case 'login-invalid':
@@ -163,11 +163,6 @@ export class AuthFormComponent implements OnInit {
         this.formService.setFieldErrors('checkbox', ['submit-invalid']);
         break;
 
-      // OTP - Default
-      case 'request-active':
-        this.notificationService.showToastError('auth.password.messages.request-active');
-        break;
-
       // OTP - Invalid
       case 'otp-invalid':
         this.formService.setFieldErrors('otp', ['submit-invalid']);
@@ -175,7 +170,7 @@ export class AuthFormComponent implements OnInit {
 
       // Generic error
       default:
-        this.messageError = this.translateService.instant('http.500.detail');
+        this.messageError = this.translateService.instant('http.400.detail');
     }
   }
 
