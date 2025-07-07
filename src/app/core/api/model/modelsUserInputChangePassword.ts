@@ -9,9 +9,10 @@
  */
 
 
-export interface ModelsPasswordResponseRequest { 
-    error?: string;
-    expires_at?: string;
+export interface ModelsUserInputChangePassword { 
+    confirmation?: string;
+    otp_request_id?: string;
+    password?: string;
     user_id?: string;
 }
 

@@ -9,14 +9,9 @@
  */
 
 
-export interface ModelsUserInputCreate { 
-    ID?: string;
-    checkbox?: boolean;
-    confirmation?: string;
-    created_at?: string;
-    email?: string;
-    otp_request_id?: string;
-    password?: string;
-    updated_at?: string;
+export interface ModelsResponseRequestUserOtp { 
+    error?: string;
+    expires_at?: string;
+    identifier?: string;
 }
 

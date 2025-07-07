@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
+import {LocalStorageKeys} from "@shared/models/local-storage";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
   private isDarkTheme = false;
+  private readonly localStorageKey = LocalStorageKeys.Theme;
 
   init() {
     // Trying to retrieve the theme from local storage
@@ -31,7 +33,7 @@ export class ThemeService {
   }
 
   private getTheme(): string | undefined {
-    return localStorage.getItem('theme') || undefined;
+    return localStorage.getItem(this.localStorageKey) || undefined;
   }
 
   private applyTheme(): void {
@@ -44,6 +46,6 @@ export class ThemeService {
   }
 
   private saveTheme(): void {
-    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light');
+    localStorage.setItem(this.localStorageKey, this.isDarkTheme ? 'dark' : 'light');
   }
 }
