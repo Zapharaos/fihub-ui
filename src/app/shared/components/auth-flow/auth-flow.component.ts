@@ -4,8 +4,9 @@ import {FormGroup} from "@angular/forms";
 import {AuthOtpStore, AuthRequestKey} from "@shared/stores/auth-otp.service";
 import {Router} from "@angular/router";
 import {NotificationService} from "@shared/services/notification.service";
+import {ResponseError} from "@shared/utils/errors";
 
-export type AuthFlowStep = {
+export interface AuthFlowStep {
   formConfig: AuthFormFieldConfig;
   onSubmit: (form: FormGroup) => Promise<void>;
 }
@@ -72,11 +73,11 @@ export class AuthFlowComponent implements OnInit, AfterViewInit {
         // Set to true before calling the setup function so that the observable subscription can react
         this.readyForNextStep = true;
         await this.setup();
-      } catch(error: any) {
+      } catch(error: unknown) {
         // Reset the state to prevent further steps from being applied
         this.readyForNextStep = false;
         // Handle any errors that occur during form submission
-        this.authFormComponent.handleError(error)
+        this.authFormComponent.handleError(error as ResponseError);
       }
     }
   }
@@ -119,9 +120,9 @@ export class AuthFlowComponent implements OnInit, AfterViewInit {
         // Finalize the request by resetting the authOtpStore
         this.authOtpStore.reset(this.authRequestKey);
       }
-    } catch(error: any) {
+    } catch(error: unknown) {
       // Handle any errors that occur during form submission
-      this.authFormComponent.handleError(error)
+      this.authFormComponent.handleError(error as ResponseError);
     } finally {
       // Reset loading state regardless of success or failure
       this.authFormComponent.setLoading(false);

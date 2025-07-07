@@ -21,7 +21,7 @@ export enum AuthRequestKey {
 export class AuthOtpStore {
 
   private readonly localStorageKey = LocalStorageKeys.AuthOtp;
-  private lsRequests: Map<string, AuthOtpStoreRequest> = new Map();
+  private lsRequests = new Map<string, AuthOtpStoreRequest>();
   private readonly _requests = new Map<string, BehaviorSubject<AuthOtpStoreRequest | null>>();
 
   get(key: string): AuthOtpStoreRequest | undefined {

@@ -55,84 +55,69 @@ export class PasswordComponent {
   }
 
   async forgot(userForm: FormGroup): Promise<void> {
-    try {
-      // Call the API to generate a forgotten password OTP
-      const request = await firstValueFrom(
-        this.authService.generateForgottenPasswordOTP(
-          {
-            email: userForm.value.email,
-          },
-          this.languageService.language?.code
-        )
+    // Call the API to generate a forgotten password OTP
+    const request = await firstValueFrom(
+      this.authService.generateForgottenPasswordOTP(
+        {
+          email: userForm.value.email,
+        },
+        this.languageService.language?.code
       )
+    )
 
-      // Show a notification based on the request status
-      if (request.error === 'request-active') {
-        this.notificationService.showToastWarn('auth.otp-flow.messages.request-active');
-      } else {
-        this.notificationService.showToastSuccess('auth.otp-flow.messages.send-success');
-      }
-
-      // Update the authOtpStore with the request data
-      this.authOtpStore.set(this.authRequestKey, {
-        identifier: request.identifier,
-        expiresAt: request.expires_at,
-      })
-    } catch (error) {
-      // Rethrow the error to the caller
-      throw error;
+    // Show a notification based on the request status
+    if (request.error === 'request-active') {
+      this.notificationService.showToastWarn('auth.otp-flow.messages.request-active');
+    } else {
+      this.notificationService.showToastSuccess('auth.otp-flow.messages.send-success');
     }
+
+    // Update the authOtpStore with the request data
+    this.authOtpStore.set(this.authRequestKey, {
+      identifier: request.identifier,
+      expiresAt: request.expires_at,
+    })
   }
 
   async verify(userForm: FormGroup): Promise<void> {
-    try {
-      // Call the API to validate the forgotten password OTP
-      // & store the request ID for the next step
-      const request = await firstValueFrom(
-        this.authService.validateForgottenPasswordOTP(
-          {
-            otp: userForm.value.otp,
-            identifier: this.authOtpStore.get(this.authRequestKey)?.identifier,
-          },
-        )
-      );
+    // Call the API to validate the forgotten password OTP
+    // & store the request ID for the next step
+    const request = await firstValueFrom(
+      this.authService.validateForgottenPasswordOTP(
+        {
+          otp: userForm.value.otp,
+          identifier: this.authOtpStore.get(this.authRequestKey)?.identifier,
+        },
+      )
+    );
 
-      // Success : store request data
-      this.authOtpStore.set(this.authRequestKey, {
-        ...this.authOtpStore.get(this.authRequestKey)!,
-        requestID: request.request_id,
-        expiresAt: request.expires_at,
-      });
-    } catch (error) {
-      // Rethrow the error to the caller
-      throw error;
-    }
+    // Success : store request data
+    this.authOtpStore.set(this.authRequestKey, {
+      ...this.authOtpStore.get(this.authRequestKey)!,
+      requestID: request.request_id,
+      expiresAt: request.expires_at,
+    });
   }
 
   async reset(userForm: FormGroup): Promise<void> {
     // Retrieving identifier and requestID from the store
     const request = this.authOtpStore.get(this.authRequestKey);
 
-    try {
-      // Call the API to finalize the request and set the new password
-      await firstValueFrom(
-        this.authService.resetForgottenPassword(
-          {
-            otp_request_id: request?.requestID,
-            user_id: request?.identifier,
-            password: userForm.get('password-feedback')?.value,
-            confirmation: userForm.get('confirmation')?.value,
-          }
-        )
+    // Call the API to finalize the request and set the new password
+    await firstValueFrom(
+      this.authService.resetForgottenPassword(
+        {
+          otp_request_id: request?.requestID,
+          user_id: request?.identifier,
+          password: userForm.get('password-feedback')?.value,
+          confirmation: userForm.get('confirmation')?.value,
+        }
       )
+    )
 
-      // Redirect to the auth page and show a success notification
-      this.router.navigate(['/auth']).then(() => {
-        this.notificationService.showToastSuccess('auth.otp-flow.password.messages.reset-success')
-      })
-    } catch (error) {
-      // Rethrow the error to the caller
-      throw error;
-    }
+    // Redirect to the auth page and show a success notification
+    this.router.navigate(['/auth']).then(() => {
+      this.notificationService.showToastSuccess('auth.otp-flow.password.messages.reset-success')
+    })
   }
 }
